@@ -1,9 +1,0 @@
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/bin/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.deps.json
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/bin/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.dll
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/bin/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.pdb
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/obj/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.csproj.CoreCompileInputs.cache
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/obj/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.AssemblyInfoInputs.cache
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/obj/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.AssemblyInfo.cs
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/obj/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.dll
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/obj/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.pdb
-/Users/steve/Projects/TechDevs/TechDevs.Core.UserManagement/obj/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.csprojResolveAssemblyReference.cache
