@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  techdevs.core.usermanagement.api:
-    image: techdevs.core.usermanagement.api
-    build:
-      context: ./TechDevs.Core.UserManagement.API
-      dockerfile: Dockerfile
