@@ -14,4 +14,7 @@
     <ProjectReference Include="..\TechDevs.Core.UserManagement\TechDevs.Core.UserManagement.csproj">
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
 </Project>
