@@ -1,5 +1,4 @@
-﻿using System;
-namespace TechDevs.Core.UserManagement
+﻿namespace TechDevs.Core.UserManagement.Interfaces
 {
     public interface IUserRegistration
     {
@@ -8,8 +7,5 @@ namespace TechDevs.Core.UserManagement
         string LastName { get; set; }
         string EmailAddress { get; set; }
         bool AggreedToTerms { get; set; }
-
-        // Optional
-		string VehicleRegistration { get; set; }
     }
 }

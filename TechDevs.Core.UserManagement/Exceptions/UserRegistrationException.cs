@@ -1,4 +1,5 @@
 ﻿using System;
+using TechDevs.Core.UserManagement.Interfaces;
 
 namespace TechDevs.Core.UserManagement
 {

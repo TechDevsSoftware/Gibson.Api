@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TechDevs.Core", "TechDevs.Core", "{309F6967-B7E3-415F-96F0-D33D35FEF2EA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TechDevs.Shared", "TechDevs.Shared", "{2A3D5031-0028-4478-85DC-243DFB10AD12}"
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TechDevs.UserManagement", "TechDevs.UserManagement", "{309F6967-B7E3-415F-96F0-D33D35FEF2EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Core.UserManagement", "TechDevs.Core.UserManagement\TechDevs.Core.UserManagement.csproj", "{86B1BFEF-F1AA-4131-9207-461B9FFBBAB2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Core.UserManagement.UnitTests", "TechDevs.Core.UserManagement.UnitTests\TechDevs.Core.UserManagement.UnitTests.csproj", "{FE5F5BE3-C85D-4A04-A52B-30A631FE286B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Core.UserManagement.API", "TechDevs.Core.UserManagement.API\TechDevs.Core.UserManagement.API.csproj", "{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5715C574-A2AB-4276-A647-9A44E701477E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,9 +25,18 @@ Global
 		{FE5F5BE3-C85D-4A04-A52B-30A631FE286B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE5F5BE3-C85D-4A04-A52B-30A631FE286B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE5F5BE3-C85D-4A04-A52B-30A631FE286B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5715C574-A2AB-4276-A647-9A44E701477E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5715C574-A2AB-4276-A647-9A44E701477E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5715C574-A2AB-4276-A647-9A44E701477E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5715C574-A2AB-4276-A647-9A44E701477E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{86B1BFEF-F1AA-4131-9207-461B9FFBBAB2} = {309F6967-B7E3-415F-96F0-D33D35FEF2EA}
 		{FE5F5BE3-C85D-4A04-A52B-30A631FE286B} = {309F6967-B7E3-415F-96F0-D33D35FEF2EA}
+		{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65} = {309F6967-B7E3-415F-96F0-D33D35FEF2EA}
 	EndGlobalSection
 EndGlobal

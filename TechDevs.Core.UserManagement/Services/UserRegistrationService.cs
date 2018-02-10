@@ -1,29 +1,36 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using TechDevs.Core.UserManagement.Interfaces;
 
-namespace TechDevs.Core.UserManagement
+namespace TechDevs.Core.UserManagement.Services
 {
-    public class UserRegistrationService
+    public class UserRegistrationService : IUserRegistrationService
     {
-        IUserRepository _userRepo;
+        private readonly IUserRepository _userRepo;
 
         public UserRegistrationService(IUserRepository userRepo)
         {
             _userRepo = userRepo;
         }
 
-        public IUser RegisterUser(IUserRegistration userRegistration)
+        public async Task<IUser> RegisterUser(IUserRegistration userRegistration)
         {
-            ValidateCanRegister(userRegistration);
-            return new User();
+            await ValidateCanRegister(userRegistration);
+            var result = await _userRepo.CreateUser(userRegistration);
+            return result;
         }
 
-        void ValidateCanRegister(IUserRegistration userRegistration)
+        public async Task ValidateCanRegister(IUserRegistration userRegistration)
         {
             var validationErrors = new StringBuilder();
 
+            // User must have agreed to the terms
+            if (!userRegistration.AggreedToTerms)
+                validationErrors.Append("Must agree to terms and conditions");
+
             // Email address cannot already exist
-            if (_userRepo.UserByEmail(userRegistration.EmailAddress) != null)
+            if (await _userRepo.EmailAlreadyRegistered(userRegistration.EmailAddress))
                 validationErrors.AppendLine("Email address has already been registered");
 
             // Email address must be valid format
