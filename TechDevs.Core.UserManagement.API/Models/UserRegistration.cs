@@ -1,6 +1,4 @@
-﻿using TechDevs.Core.UserManagement.Interfaces;
-
-namespace TechDevs.Core.UserManagement.Models
+﻿namespace TechDevs.Core.UserManagement
 {
     public class UserRegistration : IUserRegistration
     {

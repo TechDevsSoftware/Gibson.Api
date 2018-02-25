@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using TechDevs.Core.UserManagement.Interfaces;
-using TechDevs.Core.UserManagement.Repositories;
-using TechDevs.Core.UserManagement.Services;
 
 namespace TechDevs.Core.UserManagement.API
 {
@@ -21,9 +18,8 @@ namespace TechDevs.Core.UserManagement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IUserProfileService, UserProfileService>();
-            services.AddTransient<IUserRegistrationService, UserRegistrationService>();
-            services.AddSingleton<IUserRepository, InMemoryUserRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddMvc();
 

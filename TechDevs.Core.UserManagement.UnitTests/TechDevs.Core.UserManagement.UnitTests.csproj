@@ -11,9 +11,9 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TechDevs.Core.UserManagement\TechDevs.Core.UserManagement.csproj" />
+    <Folder Include="MockData\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MockData\" />
+    <ProjectReference Include="..\TechDevs.Core.UserManagement.API\TechDevs.Core.UserManagement.csproj" />
   </ItemGroup>
 </Project>

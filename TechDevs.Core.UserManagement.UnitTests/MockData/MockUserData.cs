@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TechDevs.Core.UserManagement.Interfaces;
-using TechDevs.Core.UserManagement.Models;
+using TechDevs.Core.UserManagement;
 
 namespace TechDevs.Core.UserManagement.UnitTests
 {

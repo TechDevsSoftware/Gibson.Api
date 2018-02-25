@@ -1,4 +1,4 @@
-﻿namespace TechDevs.Core.UserManagement.Interfaces
+﻿namespace TechDevs.Core.UserManagement
 {
     public interface IUserRegistration
     {
