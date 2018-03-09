@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+using TechDevs.Core.UserManagement.Models;
+using TechDevs.Core.UserManagement.Utils;
 
 namespace TechDevs.Core.UserManagement
 {
@@ -10,81 +14,114 @@ namespace TechDevs.Core.UserManagement
         Task<List<IUser>> GetAll();
         Task<IUser> Insert(IUser user);
         Task<IUser> SetEmail(IUser user, string email);
+        Task<IUser> SetUsername(IUser user, string username);
         Task<IUser> SetName(IUser user, string firstName, string lastName);
+		Task<IUser> SetPassword(IUser user, string hashedPassword);
         Task<IUser> FindByEmail(string email);
-		Task Delete(IUser user);
+        Task<bool> Delete(IUser user);
         Task<bool> UserExists(string email);
     }
 
-    public class UserRepository : IUserRepository
+    public class MongoUserRepository : IUserRepository
     {
-        private readonly List<IUser> Users;
+        readonly IMongoDatabase _database;
+        readonly IMongoCollection<IUser> _users;
+        readonly IStringNormaliser _normaliser;
 
-        public UserRepository()
+        public MongoUserRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser)
         {
-            Users = new List<IUser>();
-            Users.Add(new User
-            {
-                Id = Guid.NewGuid().ToString(),
-                FirstName = "Steve",
-                LastName = "Kent",
-                EmailAddress = "stevekent55@gmail.com",
-                AgreedToTerms = true
-            });
-            Users.Add(new User
-            {
-                Id = Guid.NewGuid().ToString(),
-                FirstName = "Adam",
-                LastName = "Fox",
-                EmailAddress = "amobilefox@gmail.com",
-                AgreedToTerms = true
-            });
+            var client = new MongoClient(dbSettings.Value.ConnectionString);
+            if (client != null) _database = client.GetDatabase(dbSettings.Value.Database);
+            if (_database != null) _users = _database.GetCollection<IUser>("users");
+            _normaliser = normaliser;
         }
 
-        public Task<List<IUser>> GetAll()
+        public async Task<bool> Delete(IUser user)
         {
-            var result = Users.ToList();
-            return Task.FromResult(result);
+            DeleteResult result = await _users.DeleteOneAsync(FilterByEmail(user.EmailAddress));
+            return (result.IsAcknowledged && result.DeletedCount > 0);
         }
 
-        public Task<IUser> Insert(IUser user)
+        public async Task<IUser> FindByEmail(string email)
         {
-            Users.Add(user);
-            return Task.FromResult(user);
+            var result = await _users.Find(FilterByEmail(email)).FirstOrDefaultAsync();
+            return result;
         }
 
-        public Task<IUser> SetEmail(IUser user, string email)
+        public async Task<List<IUser>> GetAll()
         {
-            var existingUser = Users.FirstOrDefault(x => x.Id == user.Id);
-            existingUser.EmailAddress = email;
-            return Task.FromResult(existingUser);
+            var results = await _users.Find(_ => true).ToListAsync();
+            return results;
         }
 
-        public Task<IUser> SetName(IUser user, string firstName, string lastName)
+        public async Task<IUser> Insert(IUser user)
         {
-            var existingUser = Users.FirstOrDefault(x => x.Id == user.Id);
-            existingUser.FirstName = firstName;
-            existingUser.LastName = lastName;
-            return Task.FromResult(existingUser);
+            user.NormalisedEmail = _normaliser.Normalise(user.EmailAddress);
+            user.Username = user.EmailAddress;
+            user.NormalisedUsername = _normaliser.Normalise(user.EmailAddress);
+
+            await _users.InsertOneAsync(user);
+            var result = await FindByEmail(user.EmailAddress);
+            return result;
         }
 
-        public Task Delete(IUser user)
+        public async Task<IUser> SetEmail(IUser user, string email)
         {
-            var existingUser = Users.FirstOrDefault(x => x.Id == user.Id);
-            Users.Remove(existingUser);
-            return Task.CompletedTask;
+            UpdateDefinition<IUser> update = Builders<IUser>
+                .Update
+                .Set("EmailAddress", email)
+                .Set("NormalisedEmail", _normaliser.Normalise(email));
+
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress), update);
+            if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindByEmail(email);
+            throw new Exception("User email could not be updated");
         }
 
-        public Task<IUser> FindByEmail(string email)
+        public async Task<IUser> SetName(IUser user, string firstName, string lastName)
         {
-            var user = Users.FirstOrDefault(x => x.EmailAddress == email);
-            return Task.FromResult(user);
+            UpdateDefinition<IUser> update = Builders<IUser>
+               .Update
+               .Set("FirstName", firstName)
+               .Set("LastName", lastName);
+
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress), update);
+            return await FindByEmail(user.EmailAddress);
         }
 
-        public Task<bool> UserExists(string email)
+        public async Task<IUser> SetUsername(IUser user, string username)
         {
-            var result = Users.Any(x => x.EmailAddress == email);
-            return Task.FromResult(result);
+            UpdateDefinition<IUser> update = Builders<IUser>
+              .Update
+              .Set("Username", username)
+              .Set("NormalisedUsername", _normaliser.Normalise(username));
+            
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress), update);
+            return await FindByEmail(user.EmailAddress);
+        }
+
+        public async Task<IUser> SetPassword(IUser user, string passwordHash)
+        {
+            UpdateDefinition<IUser> update = Builders<IUser>
+                .Update
+                .Set("PasswordHash", passwordHash);
+
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress), update);
+            if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindByEmail(user.EmailAddress);
+            throw new Exception("Password could not be updated");
+        }
+
+        public async Task<bool> UserExists(string email)
+        {
+            var results = await FindByEmail(email);
+            return (results != null);
+        }
+
+        FilterDefinition<IUser> FilterByEmail(string email)
+        {
+            var normEmail = _normaliser.Normalise(email);
+            var filter = Builders<IUser>.Filter.Eq("NormalisedEmail", normEmail);
+            return filter;
         }
     }
 }
+     

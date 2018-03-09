@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TechDevs.Core.UserManagement.Models;
 
 namespace TechDevs.Core.UserManagement
 {
     // API Schema 
     // /api/v1/{module}/{controller}/{method}
-
     [Route("api/v1/usermanagement/profiles")]
     public class UsersController
     {
@@ -23,7 +23,7 @@ namespace TechDevs.Core.UserManagement
             try
             {
                 if (registration == null) return new BadRequestObjectResult("Invalid registration");
-                var result = await _userService.Create(registration);
+                var result = await _userService.RegisterUser(registration);
                 return new OkObjectResult(result);
             }
             catch (UserRegistrationException ex)
@@ -92,6 +92,21 @@ namespace TechDevs.Core.UserManagement
             {
                 await _userService.SetPassword(email, password);
                 return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.Message);
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequest loginRequest)
+        {
+            try
+            {
+                var isValid = await _userService.ValidatePassword(loginRequest.Email, loginRequest.Password);
+                if (isValid) return new OkResult();
+                return new UnauthorizedResult();
             }
             catch (Exception ex)
             {

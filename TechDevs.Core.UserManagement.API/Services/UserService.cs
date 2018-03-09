@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TechDevs.Core.UserManagement.Utils;
 
 namespace TechDevs.Core.UserManagement
 {
     public interface IUserService
     {
         Task<List<IUser>> GetAllUsers();
-        Task<IUser> Create(IUserRegistration registration);
+        Task<IUser> RegisterUser(IUserRegistration registration);
         Task<IUser> GetByEmail(string email);
         Task<IUser> UpdateEmail(string currentEmail, string newEmail);
-        Task Delete(string email);
-        Task SetPassword(string email, string password);
+		Task<IUser> SetPassword(string email, string password);
+        Task<bool> Delete(string email);
         Task RequestResetPassword(string email);
         Task ResetPassword(string email, string resetPasswordToken);
         Task<bool> ValidatePassword(string email, string password);
@@ -22,10 +23,12 @@ namespace TechDevs.Core.UserManagement
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepo;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserService(IUserRepository userRepo)
+        public UserService(IUserRepository userRepo, IPasswordHasher passwordHasher)
         {
             _userRepo = userRepo;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<List<IUser>> GetAllUsers()
@@ -39,9 +42,11 @@ namespace TechDevs.Core.UserManagement
             await ValidateCanRegister(userRegistration);
             var newUser = new User
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = userRegistration.FirstName,
                 LastName = userRegistration.LastName,
                 EmailAddress = userRegistration.EmailAddress,
+                Username = userRegistration.EmailAddress,
                 AgreedToTerms = userRegistration.AggreedToTerms
             };
             var result = await _userRepo.Insert(newUser);
@@ -83,32 +88,19 @@ namespace TechDevs.Core.UserManagement
             var existingEmail = await _userRepo.FindByEmail(newEmail);
             if (existingEmail != null) throw new Exception("Email address already in use");
             // Change the email
+			await _userRepo.SetUsername(user, newEmail);
             var updatedUser = await _userRepo.SetEmail(user, newEmail);
             if (updatedUser == null) throw new Exception("Email update failed");
+            // Set the username along with the username as we dont need a seperate username
+            await _userRepo.SetUsername(user, newEmail);
             return updatedUser;
         }
 
-        public async Task<IUser> Create(IUserRegistration registration)
-        {
-            await ValidateCanRegister(registration);
-            var user = new User
-            {
-                Id = Guid.NewGuid().ToString(),
-                FirstName = registration.FirstName,
-                LastName = registration.LastName,
-                EmailAddress = registration.EmailAddress,
-                AgreedToTerms = registration.AggreedToTerms
-            };
-            var result = await _userRepo.Insert(user);
-            if (result == null) throw new Exception("User creation failed");
-            return result;
-        }
-
-        public async Task Delete(string email)
+        public async Task<bool> Delete(string email)
         {
             var user = await _userRepo.FindByEmail(email);
             if (user == null) throw new Exception("User not found");
-            await _userRepo.Delete(user);
+            return await _userRepo.Delete(user);
         }
 
         public async Task<IUser> GetByEmail(string email)
@@ -118,9 +110,13 @@ namespace TechDevs.Core.UserManagement
             return user;
         }
 
-        public Task SetPassword(string email, string password)
+        public async Task<IUser> SetPassword(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepo.FindByEmail(email);
+            if (user == null) throw new Exception("User not found");
+            var hashedPassword = _passwordHasher.HashPassword(user, password);
+            var result = await _userRepo.SetPassword(user, hashedPassword);
+            return result;
         }
 
         public Task RequestResetPassword(string email)
@@ -133,9 +129,12 @@ namespace TechDevs.Core.UserManagement
             throw new NotImplementedException();
         }
 
-        public Task<bool> ValidatePassword(string email, string password)
+        public async Task<bool> ValidatePassword(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepo.FindByEmail(email);
+            if (user == null) throw new Exception("User not found");
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+            return result;
         }
     }
 }

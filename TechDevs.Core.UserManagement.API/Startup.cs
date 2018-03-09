@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using TechDevs.Core.UserManagement.Models;
+using TechDevs.Core.UserManagement.Utils;
 
 namespace TechDevs.Core.UserManagement.API
 {
@@ -18,8 +21,23 @@ namespace TechDevs.Core.UserManagement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IUserRepository, UserRepository>();
+            BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
+
+            services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
+            services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
+
+            services.Configure<BCryptPasswordHasherOptions>(options => {
+                options.WorkFactor = 10;
+                options.EnhancedEntropy = false;
+            });
+
+            services.Configure<MongoDbSettings>(options =>
+            {
+                options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database = Configuration.GetSection("MongoConnection:Database").Value;
+            });
 
             services.AddMvc();
 
