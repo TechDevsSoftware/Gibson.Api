@@ -22,8 +22,8 @@ namespace TechDevs.Core.UserManagement
 
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepo;
-        private readonly IPasswordHasher _passwordHasher;
+        readonly IUserRepository _userRepo;
+        readonly IPasswordHasher _passwordHasher;
 
         public UserService(IUserRepository userRepo, IPasswordHasher passwordHasher)
         {

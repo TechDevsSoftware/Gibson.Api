@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace TechDevs.Core.UserManagement
 {
@@ -13,9 +12,9 @@ namespace TechDevs.Core.UserManagement
         string NormalisedEmail { get; set; }
         string FirstName { get; set; }
         string LastName { get; set; }
-        string PasswordHash { get; set; }
         bool AgreedToTerms { get; set; }
         bool ValidatedEmail { get; set; }
+		string PasswordHash { get; set; }
     }
 
     [BsonDiscriminator("User")]

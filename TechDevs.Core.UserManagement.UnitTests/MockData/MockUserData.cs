@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TechDevs.Core.UserManagement;
 
 namespace TechDevs.Core.UserManagement.UnitTests
 {
     public static class UserStubs
     {
-        public static IUser User1() => new User { FirstName = "Steve", LastName = "Kent", EmailAddress = "stevekent55@gmail.com" };
-        public static IUser User2() => new User { FirstName = "Adam", LastName = "Fox", EmailAddress = "amobilefox@gmail.com" };
+        public static IUser User1 => new User { FirstName = "Steve", LastName = "Kent", EmailAddress = "stevekent55@gmail.com" };
+        public static IUser User2 => new User { FirstName = "Adam", LastName = "Fox", EmailAddress = "amobilefox@gmail.com" };
     }
 
     public static class UserRegistrationStubs
