@@ -21,13 +21,14 @@ namespace TechDevs.Accounts.WebService
         public void ConfigureServices(IServiceCollection services)
         {
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
-            
+
             services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
 
-            services.Configure<BCryptPasswordHasherOptions>(options => {
+            services.Configure<BCryptPasswordHasherOptions>(options =>
+            {
                 options.WorkFactor = 10;
                 options.EnhancedEntropy = false;
             });
