@@ -14,6 +14,6 @@
     <Folder Include="MockData\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TechDevs.Core.UserManagement.API\TechDevs.Core.UserManagement.csproj" />
+    <ProjectReference Include="..\TechDevs.Accounts.WebService\TechDevs.Accounts.WebService.csproj" />
   </ItemGroup>
 </Project>

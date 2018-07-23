@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TechDevs.Core.UserManagement.UnitTests
+namespace TechDevs.Accounts.Tests
 {
     public static class UserStubs
     {

@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using TechDevs.Core.UserManagement.Utils;
 using Xunit;
 
-namespace TechDevs.Core.UserManagement.UnitTests
+namespace TechDevs.Accounts.Tests
 {
     public class UserServiceUnitTests
     {

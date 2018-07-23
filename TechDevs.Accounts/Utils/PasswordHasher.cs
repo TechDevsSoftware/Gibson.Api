@@ -1,18 +1,12 @@
-﻿using System;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using System;
 
-namespace TechDevs.Core.UserManagement.Utils
+namespace TechDevs.Accounts
 {
     public class BCryptPasswordHasherOptions
     {
         public int WorkFactor { get; set; } = 10;
         public bool EnhancedEntropy { get; set; } = false;
-    }
-
-    public interface IPasswordHasher
-    {
-        string HashPassword(IUser user, string password);
-        bool VerifyHashedPassword(IUser user, string hashedPassword, string providedPassword);
     }
 
     public class BCryptPasswordHasher : IPasswordHasher

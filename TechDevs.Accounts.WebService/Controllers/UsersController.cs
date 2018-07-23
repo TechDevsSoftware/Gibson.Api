@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TechDevs.Core.UserManagement.Models;
 
-namespace TechDevs.Core.UserManagement
+namespace TechDevs.Accounts.WebService
 {
     // API Schema 
     // /api/v1/{module}/{controller}/{method}

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace TechDevs.Core.UserManagement.API
+namespace TechDevs.Accounts.WebService
 {
     public class Program
     {

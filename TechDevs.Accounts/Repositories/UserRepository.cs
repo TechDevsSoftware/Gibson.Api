@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using TechDevs.Core.UserManagement.Models;
-using TechDevs.Core.UserManagement.Utils;
+using Microsoft.Extensions.Options;
 
-namespace TechDevs.Core.UserManagement
+namespace TechDevs.Accounts
 {
     public interface IUserRepository
     {

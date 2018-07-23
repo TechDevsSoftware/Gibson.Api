@@ -1,4 +1,4 @@
-﻿namespace TechDevs.Core.UserManagement.Models
+﻿namespace TechDevs.Accounts
 {
     public class MongoDbSettings
     {

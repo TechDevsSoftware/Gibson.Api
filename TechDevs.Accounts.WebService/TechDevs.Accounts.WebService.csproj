@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
+    <AssemblyName>TechDevs.Accounts.WebService</AssemblyName>
+    <RootNamespace>TechDevs.Accounts</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Interfaces\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Interfaces\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Interfaces\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Interfaces\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Data\ApplicationDbContext.cs" />
+    <Compile Remove="Validators\UserValidator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TechDevs.Accounts\TechDevs.Accounts.csproj" />
+  </ItemGroup>
+</Project>

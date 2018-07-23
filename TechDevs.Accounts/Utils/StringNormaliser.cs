@@ -1,9 +1,5 @@
-﻿namespace TechDevs.Core.UserManagement.Utils
+﻿namespace TechDevs.Accounts
 {
-    public interface IStringNormaliser
-    {
-        string Normalise(string str);
-    }
 
     public class LowerStringNormaliser : IStringNormaliser
     {

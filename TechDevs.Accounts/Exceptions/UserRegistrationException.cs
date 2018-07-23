@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TechDevs.Core.UserManagement
+namespace TechDevs.Accounts
 {
     public class UserRegistrationException : Exception
     {

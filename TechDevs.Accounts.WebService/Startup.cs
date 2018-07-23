@@ -4,10 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
-using TechDevs.Core.UserManagement.Models;
-using TechDevs.Core.UserManagement.Utils;
+using TechDevs.Accounts;
 
-namespace TechDevs.Core.UserManagement.API
+namespace TechDevs.Accounts.WebService
 {
     public class Startup
     {
@@ -22,7 +21,7 @@ namespace TechDevs.Core.UserManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
-
+            
             services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();

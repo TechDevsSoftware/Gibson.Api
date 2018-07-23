@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace TechDevs.Core.UserManagement
+namespace TechDevs.Accounts
 {
 
     public interface IUser
