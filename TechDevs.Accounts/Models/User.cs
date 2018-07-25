@@ -15,6 +15,8 @@ namespace TechDevs.Accounts
         bool AgreedToTerms { get; set; }
         bool ValidatedEmail { get; set; }
 		string PasswordHash { get; set; }
+        string ProviderName { get; set; }
+        string ProviderId { get; set; }
     }
 
     [BsonDiscriminator("User")]
@@ -30,5 +32,7 @@ namespace TechDevs.Accounts
         public bool AgreedToTerms { get; set; }
         public bool ValidatedEmail { get; set; }
         public string PasswordHash { get; set; }
+        public string ProviderName { get; set; }
+        public string ProviderId { get; set; }
     }
 }

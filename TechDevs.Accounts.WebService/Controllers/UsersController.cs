@@ -9,9 +9,9 @@ namespace TechDevs.Accounts.WebService
     [Route("api/v1/usermanagement/profiles")]
     public class UsersController
     {
-        private readonly IUserService _userService;
+        private readonly IAccountService _userService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IAccountService userService)
         {
             _userService = userService;
         }

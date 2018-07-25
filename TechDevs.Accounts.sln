@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts.UnitTests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts", "TechDevs.Accounts\TechDevs.Accounts.csproj", "{283D9A06-AAE1-44DE-A32C-D31F3AADA454}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.IdentityServer", "TechDevs.IdentityServer\TechDevs.IdentityServer.csproj", "{E0341558-F288-4758-A45B-542531FA05EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounts", "Accounts", "{E2B37836-26E3-470A-9EDF-5D04AF9253FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{9AD9C458-CD9C-46E0-BDBD-48BDD3633A93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +33,19 @@ Global
 		{283D9A06-AAE1-44DE-A32C-D31F3AADA454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{283D9A06-AAE1-44DE-A32C-D31F3AADA454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{283D9A06-AAE1-44DE-A32C-D31F3AADA454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0341558-F288-4758-A45B-542531FA05EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0341558-F288-4758-A45B-542531FA05EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0341558-F288-4758-A45B-542531FA05EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0341558-F288-4758-A45B-542531FA05EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65} = {E2B37836-26E3-470A-9EDF-5D04AF9253FB}
+		{2AA1AA53-1E45-48CB-A702-80A61264BBE6} = {E2B37836-26E3-470A-9EDF-5D04AF9253FB}
+		{283D9A06-AAE1-44DE-A32C-D31F3AADA454} = {E2B37836-26E3-470A-9EDF-5D04AF9253FB}
+		{E0341558-F288-4758-A45B-542531FA05EF} = {9AD9C458-CD9C-46E0-BDBD-48BDD3633A93}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B6649377-4FA8-4BC3-8D58-B6863080EDE7}

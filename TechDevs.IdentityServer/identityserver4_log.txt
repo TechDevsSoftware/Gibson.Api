@@ -1,0 +1,1272 @@
+2018-07-23 15:38:29.299 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-23 15:38:29.450 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-23 15:38:29.455 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-23 15:38:29.455 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-23 15:38:29.456 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-23 15:38:29.458 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-23 15:38:30.760 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:30.786 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.336 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.336 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.337 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.337 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.369 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.370 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.458 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.458 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.458 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.458 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.458 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:43.458 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:44.924 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:44.924 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:45.004 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-23 15:38:45.014 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:45.014 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:48.995 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:48.996 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:49.026 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-23 15:38:51.122 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-23 15:38:51.132 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:51.132 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:51.149 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-23 15:38:51.223 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Provider": "Google",
+  "ProviderUserId": "107387075381855787656",
+  "SubjectId": "da113436b5c14348726a9175cdd931b1c05ea61bb9717666fbb253371e622266",
+  "DisplayName": "Steve Kent",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFGL7QO98MM:00000004",
+  "TimeStamp": "2018-07-23T14:38:51Z",
+  "ProcessId": 19960,
+  "LocalIpAddress": "127.0.0.1:20842",
+  "RemoteIpAddress": "::1"
+}
+2018-07-23 15:38:51.237 +01:00 [DBG] Augmenting SignInContext
+2018-07-23 15:38:51.239 +01:00 [DBG] Adding amr claim with value: external
+2018-07-23 15:38:51.245 +01:00 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2018-07-23 15:38:51.248 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-23 15:38:51.267 +01:00 [INF] AuthenticationScheme: idsrv.external signed out.
+2018-07-23 15:38:51.279 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:51.280 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.083 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.083 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.083 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.083 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.101 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.101 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.101 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.101 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.102 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:52.101 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:54.362 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:54.362 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:56.569 +01:00 [DBG] CORS request made for path: /Account/Logout from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-23 15:38:56.570 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:56.570 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:38:56.717 +01:00 [INF] AuthenticationScheme: idsrv signed out.
+2018-07-23 15:38:56.729 +01:00 [INF] {
+  "Name": "User Logout Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1002,
+  "SubjectId": "da113436b5c14348726a9175cdd931b1c05ea61bb9717666fbb253371e622266",
+  "DisplayName": "Steve Kent",
+  "ActivityId": "0HLFGL7QO98MN:00000006",
+  "TimeStamp": "2018-07-23T14:38:56Z",
+  "ProcessId": 19960,
+  "LocalIpAddress": "127.0.0.1:20842",
+  "RemoteIpAddress": "::1"
+}
+2018-07-23 15:38:59.920 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-23 15:39:01.361 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-23 15:39:01.392 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Username": "alice",
+  "SubjectId": "818727",
+  "DisplayName": "alice",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFGL7QO98MO:00000007",
+  "TimeStamp": "2018-07-23T14:39:01Z",
+  "ProcessId": 19960,
+  "LocalIpAddress": "127.0.0.1:20842",
+  "RemoteIpAddress": "::1"
+}
+2018-07-23 15:39:01.396 +01:00 [DBG] Augmenting SignInContext
+2018-07-23 15:39:01.396 +01:00 [DBG] Adding idp claim with value: local
+2018-07-23 15:39:01.396 +01:00 [DBG] Adding amr claim with value: pwd
+2018-07-23 15:39:01.398 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-23 15:39:01.407 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:39:01.407 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:39:03.136 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:39:03.136 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:39:03.593 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-23 15:39:03.593 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:12:51.654 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:12:51.726 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:12:51.732 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:12:51.732 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:12:51.732 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:12:51.732 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 20:13:01.936 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 20:13:04.441 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:13:04.605 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "stevekent55@gmail.com",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHJ5Q03U6D:00000004",
+  "TimeStamp": "2018-07-24T19:13:04Z",
+  "ProcessId": 5132,
+  "LocalIpAddress": "127.0.0.1:22405",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 20:13:10.461 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:13:10.473 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Username": "alice",
+  "SubjectId": "818727",
+  "DisplayName": "alice",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHJ5Q03U6G:00000003",
+  "TimeStamp": "2018-07-24T19:13:10Z",
+  "ProcessId": 5132,
+  "LocalIpAddress": "127.0.0.1:22405",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 20:13:10.495 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 20:13:10.498 +01:00 [DBG] Adding idp claim with value: local
+2018-07-24 20:13:10.498 +01:00 [DBG] Adding amr claim with value: pwd
+2018-07-24 20:13:10.514 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 20:13:10.521 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:10.521 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:13.886 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:13.886 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:16.028 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:16.028 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:16.047 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 20:13:25.112 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 20:13:25.118 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:25.118 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:25.125 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 20:13:25.152 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Provider": "Google",
+  "ProviderUserId": "107387075381855787656",
+  "SubjectId": "da37b3810dc6df3947c5f8c311444882731a79fc884e87edb71e169b3d575959",
+  "DisplayName": "Steve Kent",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHJ5Q03U6E:00000005",
+  "TimeStamp": "2018-07-24T19:13:25Z",
+  "ProcessId": 5132,
+  "LocalIpAddress": "127.0.0.1:22405",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 20:13:25.157 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 20:13:25.158 +01:00 [DBG] Adding amr claim with value: external
+2018-07-24 20:13:25.158 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 20:13:25.173 +01:00 [INF] AuthenticationScheme: idsrv.external signed out.
+2018-07-24 20:13:25.182 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:25.182 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:26.965 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:13:26.965 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 20:38:50.829 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:38:50.917 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:38:50.922 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:38:50.922 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:38:50.922 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:38:50.923 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 20:38:58.245 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 20:38:58.302 +01:00 [ERR] An unhandled exception has occurred while executing the request
+System.InvalidOperationException: Unable to resolve service for type 'TechDevs.Accounts.IUserRepository' while attempting to activate 'TechDevs.Accounts.AccountService'.
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateArgumentCallSites(Type serviceType, Type implementationType, ISet`1 callSiteChain, ParameterInfo[] parameters, Boolean throwIfCallSiteNotFound)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateConstructorCallSite(Type serviceType, Type implementationType, ISet`1 callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(ServiceDescriptor descriptor, Type serviceType, ISet`1 callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(Type serviceType, ISet`1 callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateCallSite(Type serviceType, ISet`1 callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(Type serviceType, ServiceProvider serviceProvider)
+   at System.Collections.Concurrent.ConcurrentDictionaryExtensions.GetOrAdd[TKey,TValue,TArg](ConcurrentDictionary`2 dictionary, TKey key, Func`3 valueFactory, TArg arg)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerActivatorProvider.<>c__DisplayClass4_0.<CreateActivator>b__0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__14.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextResourceFilter>d__22.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeFilterPipelineAsync>d__17.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.IdentityServerMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\IdentityServerMiddleware.cs:line 72
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.<Invoke>d__7.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.BaseUrlMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\BaseUrlMiddleware.cs:line 36
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-07-24 20:41:25.681 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:41:25.743 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:41:25.746 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:41:25.746 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:41:25.746 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:41:25.746 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 20:41:32.531 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 20:41:45.535 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:41:45.725 +01:00 [ERR] An unhandled exception has occurred while executing the request
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at IdentityServer4.Quickstart.UI.AccountController.<Login>d__7.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.IdentityServer\Quickstart\Account\AccountController.cs:line 114
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__14.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextResourceFilter>d__22.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeFilterPipelineAsync>d__17.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.IdentityServerMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\IdentityServerMiddleware.cs:line 72
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.<Invoke>d__7.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.BaseUrlMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\BaseUrlMiddleware.cs:line 36
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-07-24 20:42:26.729 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:43:07.042 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:43:07.104 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:43:07.107 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:43:07.107 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:43:07.107 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:43:07.107 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 20:43:14.837 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 20:43:18.226 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:43:27.475 +01:00 [ERR] An unhandled exception has occurred while executing the request
+System.Exception: User not found
+   at TechDevs.Accounts.AccountService.<ValidatePassword>d__12.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.Accounts\Services\AccountService.cs:line 123
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at IdentityServer4.Quickstart.UI.AccountController.<Login>d__7.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.IdentityServer\Quickstart\Account\AccountController.cs:line 114
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__14.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextResourceFilter>d__22.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeFilterPipelineAsync>d__17.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.IdentityServerMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\IdentityServerMiddleware.cs:line 72
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.<Invoke>d__7.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.BaseUrlMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\BaseUrlMiddleware.cs:line 36
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-07-24 20:45:12.390 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:45:12.430 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:45:12.433 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:45:12.433 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:45:12.433 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:45:12.434 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 20:45:18.723 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 20:45:21.959 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:45:26.398 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "stevekent55@gmail.com",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHJNSAP4LV:00000003",
+  "TimeStamp": "2018-07-24T19:45:26Z",
+  "ProcessId": 7248,
+  "LocalIpAddress": "127.0.0.1:15590",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 20:45:35.771 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:45:35.798 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "steve@techdevs.tk",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHJNSAP4M0:00000003",
+  "TimeStamp": "2018-07-24T19:45:35Z",
+  "ProcessId": 7248,
+  "LocalIpAddress": "127.0.0.1:15590",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 20:45:50.778 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:45:50.809 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "steve@techdevs.tk",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHJNSAP4LV:00000004",
+  "TimeStamp": "2018-07-24T19:45:50Z",
+  "ProcessId": 7248,
+  "LocalIpAddress": "127.0.0.1:15590",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 20:45:53.720 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 20:47:17.150 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 20:47:17.811 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Username": "steve@techdevs.net",
+  "DisplayName": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHJNSAP4M1:00000001",
+  "TimeStamp": "2018-07-24T19:47:17Z",
+  "ProcessId": 7248,
+  "LocalIpAddress": "127.0.0.1:15590",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 20:47:17.937 +01:00 [ERR] An unhandled exception has occurred while executing the request
+System.ArgumentException: SubjectId is mandatory
+Parameter name: subjectId
+   at IdentityServer4.IdentityServerUser..ctor(String subjectId) in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\IdentityServerUser.cs:line 55
+   at Microsoft.AspNetCore.Http.AuthenticationManagerExtensions.<SignInAsync>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Extensions\HttpContextAuthenticationExtensions.cs:line 97
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Quickstart.UI.AccountController.<Login>d__7.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.IdentityServer\Quickstart\Account\AccountController.cs:line 132
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__14.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextResourceFilter>d__22.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeFilterPipelineAsync>d__17.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.IdentityServerMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\IdentityServerMiddleware.cs:line 72
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.<Invoke>d__7.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.BaseUrlMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\BaseUrlMiddleware.cs:line 36
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-07-24 20:52:05.111 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:52:05.226 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:52:05.231 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:52:05.231 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:52:05.231 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:52:05.231 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 20:53:39.082 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:53:39.126 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:53:39.130 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:53:39.130 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:53:39.130 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:53:39.130 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 20:59:17.361 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 20:59:17.403 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 20:59:17.406 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 20:59:17.406 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 20:59:17.406 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 20:59:17.406 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:05:48.081 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:05:48.125 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:05:48.129 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:05:48.129 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:05:48.129 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:05:48.129 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:05:55.049 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:06:15.323 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:06:16.437 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHK3CKR2K9:00000004",
+  "TimeStamp": "2018-07-24T20:06:16Z",
+  "ProcessId": 14928,
+  "LocalIpAddress": "127.0.0.1:21790",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:07:28.299 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:07:28.654 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHK3CKR2KD:00000001",
+  "TimeStamp": "2018-07-24T20:07:28Z",
+  "ProcessId": 14928,
+  "LocalIpAddress": "127.0.0.1:21790",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:07:52.081 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:08:58.220 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHK3CKR2KD:00000002",
+  "TimeStamp": "2018-07-24T20:08:58Z",
+  "ProcessId": 14928,
+  "LocalIpAddress": "127.0.0.1:21790",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:09:06.679 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:09:06.915 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Username": "steve@techdevs.net",
+  "SubjectId": "7a88f82d-c205-4113-aa77-3fa4316f9f21",
+  "DisplayName": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHK3CKR2KD:00000003",
+  "TimeStamp": "2018-07-24T20:09:06Z",
+  "ProcessId": 14928,
+  "LocalIpAddress": "127.0.0.1:21790",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:09:06.953 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:09:06.956 +01:00 [DBG] Adding idp claim with value: local
+2018-07-24 21:09:06.956 +01:00 [DBG] Adding amr claim with value: pwd
+2018-07-24 21:09:06.972 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:09:06.980 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:06.980 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:16.654 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:16.654 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:24.045 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:24.045 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:26.357 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:26.357 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:27.638 +01:00 [DBG] CORS request made for path: /Account/Logout from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:09:27.639 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:27.639 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:27.667 +01:00 [INF] AuthenticationScheme: idsrv signed out.
+2018-07-24 21:09:27.677 +01:00 [INF] {
+  "Name": "User Logout Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1002,
+  "SubjectId": "TechDevs",
+  "DisplayName": "steve@techdevs.net",
+  "ActivityId": "0HLFHK3CKR2KD:00000008",
+  "TimeStamp": "2018-07-24T20:09:27Z",
+  "ProcessId": 14928,
+  "LocalIpAddress": "127.0.0.1:21790",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:09:31.214 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:09:42.265 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:09:42.292 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "adam@techdevs.net",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHK3CKR2KD:0000000C",
+  "TimeStamp": "2018-07-24T20:09:42Z",
+  "ProcessId": 14928,
+  "LocalIpAddress": "127.0.0.1:21790",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:09:49.727 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:09:54.024 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:09:54.069 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:09:54.107 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Provider": "Google",
+  "ProviderUserId": "107387075381855787656",
+  "SubjectId": "4d63b2caa5985579c5277d2973d3309d680806de24b99183c7311efc94559a7d",
+  "DisplayName": "Steve Kent",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHK3CKR2KD:0000000F",
+  "TimeStamp": "2018-07-24T20:09:54Z",
+  "ProcessId": 14928,
+  "LocalIpAddress": "127.0.0.1:21790",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:09:54.113 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:09:54.113 +01:00 [DBG] Adding amr claim with value: external
+2018-07-24 21:09:54.113 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:09:54.114 +01:00 [INF] AuthenticationScheme: idsrv.external signed out.
+2018-07-24 21:09:54.122 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:54.122 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:57.795 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:09:57.795 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:14:26.043 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:14:26.087 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:14:26.090 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:14:26.090 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:14:26.090 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:14:26.090 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:14:32.243 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:14:35.362 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:14:39.903 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:14:39.919 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:30:33.643 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:30:33.690 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:30:33.694 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:30:33.694 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:30:33.694 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:30:33.694 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:30:46.874 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:31:07.836 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:31:11.051 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:31:11.064 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:31:11.761 +01:00 [ERR] An unhandled exception has occurred while executing the request
+System.Exception: User not found
+   at TechDevs.Accounts.AccountService.<GetByProvider>d__9.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.Accounts\Services\AccountService.cs:line 106
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Host.Quickstart.Account.ExternalController.<FindUserFromExternalProvider>d__8.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.IdentityServer\Quickstart\Account\ExternalController.cs:line 205
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Host.Quickstart.Account.ExternalController.<Callback>d__6.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.IdentityServer\Quickstart\Account\ExternalController.cs:line 96
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__14.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextResourceFilter>d__22.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeFilterPipelineAsync>d__17.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.IdentityServerMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\IdentityServerMiddleware.cs:line 72
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.<Invoke>d__7.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.BaseUrlMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\BaseUrlMiddleware.cs:line 36
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-07-24 21:32:07.386 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:32:07.428 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:32:07.431 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:32:07.431 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:32:07.431 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:32:07.431 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:32:16.096 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:32:18.577 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:32:22.523 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:32:22.536 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:32:24.184 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Provider": "Google",
+  "ProviderUserId": "107387075381855787656",
+  "SubjectId": "5e5c02a6-2af1-47d3-b9db-a6b160d8ca59",
+  "DisplayName": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHKI38OOHN:00000004",
+  "TimeStamp": "2018-07-24T20:32:24Z",
+  "ProcessId": 4152,
+  "LocalIpAddress": "127.0.0.1:2324",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:32:24.196 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:32:24.199 +01:00 [DBG] Adding amr claim with value: external
+2018-07-24 21:32:24.209 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:32:24.216 +01:00 [INF] AuthenticationScheme: idsrv.external signed out.
+2018-07-24 21:32:24.222 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:32:24.222 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:32:27.236 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:32:27.237 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:33:06.148 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:33:06.148 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:33:08.332 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:33:08.332 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:33:09.503 +01:00 [DBG] CORS request made for path: /Account/Logout from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:33:09.503 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:33:09.503 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:33:09.542 +01:00 [INF] AuthenticationScheme: idsrv signed out.
+2018-07-24 21:33:09.555 +01:00 [INF] {
+  "Name": "User Logout Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1002,
+  "SubjectId": "5e5c02a6-2af1-47d3-b9db-a6b160d8ca59",
+  "DisplayName": "steve@techdevs.net",
+  "ActivityId": "0HLFHKI38OOHM:00000006",
+  "TimeStamp": "2018-07-24T20:33:09Z",
+  "ProcessId": 4152,
+  "LocalIpAddress": "127.0.0.1:2324",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:33:12.664 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:33:23.356 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:33:23.601 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHKI38OOHM:00000008",
+  "TimeStamp": "2018-07-24T20:33:23Z",
+  "ProcessId": 4152,
+  "LocalIpAddress": "127.0.0.1:2324",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:35:30.528 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:35:32.426 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:35:32.566 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "stevekent55@gmail.com",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHKI38OOHO:00000004",
+  "TimeStamp": "2018-07-24T20:35:32Z",
+  "ProcessId": 4152,
+  "LocalIpAddress": "127.0.0.1:2324",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:35:37.026 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:35:37.192 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Username": "stevekent55@gmail.com",
+  "SubjectId": "a80aca2d-284f-4995-b85a-ca0764fbe8a4",
+  "DisplayName": "stevekent55@gmail.com",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHKI38OOHO:00000005",
+  "TimeStamp": "2018-07-24T20:35:37Z",
+  "ProcessId": 4152,
+  "LocalIpAddress": "127.0.0.1:2324",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:35:37.195 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:35:37.195 +01:00 [DBG] Adding idp claim with value: local
+2018-07-24 21:35:37.195 +01:00 [DBG] Adding amr claim with value: pwd
+2018-07-24 21:35:37.196 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:35:37.202 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:37.202 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:41.974 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:41.974 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:42.869 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:42.869 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:52.113 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:52.113 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:54.235 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:35:54.235 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:39:16.377 +01:00 [DBG] CORS request made for path: /Account/Logout from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:39:16.378 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:39:16.378 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:39:16.380 +01:00 [INF] AuthenticationScheme: idsrv signed out.
+2018-07-24 21:39:16.380 +01:00 [INF] {
+  "Name": "User Logout Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1002,
+  "SubjectId": "TechDevs",
+  "DisplayName": "stevekent55@gmail.com",
+  "ActivityId": "0HLFHKI38OOHP:00000001",
+  "TimeStamp": "2018-07-24T20:39:16Z",
+  "ProcessId": 4152,
+  "LocalIpAddress": "127.0.0.1:2324",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:39:23.618 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:39:27.998 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:39:30.992 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:39:30.998 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:39:31.285 +01:00 [ERR] An unhandled exception has occurred while executing the request
+TechDevs.Accounts.UserRegistrationException: Email address has already been registered
+
+   at TechDevs.Accounts.AccountService.<ValidateCanRegister>d__5.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.Accounts\Services\AccountService.cs:line 68
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at TechDevs.Accounts.AccountService.<RegisterUser>d__4.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.Accounts\Services\AccountService.cs:line 29
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Host.Quickstart.Account.ExternalController.<AutoProvisionUser>d__9.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.IdentityServer\Quickstart\Account\ExternalController.cs:line 223
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Host.Quickstart.Account.ExternalController.<Callback>d__6.MoveNext() in C:\Users\Steve\Documents\GitHub\TechDevs.Accounts\TechDevs.IdentityServer\Quickstart\Account\ExternalController.cs:line 102
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeActionMethodAsync>d__12.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeNextActionFilterAsync>d__10.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.<InvokeInnerFilterAsync>d__14.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeNextResourceFilter>d__22.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeFilterPipelineAsync>d__17.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.<InvokeAsync>d__15.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.<Invoke>d__4.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.IdentityServerMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\IdentityServerMiddleware.cs:line 72
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.<Invoke>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.<Invoke>d__7.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at IdentityServer4.Hosting.BaseUrlMiddleware.<Invoke>d__3.MoveNext() in C:\local\identity\server4\IdentityServer4\src\IdentityServer4\Hosting\BaseUrlMiddleware.cs:line 36
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.<Invoke>d__7.MoveNext()
+2018-07-24 21:40:30.217 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:40:30.258 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:40:30.261 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:40:30.261 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:40:30.261 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:40:30.261 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:41:02.676 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:41:04.962 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:41:07.825 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:41:07.842 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:43:10.342 +01:00 [WRN] Heartbeat took longer than ""00:00:01"" at ""2018-07-24T20:43:10.2923864+00:00"".
+2018-07-24 21:43:45.080 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:43:45.120 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:43:45.123 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:43:45.123 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:43:45.124 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:43:45.124 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:43:51.366 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:43:53.815 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:43:56.361 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:43:56.376 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:44:00.976 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Provider": "Google",
+  "ProviderUserId": "107387075381855787656",
+  "SubjectId": "5e5c02a6-2af1-47d3-b9db-a6b160d8ca59",
+  "DisplayName": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHKOJ6RU16:00000004",
+  "TimeStamp": "2018-07-24T20:44:00Z",
+  "ProcessId": 15884,
+  "LocalIpAddress": "127.0.0.1:18770",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:44:00.991 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:44:00.993 +01:00 [DBG] Adding amr claim with value: external
+2018-07-24 21:44:01.003 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:44:01.010 +01:00 [INF] AuthenticationScheme: idsrv.external signed out.
+2018-07-24 21:44:01.015 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:44:01.015 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:44:03.989 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:44:03.990 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:44:06.006 +01:00 [DBG] CORS request made for path: /Account/Logout from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:44:06.006 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:44:06.007 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:44:06.046 +01:00 [INF] AuthenticationScheme: idsrv signed out.
+2018-07-24 21:44:06.060 +01:00 [INF] {
+  "Name": "User Logout Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1002,
+  "SubjectId": "5e5c02a6-2af1-47d3-b9db-a6b160d8ca59",
+  "DisplayName": "steve@techdevs.net",
+  "ActivityId": "0HLFHKOJ6RU15:00000005",
+  "TimeStamp": "2018-07-24T20:44:06Z",
+  "ProcessId": 15884,
+  "LocalIpAddress": "127.0.0.1:18770",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:44:10.432 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:44:24.816 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:44:27.478 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:44:27.483 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:44:27.512 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Provider": "Google",
+  "ProviderUserId": "107387075381855787656",
+  "SubjectId": "5e5c02a6-2af1-47d3-b9db-a6b160d8ca59",
+  "DisplayName": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHKOJ6RU15:00000008",
+  "TimeStamp": "2018-07-24T20:44:27Z",
+  "ProcessId": 15884,
+  "LocalIpAddress": "127.0.0.1:18770",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:44:27.512 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:44:27.512 +01:00 [DBG] Adding amr claim with value: external
+2018-07-24 21:44:27.513 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:44:27.513 +01:00 [INF] AuthenticationScheme: idsrv.external signed out.
+2018-07-24 21:44:27.519 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:44:27.519 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:27.275 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:47:27.319 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:47:27.322 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:47:27.322 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:47:27.322 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:47:27.322 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:47:33.341 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:47:35.610 +01:00 [INF] AuthenticationScheme: Google was challenged.
+2018-07-24 21:47:38.385 +01:00 [INF] AuthenticationScheme: idsrv.external signed in.
+2018-07-24 21:47:38.399 +01:00 [INF] AuthenticationScheme: idsrv.external was successfully authenticated.
+2018-07-24 21:47:39.034 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Provider": "Google",
+  "ProviderUserId": "107387075381855787656",
+  "SubjectId": "5e5c02a6-2af1-47d3-b9db-a6b160d8ca59",
+  "DisplayName": "steve@techdevs.net",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHKQLEGO20:00000004",
+  "TimeStamp": "2018-07-24T20:47:38Z",
+  "ProcessId": 7084,
+  "LocalIpAddress": "127.0.0.1:23750",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:47:39.047 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:47:39.049 +01:00 [DBG] Adding amr claim with value: external
+2018-07-24 21:47:39.059 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:47:39.066 +01:00 [INF] AuthenticationScheme: idsrv.external signed out.
+2018-07-24 21:47:39.071 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:39.071 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:42.444 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:42.444 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:44.067 +01:00 [DBG] CORS request made for path: /Account/Logout from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:47:44.067 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:44.067 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:44.105 +01:00 [INF] AuthenticationScheme: idsrv signed out.
+2018-07-24 21:47:44.118 +01:00 [INF] {
+  "Name": "User Logout Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1002,
+  "SubjectId": "5e5c02a6-2af1-47d3-b9db-a6b160d8ca59",
+  "DisplayName": "Steve Kent",
+  "ActivityId": "0HLFHKQLEGO1V:00000005",
+  "TimeStamp": "2018-07-24T20:47:44Z",
+  "ProcessId": 7084,
+  "LocalIpAddress": "127.0.0.1:23750",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:47:46.494 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:47:47.990 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:47:48.260 +01:00 [INF] {
+  "Name": "User Login Failure",
+  "Category": "Authentication",
+  "EventType": "Failure",
+  "Id": 1001,
+  "Username": "stevekent55@gmail.com",
+  "Endpoint": "UI",
+  "Message": "invalid credentials",
+  "ActivityId": "0HLFHKQLEGO1V:00000007",
+  "TimeStamp": "2018-07-24T20:47:48Z",
+  "ProcessId": 7084,
+  "LocalIpAddress": "127.0.0.1:23750",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:47:52.321 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:47:52.486 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Username": "stevekent55@gmail.com",
+  "SubjectId": "a80aca2d-284f-4995-b85a-ca0764fbe8a4",
+  "DisplayName": "stevekent55@gmail.com",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHKQLEGO20:00000008",
+  "TimeStamp": "2018-07-24T20:47:52Z",
+  "ProcessId": 7084,
+  "LocalIpAddress": "127.0.0.1:23750",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:47:52.491 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:47:52.491 +01:00 [DBG] Adding idp claim with value: local
+2018-07-24 21:47:52.491 +01:00 [DBG] Adding amr claim with value: pwd
+2018-07-24 21:47:52.491 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:47:52.496 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:52.496 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:58.775 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:47:58.775 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:48:00.945 +01:00 [DBG] CORS request made for path: /Account/Logout from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:48:00.946 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:48:00.946 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:48:00.948 +01:00 [INF] AuthenticationScheme: idsrv signed out.
+2018-07-24 21:48:00.948 +01:00 [INF] {
+  "Name": "User Logout Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1002,
+  "SubjectId": "TechDevs",
+  "DisplayName": "stevekent55@gmail.com",
+  "ActivityId": "0HLFHKQLEGO1V:00000009",
+  "TimeStamp": "2018-07-24T20:48:00Z",
+  "ProcessId": 7084,
+  "LocalIpAddress": "127.0.0.1:23750",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:48:55.569 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:48:55.610 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:48:55.613 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:48:55.613 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:48:55.613 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:48:55.613 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 21:49:01.390 +01:00 [INF] AuthenticationScheme: idsrv was challenged.
+2018-07-24 21:49:07.191 +01:00 [DBG] CORS request made for path: /account/login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2018-07-24 21:49:08.309 +01:00 [INF] {
+  "Name": "User Login Success",
+  "Category": "Authentication",
+  "EventType": "Success",
+  "Id": 1000,
+  "Username": "stevekent55@gmail.com",
+  "SubjectId": "a80aca2d-284f-4995-b85a-ca0764fbe8a4",
+  "DisplayName": "stevekent55@gmail.com",
+  "Endpoint": "UI",
+  "ActivityId": "0HLFHKRFN5F4I:00000004",
+  "TimeStamp": "2018-07-24T20:49:08Z",
+  "ProcessId": 16552,
+  "LocalIpAddress": "127.0.0.1:13505",
+  "RemoteIpAddress": "::1"
+}
+2018-07-24 21:49:08.337 +01:00 [DBG] Augmenting SignInContext
+2018-07-24 21:49:08.340 +01:00 [DBG] Adding idp claim with value: local
+2018-07-24 21:49:08.340 +01:00 [DBG] Adding amr claim with value: pwd
+2018-07-24 21:49:08.358 +01:00 [INF] AuthenticationScheme: idsrv signed in.
+2018-07-24 21:49:08.368 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:49:08.368 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:49:16.437 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:49:16.438 +01:00 [INF] AuthenticationScheme: idsrv was successfully authenticated.
+2018-07-24 21:50:11.817 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 21:50:11.863 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 21:50:11.867 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 21:50:11.867 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 21:50:11.867 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 21:50:11.867 +01:00 [DBG] Using idsrv as default scheme for forbid
+2018-07-24 22:16:45.041 +01:00 [FTL] Application startup exception
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sentry.SentryOptionsExtensions.AddEventProcessorProvider(SentryOptions options, Func`1 processorProvider) in C:\projects\sentry-dotnet\src\Sentry\SentryOptionsExtensions.cs:line 80
+   at Microsoft.AspNetCore.Builder.ApplicationBuilderExtensions.UseServiceProviderProcessors(IServiceProvider provider) in C:\projects\sentry-dotnet\src\Sentry.AspNetCore\ApplicationBuilderExtensions.cs:line 37
+   at Microsoft.AspNetCore.Builder.ApplicationBuilderExtensions.UseSentry(IApplicationBuilder app) in C:\projects\sentry-dotnet\src\Sentry.AspNetCore\ApplicationBuilderExtensions.cs:line 26
+   at Sentry.AspNetCore.SentryStartupFilter.<>c__DisplayClass0_0.<Configure>b__0(IApplicationBuilder e) in C:\projects\sentry-dotnet\src\Sentry.AspNetCore\SentryStartupFilter.cs:line 13
+   at Microsoft.AspNetCore.Server.IISIntegration.IISSetupFilter.<>c__DisplayClass3_0.<Configure>b__0(IApplicationBuilder app)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-07-24 22:16:45.536 +01:00 [ERR] Connection id "0HLFHLB19CDJ4", Request id "0HLFHLB19CDJ4:00000001": An unhandled exception was thrown by the application.
+System.ArgumentNullException: Value cannot be null.
+Parameter name: values
+   at System.String.Join(String separator, IEnumerable`1 values)
+   at Microsoft.Extensions.RazorViews.BaseView.EndWriteAttribute()
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.<ExecuteAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.Extensions.RazorViews.BaseView.<ExecuteAsync>d__30.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.Frame`1.<ProcessRequestsAsync>d__2.MoveNext()
+2018-07-24 22:16:45.573 +01:00 [ERR] Connection id "0HLFHLB19CDJ3", Request id "0HLFHLB19CDJ3:00000001": An unhandled exception was thrown by the application.
+System.ObjectDisposedException: Cannot access a disposed object.
+Object name: 'FrameResponseStream'.
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.FrameResponseStream.ValidateState(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.FrameResponseStream.WriteAsync(Byte[] buffer, Int32 offset, Int32 count, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.FrameResponseStream.Write(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamWriter.Flush(Boolean flushStream, Boolean flushEncoder)
+   at System.IO.StreamWriter.Write(String value)
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.<ExecuteAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.Extensions.RazorViews.BaseView.<ExecuteAsync>d__30.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.Frame`1.<ProcessRequestsAsync>d__2.MoveNext()
+2018-07-24 22:16:58.127 +01:00 [FTL] Application startup exception
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sentry.SentryOptionsExtensions.AddEventProcessorProvider(SentryOptions options, Func`1 processorProvider) in C:\projects\sentry-dotnet\src\Sentry\SentryOptionsExtensions.cs:line 80
+   at Microsoft.AspNetCore.Builder.ApplicationBuilderExtensions.UseServiceProviderProcessors(IServiceProvider provider) in C:\projects\sentry-dotnet\src\Sentry.AspNetCore\ApplicationBuilderExtensions.cs:line 37
+   at Microsoft.AspNetCore.Builder.ApplicationBuilderExtensions.UseSentry(IApplicationBuilder app) in C:\projects\sentry-dotnet\src\Sentry.AspNetCore\ApplicationBuilderExtensions.cs:line 26
+   at Sentry.AspNetCore.SentryStartupFilter.<>c__DisplayClass0_0.<Configure>b__0(IApplicationBuilder e) in C:\projects\sentry-dotnet\src\Sentry.AspNetCore\SentryStartupFilter.cs:line 13
+   at Microsoft.AspNetCore.Server.IISIntegration.IISSetupFilter.<>c__DisplayClass3_0.<Configure>b__0(IApplicationBuilder app)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2018-07-24 22:16:58.485 +01:00 [ERR] Connection id "0HLFHLB5516CQ", Request id "0HLFHLB5516CQ:00000001": An unhandled exception was thrown by the application.
+System.ArgumentNullException: Value cannot be null.
+Parameter name: values
+   at System.String.Join(String separator, IEnumerable`1 values)
+   at Microsoft.Extensions.RazorViews.BaseView.EndWriteAttribute()
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.<ExecuteAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.Extensions.RazorViews.BaseView.<ExecuteAsync>d__30.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.Frame`1.<ProcessRequestsAsync>d__2.MoveNext()
+2018-07-24 22:16:58.526 +01:00 [ERR] Connection id "0HLFHLB5516CR", Request id "0HLFHLB5516CR:00000001": An unhandled exception was thrown by the application.
+System.ObjectDisposedException: Cannot access a disposed object.
+Object name: 'FrameResponseStream'.
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.FrameResponseStream.ValidateState(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.FrameResponseStream.WriteAsync(Byte[] buffer, Int32 offset, Int32 count, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.FrameResponseStream.Write(Byte[] buffer, Int32 offset, Int32 count)
+   at System.IO.StreamWriter.Flush(Boolean flushStream, Boolean flushEncoder)
+   at System.IO.StreamWriter.Write(String value)
+   at Microsoft.AspNetCore.Hosting.Views.ErrorPage.<ExecuteAsync>d__6.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.Extensions.RazorViews.BaseView.<ExecuteAsync>d__30.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.Frame`1.<ProcessRequestsAsync>d__2.MoveNext()
+2018-07-24 22:17:35.719 +01:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2018-07-24 22:17:35.765 +01:00 [DBG] Using idsrv as default scheme for authentication
+2018-07-24 22:17:35.771 +01:00 [DBG] Using idsrv as default scheme for sign-in
+2018-07-24 22:17:35.771 +01:00 [DBG] Using idsrv as default scheme for sign-out
+2018-07-24 22:17:35.771 +01:00 [DBG] Using idsrv as default scheme for challenge
+2018-07-24 22:17:35.771 +01:00 [DBG] Using idsrv as default scheme for forbid

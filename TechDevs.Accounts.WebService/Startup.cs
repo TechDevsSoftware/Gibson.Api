@@ -23,7 +23,7 @@ namespace TechDevs.Accounts.WebService
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
 
             services.AddSingleton<IUserRepository, MongoUserRepository>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAccountService, AccountService>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
 

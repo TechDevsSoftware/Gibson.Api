@@ -16,7 +16,7 @@ namespace TechDevs.Accounts.Tests
             userRepo.Setup(x => x.Insert(It.IsAny<IUser>())).ReturnsAsync(UserStubs.User1);
             var passwordHasher = new Mock<IPasswordHasher>();
             passwordHasher.Setup(x => x.HashPassword(UserStubs.User1, It.IsAny<string>())).Returns(Guid.NewGuid().ToString());
-            var sut = new UserService(userRepo.Object, passwordHasher.Object);
+            var sut = new AccountService(userRepo.Object, passwordHasher.Object);
             // Act
             var result = await sut.RegisterUser(validUserRegistration);
             // Assert
@@ -30,7 +30,7 @@ namespace TechDevs.Accounts.Tests
             var userRegistration = UserRegistrationStubs.ValidUser1();
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(x => x.UserExists(userRegistration.EmailAddress)).ReturnsAsync(true);
-            var sut = new UserService(userRepo.Object, null);
+            var sut = new AccountService(userRepo.Object, null);
             // Act & Assert
             await Assert.ThrowsAsync<UserRegistrationException>(async () => await sut.RegisterUser(userRegistration));
         }
@@ -44,7 +44,7 @@ namespace TechDevs.Accounts.Tests
             var createUser = UserRegistrationStubs.ValidUser1();
             createUser.EmailAddress = invalidEmail;
             var userRepo = new Mock<IUserRepository>();
-            var sut = new UserService(userRepo.Object, null);
+            var sut = new AccountService(userRepo.Object, null);
             // Act & Assert
             await Assert.ThrowsAsync<UserRegistrationException>(async () => await sut.RegisterUser(createUser));
         }
@@ -54,7 +54,7 @@ namespace TechDevs.Accounts.Tests
         public async Task RegisterUser_ShouldThrowUserRegistrationException_WhenRequiredFieldIsMissing(IUserRegistration invalidUserRegistration)
         {
             // Arrange
-            var sut = new UserService(new Mock<IUserRepository>().Object, new Mock<IPasswordHasher>().Object);
+            var sut = new AccountService(new Mock<IUserRepository>().Object, new Mock<IPasswordHasher>().Object);
             // Act & Assert
             await Assert.ThrowsAnyAsync<Exception>(async () => await sut.RegisterUser(invalidUserRegistration));
         }
@@ -70,7 +70,7 @@ namespace TechDevs.Accounts.Tests
                 EmailAddress = "dummy@mail.com",
                 AggreedToTerms = false
             };
-            var sut = new UserService(new Mock<IUserRepository>().Object, new Mock<IPasswordHasher>().Object);
+            var sut = new AccountService(new Mock<IUserRepository>().Object, new Mock<IPasswordHasher>().Object);
             // Act & Assert
             await Assert.ThrowsAnyAsync<UserRegistrationException>(async () => await sut.RegisterUser(userRegistration));
         }
@@ -81,7 +81,7 @@ namespace TechDevs.Accounts.Tests
             // Arrange
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(x => x.Insert(It.IsAny<IUser>())).ReturnsAsync(UserStubs.User1);
-            var sut = new UserService(userRepo.Object, new Mock<IPasswordHasher>().Object);
+            var sut = new AccountService(userRepo.Object, new Mock<IPasswordHasher>().Object);
             // Act
             var result = await sut.RegisterUser(UserRegistrationStubs.ValidUser1());
             // Assert
