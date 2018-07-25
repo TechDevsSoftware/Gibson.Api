@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechDevs.Accounts.WebService
@@ -7,6 +8,7 @@ namespace TechDevs.Accounts.WebService
     // API Schema 
     // /api/v1/{module}/{controller}/{method}
     [Route("api/v1/usermanagement/profiles")]
+    //[Authorize]
     public class UsersController
     {
         private readonly IAccountService _userService;

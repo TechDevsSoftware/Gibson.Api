@@ -39,6 +39,31 @@ namespace TechDevs.Accounts.WebService
                 options.Database = Configuration.GetSection("MongoConnection:Database").Value;
             });
 
+
+            services.AddMvcCore()
+                .AddAuthorization()
+                .AddJsonFormatters();
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "https://techdevs-identityserver.azurewebsites.net";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "techdevs-accounts-api";
+                });
+
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -54,7 +79,8 @@ namespace TechDevs.Accounts.WebService
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("default");
+            app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
