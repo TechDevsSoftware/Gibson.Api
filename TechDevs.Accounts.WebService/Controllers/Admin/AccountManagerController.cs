@@ -5,15 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TechDevs.Accounts.WebService
 {
-    // API Schema 
-    // /api/v1/{module}/{controller}/{method}
-    [Route("api/v1/usermanagement/profiles")]
-    //[Authorize]
-    public class UsersController
+    // API Schema
+    [Route("api/v1/admin/accounts")]
+    [Authorize]
+    public class AccountManagerController : ControllerBase
     {
         private readonly IAccountService _userService;
 
-        public UsersController(IAccountService userService)
+        public AccountManagerController(IAccountService userService)
         {
             _userService = userService;
         }
@@ -42,20 +41,6 @@ namespace TechDevs.Accounts.WebService
         {
             var result = await _userService.GetAllUsers();
             return new OkObjectResult(result);
-        }
-
-        [HttpGet("{email}")]
-        public async Task<IActionResult> GetByEmail(string email)
-        {
-            try
-            {
-                var result = await _userService.GetByEmail(email);
-                return new OkObjectResult(result);
-            }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex.Message);
-            }
         }
 
         [HttpPost("updateemail")]

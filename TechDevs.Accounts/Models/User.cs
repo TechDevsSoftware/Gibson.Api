@@ -35,4 +35,24 @@ namespace TechDevs.Accounts
         public string ProviderName { get; set; }
         public string ProviderId { get; set; }
     }
+
+    public class UserProfile
+    {
+        public string Username { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+        public bool AgreedToTerms { get; set; }
+        public bool ValidatedEmail { get; set; }
+
+        public UserProfile(IUser user)
+        {
+            Username = user.Username;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            EmailAddress = user.EmailAddress;
+            AgreedToTerms = user.AgreedToTerms;
+            ValidatedEmail = user.ValidatedEmail;
+        }
+    }
 }

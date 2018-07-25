@@ -13,8 +13,9 @@ namespace TechDevs.Accounts
         Task<IUser> SetEmail(IUser user, string email);
         Task<IUser> SetUsername(IUser user, string username);
         Task<IUser> SetName(IUser user, string firstName, string lastName);
-		Task<IUser> SetPassword(IUser user, string hashedPassword);
+        Task<IUser> SetPassword(IUser user, string hashedPassword);
         Task<IUser> FindByEmail(string email);
+        Task<IUser> FindById(string id);
         Task<IUser> FindByProvider(string provider, string providerId);
         Task<bool> Delete(IUser user);
         Task<bool> UserExists(string email);
@@ -98,7 +99,7 @@ namespace TechDevs.Accounts
               .Update
               .Set("Username", username)
               .Set("NormalisedUsername", _normaliser.Normalise(username));
-            
+
             var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress), update);
             return await FindByEmail(user.EmailAddress);
         }
@@ -132,6 +133,18 @@ namespace TechDevs.Accounts
             var filter = Builders<IUser>.Filter.Eq("ProviderId", providerId);
             return filter;
         }
+
+        FilterDefinition<IUser> FilterById(string id)
+        {
+            var filter = Builders<IUser>.Filter.Eq("_id", id);
+            return filter;
+        }
+
+        public async Task<IUser> FindById(string id)
+        {
+            var result = await _users.Find(FilterById(id)).FirstOrDefaultAsync();
+            return result;
+        }
+
     }
 }
-     

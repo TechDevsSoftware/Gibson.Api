@@ -111,6 +111,11 @@ namespace Host.Quickstart.Account
             ProcessLoginCallbackForWsFed(result, additionalLocalClaims, localSignInProps);
             ProcessLoginCallbackForSaml2p(result, additionalLocalClaims, localSignInProps);
 
+            additionalLocalClaims.Add(new Claim(ClaimTypes.Name, user.EmailAddress));
+            additionalLocalClaims.Add(new Claim(ClaimTypes.Email, user.EmailAddress));
+            additionalLocalClaims.Add(new Claim(ClaimTypes.GivenName, user.FirstName));
+            additionalLocalClaims.Add(new Claim(ClaimTypes.Surname, user.FirstName));
+
             // issue authentication cookie for user
             await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.Id, user.Username));
             await HttpContext.SignInAsync(user.Id, $"{user.FirstName} {user.LastName}" , provider, localSignInProps, additionalLocalClaims.ToArray());

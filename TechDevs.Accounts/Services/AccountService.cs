@@ -137,6 +137,12 @@ namespace TechDevs.Accounts
                 return false;
             }
         }
+
+        public async Task<IUser> GetById(string id)
+        {
+            var user = await _userRepo.FindById(id);
+            return user;
+        }
     }
 
 }

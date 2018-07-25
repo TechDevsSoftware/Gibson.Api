@@ -16,12 +16,13 @@ document.getElementById("login").addEventListener("click", login, false);
 document.getElementById("api").addEventListener("click", api, false);
 document.getElementById("logout").addEventListener("click", logout, false);
 
+// authority: "https://techdevs-identityserver.azurewebsites.net",
 var config = {
-    authority: "https://techdevs-identityserver.azurewebsites.net",
+    authority: "http://localhost:5000",
     client_id: "spa",
     redirect_uri: "http://localhost:5003/callback.html",
     response_type: "id_token token",
-    scope:"openid profile api1",
+    scope:"openid profile api1 techdevs-accounts-api",
     post_logout_redirect_uri : "http://localhost:5003/index.html",
 };
 var mgr = new Oidc.UserManager(config);
@@ -29,6 +30,7 @@ var mgr = new Oidc.UserManager(config);
 mgr.getUser().then(function (user) {
     if (user) {
         log("User logged in", user.profile);
+        log("Token: ", user.access_token);
     }
     else {
         log("User not logged in");
@@ -41,7 +43,7 @@ function login() {
 
 function api() {
     mgr.getUser().then(function (user) {
-        var url = "http://localhost:5001/api/v1/usermanagement/profiles";
+        var url = "http://localhost:5001/api/v1/account";
 
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);

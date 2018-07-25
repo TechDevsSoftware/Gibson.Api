@@ -20,10 +20,14 @@ namespace TechDevs.IdentityServer
 
         public static IEnumerable<ApiResource> GetApis()
         {
+            var api1 = new ApiResource("techdevs-accounts-api", "TechDevs Accounts API");
+            api1.ApiSecrets.Add(new Secret("TECHDEVS"));
+            api1.UserClaims.Add("email");
+
             return new ApiResource[]
             {
                 new ApiResource("api1", "My API #1"),
-                new ApiResource("techdevs-accounts-api", "TechDevs Accounts API")
+               api1
             };
         }
 
@@ -52,7 +56,18 @@ namespace TechDevs.IdentityServer
                     PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
                     AllowedCorsOrigins = { "http://localhost:5003", "http://localhost:5001" },
 
-                    AllowedScopes = { "openid", "profile", "api1", "techdevs-accounts-api" }
+                    AllowedScopes =
+                    {
+                        "emailaddress",
+                        "name",
+                        "given_name",
+                        "family_name",
+                        "openid",
+                        "profile",
+                        "api1",
+                        "techdevs-accounts-api"
+                    },
+                    RequireConsent = true
                 }
             };
         }

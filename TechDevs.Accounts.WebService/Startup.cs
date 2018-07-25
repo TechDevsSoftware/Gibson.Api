@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,19 @@ namespace TechDevs.Accounts.WebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore()
+               .AddAuthorization()
+               .AddJsonFormatters();
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "techdevs-accounts-api";
+                    options.ApiSecret = "TECHDEVS";
+                });
+
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
 
             services.AddSingleton<IUserRepository, MongoUserRepository>();
@@ -38,19 +52,6 @@ namespace TechDevs.Accounts.WebService
                 options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
                 options.Database = Configuration.GetSection("MongoConnection:Database").Value;
             });
-
-
-            services.AddMvcCore()
-                .AddAuthorization()
-                .AddJsonFormatters();
-
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
-                {
-                    options.Authority = "https://techdevs-identityserver.azurewebsites.net";
-                    options.RequireHttpsMetadata = false;
-                    options.ApiName = "techdevs-accounts-api";
-                });
 
             services.AddCors(options =>
             {
@@ -79,8 +80,11 @@ namespace TechDevs.Accounts.WebService
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseCors("default");
+
             app.UseAuthentication();
+
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
