@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TechDevs.Accounts
 {
+
+
     public class AccountService : IAccountService
     {
         readonly IUserRepository _userRepo;
@@ -36,7 +37,8 @@ namespace TechDevs.Accounts
                 Username = userRegistration.EmailAddress,
                 AgreedToTerms = userRegistration.AggreedToTerms,
                 ProviderId = userRegistration.ProviderId ?? "TechDevs",
-                ProviderName = userRegistration.ProviderName ?? "TechDevs"
+                ProviderName = userRegistration.ProviderName ?? "TechDevs",
+                UserData = new UserData()
             };
             var result = await _userRepo.Insert(newUser);
             return result;

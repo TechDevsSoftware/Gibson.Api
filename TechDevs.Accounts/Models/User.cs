@@ -1,4 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.Collections.Generic;
 
 namespace TechDevs.Accounts
 {
@@ -14,9 +16,10 @@ namespace TechDevs.Accounts
         string LastName { get; set; }
         bool AgreedToTerms { get; set; }
         bool ValidatedEmail { get; set; }
-		string PasswordHash { get; set; }
+        string PasswordHash { get; set; }
         string ProviderName { get; set; }
         string ProviderId { get; set; }
+        UserData UserData { get; set; }
     }
 
     [BsonDiscriminator("User")]
@@ -34,6 +37,49 @@ namespace TechDevs.Accounts
         public string PasswordHash { get; set; }
         public string ProviderName { get; set; }
         public string ProviderId { get; set; }
+        public UserData UserData { get; set; }
+
+        public User()
+        {
+            UserData = new UserData();
+        }
+    }
+
+    public class UserData : IUserData
+    {
+        public List<UserVehicle> MyVehicles { get; set; }
+        public List<VehicleListing> SavedVehicles { get; set; }
+        public List<ServiceHistory> ServiceHistories { get; set; }
+
+        public UserData()
+        {
+            MyVehicles = new List<UserVehicle>();
+            SavedVehicles = new List<VehicleListing>();
+            ServiceHistories = new List<ServiceHistory>();
+        }
+    }
+
+    public class ServiceHistory
+    {
+        public string Registration { get; set; }
+        public int Mileage { get; set; }
+        public DateTime ServiceDate { get; set; }
+        public string ServiceNotes { get; set; }
+        public int LoyaltyPointsEarned { get; set; }
+    }
+
+    public class UserVehicle
+    {
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public string Registration { get; set; }
+        public int Year { get; set; }
+    }
+
+    public class VehicleListing
+    {
+        public string Registration { get; set; }
+        public string ListingId { get; set; }
     }
 
     public class UserProfile
@@ -44,6 +90,7 @@ namespace TechDevs.Accounts
         public string EmailAddress { get; set; }
         public bool AgreedToTerms { get; set; }
         public bool ValidatedEmail { get; set; }
+        public UserData UserData { get; set; }
 
         public UserProfile(IUser user)
         {
@@ -53,6 +100,7 @@ namespace TechDevs.Accounts
             EmailAddress = user.EmailAddress;
             AgreedToTerms = user.AgreedToTerms;
             ValidatedEmail = user.ValidatedEmail;
+            UserData = user.UserData;
         }
     }
 }

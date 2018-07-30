@@ -38,9 +38,9 @@ namespace TechDevs.IdentityServer
                 // SPA client using implicit flow
                 new Client
                 {
-                    ClientId = "spa",
-                    ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
+                    ClientId = "dev-spa",
+                    ClientName = "DEV SPA Client",
+                    ClientUri = "http://localhost:8100",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
@@ -51,10 +51,15 @@ namespace TechDevs.IdentityServer
                         "http://localhost:5003/callback.html",
                         "http://localhost:5003/silent.html",
                         "http://localhost:5003/popup.html",
+                        "http://localhost:8100/auth-callback",
+                        "http://localhost:8100/auth-callback.html",
+                        "http://localhost:8100/auth.html",
+                        "http://localhost:8100"
                     },
 
-                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5003", "http://localhost:5001" },
+                    
+                    PostLogoutRedirectUris = { "http://localhost:5003/index.html", "http://localhost:8100" },
+                    AllowedCorsOrigins = { "http://localhost:5003", "http://localhost:5001", "http://localhost:8100" },
 
                     AllowedScopes =
                     {
@@ -67,7 +72,39 @@ namespace TechDevs.IdentityServer
                         "api1",
                         "techdevs-accounts-api"
                     },
-                    RequireConsent = true
+                    RequireConsent = false
+                }, 
+                  // SPA client using implicit flow
+                new Client
+                {
+                    ClientId = "spa",
+                    ClientName = "SPA Client",
+                    ClientUri = "https://techdevs-dpmobile.netlify.com",
+
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris =
+                    {
+                        "https://techdevs-dpmobile.netlify.com",
+                        "https://techdevs-dpmobile.netlify.com/auth-callback"
+                    },
+                    
+                    PostLogoutRedirectUris = { "https://techdevs-dpmobile.netlify.com" },
+                    AllowedCorsOrigins = { "https://techdevs-dpmobile.netlify.com" },
+
+                    AllowedScopes =
+                    {
+                        "emailaddress",
+                        "name",
+                        "given_name",
+                        "family_name",
+                        "openid",
+                        "profile",
+                        "api1",
+                        "techdevs-accounts-api"
+                    },
+                    RequireConsent = false
                 }
             };
         }

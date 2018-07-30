@@ -1,19 +1,20 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
-using TechDevs.Accounts;
 
 namespace TechDevs.Accounts.WebService
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _env;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -25,10 +26,12 @@ namespace TechDevs.Accounts.WebService
                .AddAuthorization()
                .AddJsonFormatters();
 
+            var identityServer = (_env.IsDevelopment()) ? "http://localhost:5000" : "https://techdevs-identityserver.azurewebsites.net";
+
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://localhost:5000";
+                    options.Authority = identityServer;
                     options.RequireHttpsMetadata = false;
                     options.ApiName = "techdevs-accounts-api";
                     options.ApiSecret = "TECHDEVS";
@@ -38,8 +41,10 @@ namespace TechDevs.Accounts.WebService
 
             services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IAuthTokenService, AuthTokenService>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
+            services.AddTransient<IMyVehicleService, MyVehicleService>();
 
             services.Configure<BCryptPasswordHasherOptions>(options =>
             {

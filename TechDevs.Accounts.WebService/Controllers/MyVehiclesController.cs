@@ -1,19 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TechDevs.Accounts.ExtMethods;
 
 namespace TechDevs.Accounts.WebService.Controllers
 {
-    [Route("api/MyVehicles")]
+    [Route("api/v1/account/myvehicles")]
     public class MyVehiclesController : Controller
     {
-        [HttpGet]
-        public async Task<IActionResult> GetMyVehicles()
+        private readonly IMyVehicleService _myVehicleService;
+
+        public MyVehiclesController(IMyVehicleService myVehicleService)
         {
-            return await Task.FromResult(new OkResult());
+            _myVehicleService = myVehicleService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddVehicle([FromBody] UserVehicle vehicle)
+        {
+            var userId = this.UserId();
+            if (userId == null) return new UnauthorizedResult();
+
+            var result = await _myVehicleService.AddVehicle(vehicle, userId);
+            return new OkObjectResult(result);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveVehicle(string registration)
+        {
+            var userId = this.UserId();
+            if (userId == null) return new UnauthorizedResult();
+
+            var result = await _myVehicleService.RemoveVehicle(registration, userId);
+            return new OkObjectResult(result);
         }
 
     }

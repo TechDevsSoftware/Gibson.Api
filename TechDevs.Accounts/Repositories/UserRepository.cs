@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Microsoft.Extensions.Options;
+using System.Linq.Expressions;
 
 namespace TechDevs.Accounts
 {
@@ -19,6 +20,7 @@ namespace TechDevs.Accounts
         Task<IUser> FindByProvider(string provider, string providerId);
         Task<bool> Delete(IUser user);
         Task<bool> UserExists(string email);
+        Task<IUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id);
     }
 
     public class MongoUserRepository : IUserRepository
@@ -119,6 +121,17 @@ namespace TechDevs.Accounts
         {
             var results = await FindByEmail(email);
             return (results != null);
+        }
+
+        public async Task<IUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id)
+        {
+            UpdateDefinition<IUser> update = Builders<IUser>
+                .Update
+                .Set(propertyPath, data);
+
+            var result = await _users.UpdateOneAsync(FilterById(id), update);
+            if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(id);
+            throw new Exception("User could not be updated");
         }
 
         FilterDefinition<IUser> FilterByEmail(string email)
