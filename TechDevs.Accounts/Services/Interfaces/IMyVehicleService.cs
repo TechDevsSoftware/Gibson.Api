@@ -6,6 +6,7 @@ namespace TechDevs.Accounts
     {
         Task<IUser> AddVehicle(UserVehicle vehicle, string userId);
         Task<IUser> RemoveVehicle(string registration, string userId);
+        Task<UserVehicle> LookupVehicle(string registration);
     }
 
 }

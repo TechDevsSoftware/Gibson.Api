@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Accounts.ExtMethods;
 
 namespace TechDevs.Accounts.WebService.Controllers
 {
     [Route("api/v1/account/myvehicles")]
+    [Authorize]
     public class MyVehiclesController : Controller
     {
         private readonly IMyVehicleService _myVehicleService;
@@ -34,5 +36,12 @@ namespace TechDevs.Accounts.WebService.Controllers
             return new OkObjectResult(result);
         }
 
+        [HttpGet]
+        [Route("lookup")]
+        public async Task<IActionResult> LookupVehicle(string registration)
+        {
+            var result = await _myVehicleService.LookupVehicle(registration);
+            return new OkObjectResult(result);
+        }
     }
 }

@@ -73,7 +73,10 @@ namespace TechDevs.Accounts
         public string Make { get; set; }
         public string Model { get; set; }
         public string Registration { get; set; }
+        public string Colour { get; set; }
+        public string FuelType { get; set; }
         public int Year { get; set; }
+        public List<MotResult> MOTResults { get; set; }
     }
 
     public class VehicleListing
@@ -102,5 +105,17 @@ namespace TechDevs.Accounts
             ValidatedEmail = user.ValidatedEmail;
             UserData = user.UserData;
         }
+    }
+
+    public class MotResult
+    {
+        public string CompletedDate { get; set; }
+        public string TestResult { get; set; }
+        public string ExpiryDate { get; set; }
+        public string OdometerValue { get; set; }
+        public string OdometerUnit { get; set; }
+        public string OdometerResultType { get; set; }
+        public string MotTestNumber { get; set; }
+        public List<object> RfrAndComments { get; set; }
     }
 }
