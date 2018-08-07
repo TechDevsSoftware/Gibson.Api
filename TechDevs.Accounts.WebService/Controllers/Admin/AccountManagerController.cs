@@ -7,7 +7,7 @@ namespace TechDevs.Accounts.WebService
 {
     // API Schema
     [Route("api/v1/admin/accounts")]
-    [Authorize]
+    //[Authorize]
     public class AccountManagerController : ControllerBase
     {
         private readonly IAccountService _userService;

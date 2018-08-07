@@ -38,6 +38,9 @@ namespace TechDevs.Accounts.WebService
                 });
 
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<UserData>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<UserVehicle>(); // do it before you access DB
+
 
             services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IAccountService, AccountService>();

@@ -23,6 +23,7 @@ namespace TechDevs.Accounts
     }
 
     [BsonDiscriminator("User")]
+    [BsonIgnoreExtraElements]
     public class User : IUser
     {
         public string Id { get; set; }
@@ -68,6 +69,7 @@ namespace TechDevs.Accounts
         public int LoyaltyPointsEarned { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class UserVehicle
     {
         public string Make { get; set; }

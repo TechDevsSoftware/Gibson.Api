@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Accounts.ExtMethods;
@@ -19,21 +20,35 @@ namespace TechDevs.Accounts.WebService.Controllers
         [HttpPost]
         public async Task<IActionResult> AddVehicle([FromBody] UserVehicle vehicle)
         {
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
+            try
+            {
+                var userId = this.UserId();
+                if (userId == null) return new UnauthorizedResult();
 
-            var result = await _myVehicleService.AddVehicle(vehicle, userId);
-            return new OkObjectResult(result);
+                var result = await _myVehicleService.AddVehicle(vehicle, userId);
+                return new OkObjectResult(result);
+            }
+            catch (Exception)
+            {
+                return new BadRequestObjectResult("Vehicle could not be added");
+            }
         }
 
         [HttpDelete]
         public async Task<IActionResult> RemoveVehicle(string registration)
         {
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
+            try
+            {
+                var userId = this.UserId();
+                if (userId == null) return new UnauthorizedResult();
 
-            var result = await _myVehicleService.RemoveVehicle(registration, userId);
-            return new OkObjectResult(result);
+                var result = await _myVehicleService.RemoveVehicle(registration, userId);
+                return new OkObjectResult(result);
+            }
+            catch (Exception)
+            {
+                return new BadRequestObjectResult("Vehicle could not be removed");
+            }
         }
 
         [HttpGet]
