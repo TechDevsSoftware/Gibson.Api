@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using TechDevs.Accounts;
 using MongoDB.Bson.Serialization;
 using IdentityServer4.Services;
+using Microsoft.AspNetCore.Http;
+using IdentityServer4.Validation;
 
 namespace TechDevs.IdentityServer
 {
@@ -88,6 +90,8 @@ namespace TechDevs.IdentityServer
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
 
+            services.AddTransient<IResourceOwnerPasswordValidator, PasswordValidator>();
+
             services.Configure<BCryptPasswordHasherOptions>(options =>
             {
                 options.WorkFactor = 10;
@@ -114,6 +118,6 @@ namespace TechDevs.IdentityServer
             app.UseIdentityServer();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
-        }
+        }      
     }
 }

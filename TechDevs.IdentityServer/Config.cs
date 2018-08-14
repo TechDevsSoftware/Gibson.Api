@@ -34,7 +34,63 @@ namespace TechDevs.IdentityServer
         public static IEnumerable<Client> GetClients()
         {
             return new[]
-            {
+             {
+                 // resource owner password grant client
+                new Client
+                {
+                    ClientId = "ro.client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = {
+                        "emailaddress",
+                        "name",
+                        "given_name",
+                        "family_name",
+                        "openid",
+                        "profile",
+                        "api1",
+                        "techdevs-accounts-api"
+                    }
+                },
+
+                // SPA client using implicit flow
+                new Client
+                {
+                    ClientId = "dev-customer-portal",
+                    ClientName = "DEV Customer Portal",
+                    ClientUri = "http://localhost:4200",
+
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris =
+                    {
+                        "http://localhost:4200",
+                        "http://localhost:4200/assets/callback.html"
+                    },
+
+
+                    PostLogoutRedirectUris = { "http://localhost:4200/index.html", "http://localhost:4200" },
+                    AllowedCorsOrigins = { "http://localhost:4200", "http://localhost:4200", "http://localhost:4200" },
+
+                    AllowedScopes =
+                    {
+                        "emailaddress",
+                        "name",
+                        "given_name",
+                        "family_name",
+                        "openid",
+                        "profile",
+                        "api1",
+                        "techdevs-accounts-api"
+                    },
+                    RequireConsent = false
+                },    
+            
                 // SPA client using implicit flow
                 new Client
                 {
@@ -57,7 +113,7 @@ namespace TechDevs.IdentityServer
                         "http://localhost:8100"
                     },
 
-                    
+
                     PostLogoutRedirectUris = { "http://localhost:5003/index.html", "http://localhost:8100" },
                     AllowedCorsOrigins = { "http://localhost:5003", "http://localhost:5001", "http://localhost:8100" },
 
@@ -89,7 +145,7 @@ namespace TechDevs.IdentityServer
                         "https://techdevs-dpmobile.netlify.com",
                         "https://techdevs-dpmobile.netlify.com/auth-callback"
                     },
-                    
+
                     PostLogoutRedirectUris = { "https://techdevs-dpmobile.netlify.com" },
                     AllowedCorsOrigins = { "https://techdevs-dpmobile.netlify.com" },
 

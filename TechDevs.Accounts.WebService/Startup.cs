@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,22 +27,28 @@ namespace TechDevs.Accounts.WebService
                .AddAuthorization()
                .AddJsonFormatters();
 
-            var identityServer = (_env.IsDevelopment()) ? "http://localhost:5000" : "https://techdevs-identityserver.azurewebsites.net";
+            //var identityServer = (_env.IsDevelopment()) ? "http://localhost:5000" : "https://techdevs-identityserver.azurewebsites.net";
 
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    options.Authority = identityServer;
-                    options.RequireHttpsMetadata = false;
-                    options.ApiName = "techdevs-accounts-api";
-                    options.ApiSecret = "TECHDEVS";
+                    options.Audience = "http://localhost:4200";
+                    options.Authority = "http://localhost:5105";
                 });
+
+            //services.AddAuthentication("Bearer")
+            //    .AddIdentityServerAuthentication(options =>
+            //    {
+            //        options.Authority = identityServer;
+            //        options.RequireHttpsMetadata = false;
+            //        options.ApiName = "techdevs-accounts-api";
+            //        options.ApiSecret = "TECHDEVS";
+            //    });
 
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
             BsonClassMap.RegisterClassMap<UserData>(); // do it before you access DB
             BsonClassMap.RegisterClassMap<UserVehicle>(); // do it before you access DB
-
-
+            
             services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthTokenService, AuthTokenService>();
