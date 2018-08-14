@@ -129,7 +129,7 @@ namespace IdentityServer4.Quickstart.UI
                     };
 
                     // issue authentication cookie with subject ID and username
-                    await HttpContext.SignInAsync(user.ProviderId, $"{user.FirstName} {user.LastName}", props);
+                    await HttpContext.SignInAsync(user.Id, $"{user.FirstName} {user.LastName}", props);
 
                     if (context != null)
                     {

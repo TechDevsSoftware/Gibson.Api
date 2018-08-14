@@ -76,12 +76,21 @@ namespace TechDevs.IdentityServer
 
                     options.ClientId = "562400802513-l81m74td45m43m3r8mj9qq3ipdg9o071.apps.googleusercontent.com";
                     options.ClientSecret = "uhYVb-Llb2RJlXnGWuX_nC_A";
+                })
+                .AddFacebook(options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    
+                    options.ClientId = "205361463671684";
+                    options.ClientSecret = "4545af445f480cbf9ba0d988cfa0a0d0";
                 });
 
 
 
             // TechDevs Account DLL Wire up ---  Eventually we should remap this to work with the web service via HTTP. But this is faster for now
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<UserData>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<UserVehicle>(); // do it before you access DB
 
             services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IAccountService, AccountService>();
