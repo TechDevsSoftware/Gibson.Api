@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace TechDevs.Accounts
 {
-
     public interface IUser
     {
         string Id { get; set; }
@@ -45,7 +44,8 @@ namespace TechDevs.Accounts
             UserData = new UserData();
         }
     }
-
+    
+    [BsonIgnoreExtraElements]
     public class UserData : IUserData
     {
         public List<UserVehicle> MyVehicles { get; set; }
@@ -60,6 +60,7 @@ namespace TechDevs.Accounts
         }
     }
 
+    [BsonIgnoreExtraElements]
     public class ServiceHistory
     {
         public string Registration { get; set; }
@@ -81,12 +82,14 @@ namespace TechDevs.Accounts
         public List<MotResult> MOTResults { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class VehicleListing
     {
         public string Registration { get; set; }
         public string ListingId { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class UserProfile
     {
         public string Username { get; set; }
@@ -109,6 +112,7 @@ namespace TechDevs.Accounts
         }
     }
 
+    [BsonIgnoreExtraElements]
     public class MotResult
     {
         public string CompletedDate { get; set; }
