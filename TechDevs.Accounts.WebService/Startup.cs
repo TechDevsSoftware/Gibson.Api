@@ -1,10 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TechDevs.Accounts.WebService
 {
@@ -41,28 +49,29 @@ namespace TechDevs.Accounts.WebService
 
             var identityServer = (_env.IsDevelopment()) ? "http://localhost:5000" : "https://techdevs-identityserver.azurewebsites.net";
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    //options.Audience = "http://localhost:4200";
+                    //options.Authority = "http://localhost:5101";
                     options.RequireHttpsMetadata = false;
-                    //options.SaveToken = true;
-                    options.Audience = "http://localhost:4200";
-                    options.Authority = "http://localhost:5105";
-                });
+                    
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("techdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevs")),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true
+                    };
 
-            //services.AddAuthentication("Bearer")
-            //    .AddIdentityServerAuthentication(options =>
-            //    {
-            //        options.Authority = identityServer;
-            //        options.RequireHttpsMetadata = false;
-            //        options.ApiName = "techdevs-accounts-api";
-            //        options.ApiSecret = "TECHDEVS";
-            //    });
+                });
 
             BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
             BsonClassMap.RegisterClassMap<UserData>(); // do it before you access DB
             BsonClassMap.RegisterClassMap<UserVehicle>(); // do it before you access DB
-            
+
             services.AddSingleton<IUserRepository, MongoUserRepository>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IAuthTokenService, AuthTokenService>();
@@ -99,7 +108,6 @@ namespace TechDevs.Accounts.WebService
             {
                 app.UseDeveloperExceptionPage();
             }
-
 
             app.UseAuthentication();
 

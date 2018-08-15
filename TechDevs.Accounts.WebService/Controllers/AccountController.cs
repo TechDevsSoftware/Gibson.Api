@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,8 +44,9 @@ namespace TechDevs.Accounts.WebService.Controllers
 
         private string GetUserIdFromRequest()
         {
-            return User.FindFirst("sub")?.Value;
+            var sub = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+            if (sub == null) sub = User.FindFirst("sub")?.Value;
+            return sub;
         }
-
     }
 }

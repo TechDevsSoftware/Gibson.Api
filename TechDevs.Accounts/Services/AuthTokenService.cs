@@ -13,12 +13,14 @@ namespace TechDevs.Accounts
         public AuthTokenService(IAccountService accountService)
         {
             _accountService = accountService;
-            _tokenSecret = "techdevs";
+            _tokenSecret = "techdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevs";
         }
 
         public async Task<string> CreateToken(string userId, string requestedClaims)
         {
             var builder = new JwtBuilder()
+                  .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
+                  .AddClaim("sub", userId)
                   .WithAlgorithm(new HMACSHA256Algorithm())
                   .WithSecret(_tokenSecret);
 
