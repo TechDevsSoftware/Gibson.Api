@@ -4,57 +4,28 @@ using System.Collections.Generic;
 
 namespace TechDevs.Accounts
 {
-    public interface IUser
-    {
-        string Id { get; set; }
-        string Username { get; set; }
-        string NormalisedUsername { get; set; }
-        string EmailAddress { get; set; }
-        string NormalisedEmail { get; set; }
-        string FirstName { get; set; }
-        string LastName { get; set; }
-        bool AgreedToTerms { get; set; }
-        bool ValidatedEmail { get; set; }
-        string PasswordHash { get; set; }
-        string ProviderName { get; set; }
-        string ProviderId { get; set; }
-        UserData UserData { get; set; }
-    }
 
-    [BsonDiscriminator("User")]
     [BsonIgnoreExtraElements]
-    public class User : IUser
+    public class Customer : AuthUser, ICustomer
     {
-        public string Id { get; set; }
-        public string Username { get; set; }
-        public string NormalisedUsername { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string EmailAddress { get; set; }
-        public string NormalisedEmail { get; set; }
-        public bool AgreedToTerms { get; set; }
-        public bool ValidatedEmail { get; set; }
-        public string PasswordHash { get; set; }
-        public string ProviderName { get; set; }
-        public string ProviderId { get; set; }
-        public UserData UserData { get; set; }
+        public ICustomerData CustomerData { get; set; }
 
-        public User()
+        public Customer()
         {
-            UserData = new UserData();
+            CustomerData = new CustomerData();
         }
     }
-    
+
     [BsonIgnoreExtraElements]
-    public class UserData : IUserData
+    public class CustomerData : ICustomerData
     {
-        public List<UserVehicle> MyVehicles { get; set; }
+        public List<CustomerVehicle> MyVehicles { get; set; }
         public List<VehicleListing> SavedVehicles { get; set; }
         public List<ServiceHistory> ServiceHistories { get; set; }
 
-        public UserData()
+        public CustomerData()
         {
-            MyVehicles = new List<UserVehicle>();
+            MyVehicles = new List<CustomerVehicle>();
             SavedVehicles = new List<VehicleListing>();
             ServiceHistories = new List<ServiceHistory>();
         }
@@ -71,7 +42,7 @@ namespace TechDevs.Accounts
     }
 
     [BsonIgnoreExtraElements]
-    public class UserVehicle
+    public class CustomerVehicle
     {
         public string Make { get; set; }
         public string Model { get; set; }
@@ -90,7 +61,7 @@ namespace TechDevs.Accounts
     }
 
     [BsonIgnoreExtraElements]
-    public class UserProfile
+    public class CustomerProfile
     {
         public string Username { get; set; }
         public string FirstName { get; set; }
@@ -98,9 +69,9 @@ namespace TechDevs.Accounts
         public string EmailAddress { get; set; }
         public bool AgreedToTerms { get; set; }
         public bool ValidatedEmail { get; set; }
-        public UserData UserData { get; set; }
+        public ICustomerData CustomerData { get; set; }
 
-        public UserProfile(IUser user)
+        public CustomerProfile(ICustomer user)
         {
             Username = user.Username;
             FirstName = user.FirstName;
@@ -108,7 +79,7 @@ namespace TechDevs.Accounts
             EmailAddress = user.EmailAddress;
             AgreedToTerms = user.AgreedToTerms;
             ValidatedEmail = user.ValidatedEmail;
-            UserData = user.UserData;
+            CustomerData = user.CustomerData;
         }
     }
 

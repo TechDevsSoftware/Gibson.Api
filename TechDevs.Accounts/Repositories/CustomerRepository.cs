@@ -7,61 +7,61 @@ using System.Linq.Expressions;
 
 namespace TechDevs.Accounts
 {
-    public interface IUserRepository
+    public interface IAuthUserRepository
     {
-        Task<List<IUser>> GetAll();
-        Task<IUser> Insert(IUser user);
-        Task<IUser> SetEmail(IUser user, string email);
-        Task<IUser> SetUsername(IUser user, string username);
-        Task<IUser> SetName(IUser user, string firstName, string lastName);
-        Task<IUser> SetPassword(IUser user, string hashedPassword);
-        Task<IUser> FindByEmail(string email);
-        Task<IUser> FindById(string id);
-        Task<IUser> FindByProvider(string provider, string providerId);
-        Task<bool> Delete(IUser user);
+        Task<List<IAuthUser>> GetAll();
+        Task<IAuthUser> Insert(IAuthUser user);
+        Task<IAuthUser> SetEmail(IAuthUser user, string email);
+        Task<IAuthUser> SetUsername(IAuthUser user, string username);
+        Task<IAuthUser> SetName(IAuthUser user, string firstName, string lastName);
+        Task<IAuthUser> SetPassword(IAuthUser user, string hashedPassword);
+        Task<IAuthUser> FindByEmail(string email);
+        Task<IAuthUser> FindById(string id);
+        Task<IAuthUser> FindByProvider(string provider, string providerId);
+        Task<bool> Delete(IAuthUser user);
         Task<bool> UserExists(string email);
-        Task<IUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id);
+        Task<IAuthUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id);
     }
 
-    public class MongoUserRepository : IUserRepository
+    public class MongoUserRepository : IAuthUserRepository
     {
         readonly IMongoDatabase _database;
-        readonly IMongoCollection<IUser> _users;
+        readonly IMongoCollection<IAuthUser> _users;
         readonly IStringNormaliser _normaliser;
 
         public MongoUserRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser)
         {
             var client = new MongoClient(dbSettings.Value.ConnectionString);
             if (client != null) _database = client.GetDatabase(dbSettings.Value.Database);
-            if (_database != null) _users = _database.GetCollection<IUser>("users");
+            if (_database != null) _users = _database.GetCollection<IAuthUser>("users");
             _normaliser = normaliser;
         }
 
-        public async Task<bool> Delete(IUser user)
+        public async Task<bool> Delete(IAuthUser user)
         {
             DeleteResult result = await _users.DeleteOneAsync(FilterByEmail(user.EmailAddress));
             return (result.IsAcknowledged && result.DeletedCount > 0);
         }
 
-        public async Task<IUser> FindByEmail(string email)
+        public async Task<IAuthUser> FindByEmail(string email)
         {
             var result = await _users.Find(FilterByEmail(email)).FirstOrDefaultAsync();
             return result;
         }
 
-        public async Task<IUser> FindByProvider(string provider, string providerId)
+        public async Task<IAuthUser> FindByProvider(string provider, string providerId)
         {
             var result = await _users.Find(FilterByProvider(provider, providerId)).FirstOrDefaultAsync();
             return result;
         }
 
-        public async Task<List<IUser>> GetAll()
+        public async Task<List<IAuthUser>> GetAll()
         {
             var results = await _users.Find(_ => true).ToListAsync();
             return results;
         }
 
-        public async Task<IUser> Insert(IUser user)
+        public async Task<IAuthUser> Insert(IAuthUser user)
         {
             user.NormalisedEmail = _normaliser.Normalise(user.EmailAddress);
             user.Username = user.EmailAddress;
@@ -72,9 +72,9 @@ namespace TechDevs.Accounts
             return result;
         }
 
-        public async Task<IUser> SetEmail(IUser user, string email)
+        public async Task<IAuthUser> SetEmail(IAuthUser user, string email)
         {
-            UpdateDefinition<IUser> update = Builders<IUser>
+            UpdateDefinition<IAuthUser> update = Builders<IAuthUser>
                 .Update
                 .Set("EmailAddress", email)
                 .Set("NormalisedEmail", _normaliser.Normalise(email));
@@ -84,9 +84,9 @@ namespace TechDevs.Accounts
             throw new Exception("User email could not be updated");
         }
 
-        public async Task<IUser> SetName(IUser user, string firstName, string lastName)
+        public async Task<IAuthUser> SetName(IAuthUser user, string firstName, string lastName)
         {
-            UpdateDefinition<IUser> update = Builders<IUser>
+            UpdateDefinition<IAuthUser> update = Builders<IAuthUser>
                .Update
                .Set("FirstName", firstName)
                .Set("LastName", lastName);
@@ -95,9 +95,9 @@ namespace TechDevs.Accounts
             return await FindByEmail(user.EmailAddress);
         }
 
-        public async Task<IUser> SetUsername(IUser user, string username)
+        public async Task<IAuthUser> SetUsername(IAuthUser user, string username)
         {
-            UpdateDefinition<IUser> update = Builders<IUser>
+            UpdateDefinition<IAuthUser> update = Builders<IAuthUser>
               .Update
               .Set("Username", username)
               .Set("NormalisedUsername", _normaliser.Normalise(username));
@@ -106,9 +106,9 @@ namespace TechDevs.Accounts
             return await FindByEmail(user.EmailAddress);
         }
 
-        public async Task<IUser> SetPassword(IUser user, string passwordHash)
+        public async Task<IAuthUser> SetPassword(IAuthUser user, string passwordHash)
         {
-            UpdateDefinition<IUser> update = Builders<IUser>
+            UpdateDefinition<IAuthUser> update = Builders<IAuthUser>
                 .Update
                 .Set("PasswordHash", passwordHash);
 
@@ -123,9 +123,9 @@ namespace TechDevs.Accounts
             return (results != null);
         }
 
-        public async Task<IUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id)
+        public async Task<IAuthUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id)
         {
-            UpdateDefinition<IUser> update = Builders<IUser>
+            UpdateDefinition<IAuthUser> update = Builders<IAuthUser>
                 .Update
                 .Set(propertyPath, data);
 
@@ -134,26 +134,26 @@ namespace TechDevs.Accounts
             throw new Exception("User could not be updated");
         }
 
-        FilterDefinition<IUser> FilterByEmail(string email)
+        FilterDefinition<IAuthUser> FilterByEmail(string email)
         {
             var normEmail = _normaliser.Normalise(email);
-            var filter = Builders<IUser>.Filter.Eq("NormalisedEmail", normEmail);
+            var filter = Builders<IAuthUser>.Filter.Eq("NormalisedEmail", normEmail);
             return filter;
         }
 
-        FilterDefinition<IUser> FilterByProvider(string provider, string providerId)
+        FilterDefinition<IAuthUser> FilterByProvider(string provider, string providerId)
         {
-            var filter = Builders<IUser>.Filter.Eq("ProviderId", providerId);
+            var filter = Builders<IAuthUser>.Filter.Eq("ProviderId", providerId);
             return filter;
         }
 
-        FilterDefinition<IUser> FilterById(string id)
+        FilterDefinition<IAuthUser> FilterById(string id)
         {
-            var filter = Builders<IUser>.Filter.Eq("_id", id);
+            var filter = Builders<IAuthUser>.Filter.Eq("_id", id);
             return filter;
         }
 
-        public async Task<IUser> FindById(string id)
+        public async Task<IAuthUser> FindById(string id)
         {
             var result = await _users.Find(FilterById(id)).FirstOrDefaultAsync();
             return result;

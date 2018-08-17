@@ -90,12 +90,12 @@ namespace TechDevs.IdentityServer
 
 
             // TechDevs Account DLL Wire up ---  Eventually we should remap this to work with the web service via HTTP. But this is faster for now
-            BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
-            BsonClassMap.RegisterClassMap<UserData>(); // do it before you access DB
-            BsonClassMap.RegisterClassMap<UserVehicle>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<Customer>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<CustomerData>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<CustomerVehicle>(); // do it before you access DB
 
-            services.AddSingleton<IUserRepository, MongoUserRepository>();
-            services.AddTransient<IAccountService, AccountService>();
+            services.AddSingleton<ICustomerRespository, MongoUserRepository>();
+            services.AddTransient<IAuthUserService, AuthUserService>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
 

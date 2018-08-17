@@ -13,9 +13,9 @@ namespace TechDevs.Accounts.WebService.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthTokenService _tokenService;
-        private readonly IAccountService _accountService;
+        private readonly IAuthUserService<AuthUser> _accountService;
 
-        public AuthController(IAuthTokenService tokenService, IAccountService accountService)
+        public AuthController(IAuthTokenService tokenService, IAuthUserService<AuthUser> accountService)
         {
             _accountService = accountService;
             _tokenService = tokenService;
@@ -23,35 +23,35 @@ namespace TechDevs.Accounts.WebService.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest req)
+        public async Task<IActionResult> Login([FromBody] LoginRequest req, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             switch (req.Provider)
             {
                 case "TechDevs":
-                    return await LoginWithTechDevs(req.Email, req.Password);
+                    return await LoginWithTechDevs(req.Email, req.Password, clientId);
                 case "Google":
-                    return await LoginWithGoogle(req.ProviderIdToken);
+                    return await LoginWithGoogle(req.ProviderIdToken, clientId);
                 default:
                     return new BadRequestObjectResult("Unsupported auth provider");
             }
         }
 
-        private async Task<IActionResult> LoginWithTechDevs(string email, string password)
+        private async Task<IActionResult> LoginWithTechDevs(string email, string password, string clientId)
         {
-            var valid = await _accountService.ValidatePassword(email, password);
+            var valid = await _accountService.ValidatePassword(email, password, clientId);
             if (!valid) return new UnauthorizedResult();
-            var user = await _accountService.GetByEmail(email);
-            var token = await _tokenService.CreateToken(user.Id, "profile");
+            var user = await _accountService.GetByEmail(email, clientId);
+            var token = await _tokenService.CreateToken(user.Id, "profile", clientId);
             return new OkObjectResult(token);
         }
 
-        private async Task<IActionResult> LoginWithGoogle(string idToken)
+        private async Task<IActionResult> LoginWithGoogle(string idToken, string clientId)
         {
             try
             {
                 var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
-                var user = await _accountService.GetByProvider("Google", payload.Subject);
-                var token = await _tokenService.CreateToken(user.Id, "profile");
+                var user = await _accountService.GetByProvider("Google", payload.Subject, clientId);
+                var token = await _tokenService.CreateToken(user.Id, "profile", clientId);
                 return new OkObjectResult(token);
             }
             catch (InvalidJwtException ex)

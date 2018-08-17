@@ -22,7 +22,7 @@ namespace Host.Quickstart.Account
     [AllowAnonymous]
     public class ExternalController : Controller
     {
-        private readonly IAccountService _accountService;
+        private readonly IAuthUserService<AuthUser> _accountService;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
@@ -31,7 +31,7 @@ namespace Host.Quickstart.Account
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IEventService events,
-            IAccountService accountService)
+            IAuthUserService<AuthUser> accountService)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
@@ -188,7 +188,7 @@ namespace Host.Quickstart.Account
             }
         }
 
-        private async Task<(IUser user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProvider(AuthenticateResult result)
+        private async Task<(IAuthUser user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProvider(AuthenticateResult result)
         {
             var externalUser = result.Principal;
 
@@ -207,15 +207,15 @@ namespace Host.Quickstart.Account
             var providerUserId = userIdClaim.Value;
 
             // find external user
-            var user = await _accountService.GetByProvider(provider, providerUserId);
+            var user = await _accountService.GetByProvider(provider, providerUserId, clientId);
             
             return (user, provider, providerUserId, claims);
         }
 
-        private async Task<IUser> AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
+        private async Task<IAuthUser> AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
         {
             // Map to a new user registation
-            var userReg = new UserRegistration
+            var userReg = new AuthUserRegistration
             {
                 FirstName = claims.FirstOrDefault(x => x.Type.EndsWith("givenname")).Value,
                 LastName = claims.FirstOrDefault(x => x.Type.EndsWith("surname")).Value,

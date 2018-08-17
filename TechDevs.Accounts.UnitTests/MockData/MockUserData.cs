@@ -6,17 +6,17 @@ namespace TechDevs.Accounts.Tests
 {
     public static class UserStubs
     {
-        public static IUser User1 => new User { FirstName = "Steve", LastName = "Kent", EmailAddress = "stevekent55@gmail.com" };
-        public static IUser User2 => new User { FirstName = "Adam", LastName = "Fox", EmailAddress = "amobilefox@gmail.com" };
+        public static ICustomer User1 => new Customer { FirstName = "Steve", LastName = "Kent", EmailAddress = "stevekent55@gmail.com" };
+        public static ICustomer User2 => new Customer { FirstName = "Adam", LastName = "Fox", EmailAddress = "amobilefox@gmail.com" };
     }
 
     public static class UserRegistrationStubs
     {
-        public static IUserRegistration ValidUser1() => new UserRegistration { FirstName = "Steve", LastName = "Kent", EmailAddress = "stevekent55@gmail.com", AggreedToTerms = true };
-        public static IUserRegistration ValidUser2() => new UserRegistration { FirstName = "Adam", LastName = "Fox", EmailAddress = "amobilefox@gmail.com", AggreedToTerms = true };
-        public static IUserRegistration UserMissingFirstName => new UserRegistration { LastName = "Kent", EmailAddress = "stevekent55@gmail.com" };
-        public static IUserRegistration UserMissingLastName => new UserRegistration { FirstName = "Steve", EmailAddress = "stevekent55@gmail.com" };
-        public static IUserRegistration UserMissingEmailAddress => new UserRegistration { FirstName = "Steve", LastName = "Kent" };
+        public static IAuthUserRegistration ValidUser1() => new AuthUserRegistration { FirstName = "Steve", LastName = "Kent", EmailAddress = "stevekent55@gmail.com", AggreedToTerms = true };
+        public static IAuthUserRegistration ValidUser2() => new AuthUserRegistration { FirstName = "Adam", LastName = "Fox", EmailAddress = "amobilefox@gmail.com", AggreedToTerms = true };
+        public static IAuthUserRegistration UserMissingFirstName => new AuthUserRegistration { LastName = "Kent", EmailAddress = "stevekent55@gmail.com" };
+        public static IAuthUserRegistration UserMissingLastName => new AuthUserRegistration { FirstName = "Steve", EmailAddress = "stevekent55@gmail.com" };
+        public static IAuthUserRegistration UserMissingEmailAddress => new AuthUserRegistration { FirstName = "Steve", LastName = "Kent" };
     }
 
     public class ValidUserRegistrations : IEnumerable<object[]>

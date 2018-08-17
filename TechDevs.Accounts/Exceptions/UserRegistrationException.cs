@@ -4,19 +4,19 @@ namespace TechDevs.Accounts
 {
     public class UserRegistrationException : Exception
     {
-        public UserRegistrationException(IUserRegistration userRegistration)
+        public UserRegistrationException(IAuthUserRegistration userRegistration)
         {
             UserRegistration = userRegistration;
         }
-        public UserRegistrationException(IUserRegistration userRegistration, string message) : base(message)
+        public UserRegistrationException(IAuthUserRegistration userRegistration, string message) : base(message)
         {
             UserRegistration = userRegistration;
         }
-        public UserRegistrationException(IUserRegistration userRegistration, string message, Exception inner) : base(message, inner)
+        public UserRegistrationException(IAuthUserRegistration userRegistration, string message, Exception inner) : base(message, inner)
         {
             UserRegistration = userRegistration;
         }
 
-        public IUserRegistration UserRegistration { get; }
+        public IAuthUserRegistration UserRegistration { get; }
     }
 }

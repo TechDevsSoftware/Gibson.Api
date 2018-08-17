@@ -18,7 +18,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddVehicle([FromBody] UserVehicle vehicle)
+        public async Task<IActionResult> AddVehicle([FromBody] CustomerVehicle vehicle)
         {
             try
             {

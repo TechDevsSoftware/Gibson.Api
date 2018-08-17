@@ -1,18 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using TechDevs.Accounts.Repositories;
+using TechDevs.Accounts.Services;
 
 namespace TechDevs.Accounts.WebService
 {
@@ -68,23 +64,33 @@ namespace TechDevs.Accounts.WebService
 
                 });
 
-            BsonClassMap.RegisterClassMap<User>(); // do it before you access DB
-            BsonClassMap.RegisterClassMap<UserData>(); // do it before you access DB
-            BsonClassMap.RegisterClassMap<UserVehicle>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<Customer>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<CustomerData>(); // do it before you access DB
+            BsonClassMap.RegisterClassMap<CustomerVehicle>(); // do it before you access DB
 
-            services.AddSingleton<IUserRepository, MongoUserRepository>();
-            services.AddTransient<IAccountService, AccountService>();
+            // Repositories
+            services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
+            services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
+
+            // Services
+            services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IAuthUserService<Customer>, CustomerService>();
+            services.AddTransient<IAuthUserService<Employee>, EmployeeService>();
             services.AddTransient<IAuthTokenService, AuthTokenService>();
+
+            // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
-            services.AddTransient<IMyVehicleService, MyVehicleService>();
 
+            // Configure the passowrd hashing algorithm
             services.Configure<BCryptPasswordHasherOptions>(options =>
             {
                 options.WorkFactor = 10;
                 options.EnhancedEntropy = false;
             });
 
+            // Configure the mongodb connection string settings for DI
             services.Configure<MongoDbSettings>(options =>
             {
                 options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;

@@ -7,16 +7,16 @@ namespace TechDevs.Accounts
 {
     public class AuthTokenService : IAuthTokenService
     {
-        private readonly IAccountService _accountService;
+        private readonly IAuthUserService<Customer> _accountService;
         private readonly string _tokenSecret;
 
-        public AuthTokenService(IAccountService accountService)
+        public AuthTokenService(IAuthUserService<Customer> accountService)
         {
             _accountService = accountService;
             _tokenSecret = "techdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevs";
         }
 
-        public async Task<string> CreateToken(string userId, string requestedClaims)
+        public async Task<string> CreateToken(string userId, string requestedClaims, string clientId)
         {
             var builder = new JwtBuilder()
                   .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
@@ -24,19 +24,19 @@ namespace TechDevs.Accounts
                   .WithAlgorithm(new HMACSHA256Algorithm())
                   .WithSecret(_tokenSecret);
 
-            builder = await BuildPayload(builder, userId, requestedClaims);
+            builder = await BuildPayload(builder, userId, requestedClaims, clientId);
             var token = builder.Build();
             return token;
         }
 
-        private async Task<JwtBuilder> BuildPayload(JwtBuilder builder, string userId, string requestedClaims)
+        private async Task<JwtBuilder> BuildPayload(JwtBuilder builder, string userId, string requestedClaims, string clientId)
         {
-            var user = await _accountService.GetById(userId);
+            var user = await _accountService.GetById(userId, clientId);
             if (user == null) throw new Exception("User not found");
             return await BuildPayload(builder, user, requestedClaims);
         }
 
-        private Task<JwtBuilder> BuildPayload(JwtBuilder builder, IUser user, string requestedClaims)
+        private Task<JwtBuilder> BuildPayload(JwtBuilder builder, IAuthUser user, string requestedClaims)
         {
             if (requestedClaims.Contains("profile"))
             {

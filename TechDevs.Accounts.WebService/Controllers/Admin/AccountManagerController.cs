@@ -8,47 +8,28 @@ namespace TechDevs.Accounts.WebService
     // API Schema
     [Route("api/v1/admin/accounts")]
     //[Authorize]
-    public class AccountManagerController : ControllerBase
+    public class CustomerAdminController : ControllerBase
     {
-        private readonly IAccountService _userService;
+        private readonly IAuthUserService<Customer> _userService;
 
-        public AccountManagerController(IAccountService userService)
+        public CustomerAdminController(IAuthUserService<Customer> userService)
         {
             _userService = userService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] UserRegistration registration)
-        {
-            try
-            {
-                if (registration == null) return new BadRequestObjectResult("Invalid registration");
-                var result = await _userService.RegisterUser(registration);
-                return new OkObjectResult(result);
-            }
-            catch (UserRegistrationException ex)
-            {
-                return new BadRequestObjectResult("Validaiton Errors: " + Environment.NewLine + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex.Message);
-            }
-        }
-
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
-            var result = await _userService.GetAllUsers();
+            var result = await _userService.GetAllUsers(clientId);
             return new OkObjectResult(result);
         }
 
         [HttpPost("updateemail")]
-        public async Task<IActionResult> UpdateEmail([FromQuery] string currentEmail, [FromQuery]string newEmail)
+        public async Task<IActionResult> UpdateEmail([FromQuery] string currentEmail, [FromQuery]string newEmail, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             try
             {
-                var result = await _userService.UpdateEmail(currentEmail, newEmail);
+                var result = await _userService.UpdateEmail(currentEmail, newEmail, clientId);
                 return new OkObjectResult(result);
             }
             catch (Exception ex)
@@ -58,11 +39,11 @@ namespace TechDevs.Accounts.WebService
         }
 
         [HttpDelete("{email}")]
-        public async Task<IActionResult> Delete(string email)
+        public async Task<IActionResult> Delete(string email, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             try
             {
-                await _userService.Delete(email);
+                await _userService.Delete(email, clientId);
                 return new OkResult();
             }
             catch (Exception ex)
@@ -72,11 +53,11 @@ namespace TechDevs.Accounts.WebService
         }
 
         [HttpPost("password")]
-        public async Task<IActionResult> SetPassword(string email, string password)
+        public async Task<IActionResult> SetPassword(string email, string password, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             try
             {
-                await _userService.SetPassword(email, password);
+                await _userService.SetPassword(email, password, clientId);
                 return new OkResult();
             }
             catch (Exception ex)
@@ -86,11 +67,11 @@ namespace TechDevs.Accounts.WebService
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest loginRequest)
+        public async Task<IActionResult> Login(LoginRequest loginRequest, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             try
             {
-                var isValid = await _userService.ValidatePassword(loginRequest.Email, loginRequest.Password);
+                var isValid = await _userService.ValidatePassword(loginRequest.Email, loginRequest.Password, clientId);
                 if (isValid) return new OkResult();
                 return new UnauthorizedResult();
             }

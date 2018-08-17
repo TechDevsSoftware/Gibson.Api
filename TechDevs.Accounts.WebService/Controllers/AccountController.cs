@@ -7,37 +7,37 @@ namespace TechDevs.Accounts.WebService.Controllers
 {
     [Authorize]
     [Route("api/v1/account")]
-    public class AccountController : Controller
+    public class CustomerController : Controller
     {
-        private readonly IAccountService _accountService;
+        private readonly IAuthUserService<Customer> _accountService;
 
-        public AccountController(IAccountService accountService)
+        public CustomerController(IAuthUserService<Customer> accountService)
         {
             _accountService = accountService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProfile()
+        public async Task<IActionResult> GetProfile([FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             var userId = GetUserIdFromRequest();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId);
+            var user = await _accountService.GetById(userId, clientId);
             if (user == null) return new NotFoundResult();
 
-            return new OkObjectResult(new UserProfile(user));
+            return new OkObjectResult(new CustomerProfile(user));
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAccount()
+        public async Task<IActionResult> DeleteAccount([FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             var userId = GetUserIdFromRequest();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId);
+            var user = await _accountService.GetById(userId, clientId);
             if (user == null) return new NotFoundResult();
 
-            var result = await _accountService.Delete(user.EmailAddress);
+            var result = await _accountService.Delete(user.EmailAddress, clientId);
             if (result == false) return new BadRequestResult();
             return new OkResult();
         }

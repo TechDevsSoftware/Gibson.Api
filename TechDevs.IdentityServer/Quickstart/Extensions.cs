@@ -8,9 +8,9 @@ namespace IdentityServer4.Quickstart.UI
 {
     public class PasswordValidator : IResourceOwnerPasswordValidator
     {
-        private readonly IAccountService _accountService;
+        private readonly IAuthUserService _accountService;
 
-        public PasswordValidator(IAccountService accountService)
+        public PasswordValidator(IAuthUserService accountService)
         {
             _accountService = accountService;
         }
