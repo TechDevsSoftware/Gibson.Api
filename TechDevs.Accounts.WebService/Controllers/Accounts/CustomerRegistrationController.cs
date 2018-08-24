@@ -21,7 +21,7 @@ namespace TechDevs.Accounts.WebService.Controllers
             try
             {
                 if (registration == null) return new BadRequestObjectResult("Invalid registration");
-                var result = await _userService.RegisterUser(new Customer(), registration, clientId);
+                var result = await _userService.RegisterUser(registration, clientId);
                 return new OkObjectResult(result);
             }
             catch (UserRegistrationException ex)

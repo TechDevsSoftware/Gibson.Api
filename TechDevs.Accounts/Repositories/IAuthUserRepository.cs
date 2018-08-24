@@ -17,5 +17,7 @@ namespace TechDevs.Accounts.Repositories
         Task<TAuthUser> SetUsername(TAuthUser user, string username, string clientId);
         Task<TAuthUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id, string clientId);
         Task<bool> UserExists(string email, string clientId);
+        Task<TAuthUser> SetInvitation(string userId, AuthUserInvitation invite, string clientId);
+        Task<TAuthUser> SetDisabled(string userId, bool disabled, string clientId);
     }
 }

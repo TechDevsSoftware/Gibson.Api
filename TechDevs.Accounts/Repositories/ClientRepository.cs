@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,10 +46,12 @@ namespace TechDevs.Accounts.Repositories
             if (includeRelatedAuthUsers)
             {
                 var clientFilter = new BsonDocument { { "ClientId", new BsonDocument { { "_id", client.Id } } } };
-                //var employees = _users.OfType<Employee>().Find(clientFilter);
-                //var customers = _users.OfType<Customer>().Find(clientFilter);
-                client.Employees = await (await _users.OfType<Employee>().FindAsync(clientFilter)).ToListAsync();
-                client.Customers = await (await _users.OfType<Customer>().FindAsync(clientFilter)).ToListAsync();
+
+                var employees = await _users.OfType<Employee>().Find(clientFilter).ToListAsync();
+                var customers = await _users.OfType<Customer>().Find(clientFilter).ToListAsync();
+
+                client.Employees = employees.Select(e => new EmployeeProfile(e)).ToList();
+                client.Customers = customers.Select(e => new CustomerProfile(e)).ToList();
             }
             return client;
         }

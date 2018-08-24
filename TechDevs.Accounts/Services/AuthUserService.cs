@@ -27,7 +27,7 @@ namespace TechDevs.Accounts
         {
         }
 
-        public override Task<AuthUser> RegisterUser(AuthUser newUser, AuthUserRegistration userRegistration, string clientId)
+        public override Task<AuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientId)
         {
             throw new Exception("Must be registered using a Customer or Employee service. Not the base AuthUser service");
         }
@@ -50,7 +50,7 @@ namespace TechDevs.Accounts
             return result;
         }
 
-        public virtual async Task<TAuthUser> RegisterUser(TAuthUser newUser, AuthUserRegistration userRegistration, string clientId)
+        public virtual async Task<TAuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientId)
         {
             await ValidateCanRegister(userRegistration, clientId);
 
@@ -63,10 +63,13 @@ namespace TechDevs.Accounts
                 EmailAddress = userRegistration.EmailAddress,
                 AgreedToTerms = userRegistration.AggreedToTerms,
                 ProviderName = userRegistration.ProviderName,
-                ProviderId = userRegistration.ProviderId
+                ProviderId = userRegistration.ProviderId,
+                Disabled = userRegistration.IsInvite
             };
 
             var result = await _userRepo.Insert(newAuthUser, clientId);
+            if (userRegistration.IsInvite) return result;
+            
             var resultAfterPassword = await SetPassword(result.EmailAddress, userRegistration.Password, clientId);
             return resultAfterPassword;
         }
@@ -76,7 +79,7 @@ namespace TechDevs.Accounts
             var validationErrors = new StringBuilder();
 
             // User must have agreed to the terms
-            if (!userRegistration.AggreedToTerms)
+            if (!userRegistration.IsInvite && !userRegistration.AggreedToTerms)
                 validationErrors.Append("Must agree to terms and conditions");
 
             // Email address cannot already exist
@@ -172,6 +175,61 @@ namespace TechDevs.Accounts
             var user = await _userRepo.FindById(id, clientId);
             return user;
         }
+
+        public virtual async Task<TAuthUser> EnableAccount(string email, string clientId)
+        {
+            var user = await _userRepo.FindByEmail(email, clientId);
+            if (user == null) throw new Exception("User could not be found");
+            var result = await _userRepo.SetDisabled(user.Id, false, clientId);
+            return result;
+        }
+
+        public virtual async Task<TAuthUser> DisableAccount(string email, string clientId)
+        {
+            var user = await _userRepo.FindByEmail(email, clientId);
+            if (user == null) throw new Exception("User could not be found");
+            var result = await _userRepo.SetDisabled(user.Id, true, clientId);
+            return result;
+        }
+
+        #region Invites
+
+        public virtual async Task<TAuthUser> SubmitInvitation(AuthUserInvitationRequest invite, string clientId)
+        {
+            // Generate the Invitation
+            var fakeSentByUserId = Guid.NewGuid().ToString();
+            var invitationRecord = new AuthUserInvitation(invite, fakeSentByUserId);
+
+            // Map the invite into a new user request
+            var userReq = new AuthUserRegistration
+            {
+                IsInvite = true,
+                AggreedToTerms = false,
+                ProviderName = "TechDevs",
+                FirstName = invite.FirstName,
+                LastName = invite.LastName,
+                EmailAddress = invite.Email        
+            };
+
+            // Check to see if the user already exists
+            var existingUser = await GetByEmail(invitationRecord.Email, clientId);
+            if (existingUser != null) throw new Exception("User is already registered");
+            
+            // Register the user
+            var user = await RegisterUser(userReq, clientId);
+            if (user == null) throw new Exception("Failed to register the user from an invitation request");
+            
+            // Set the invitation record and update
+            var newUser = await _userRepo.SetInvitation(user.Id, invitationRecord, clientId);
+            
+            // Send the email notification to the user
+            // var invitationMessage = new InvitaitonMessage(invitationRecord);
+            // _notifications.SendEmail(invitationMessage);
+
+            return newUser;
+        } 
+
+        #endregion
     }
 
 }

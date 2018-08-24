@@ -24,11 +24,13 @@ namespace TechDevs.Accounts
         public string EmailAddress { get; set; }
         public bool AgreedToTerms { get; set; }
         public bool ValidatedEmail { get; set; }
+        public string ProviderName { get; set; }
     }
 
     [BsonIgnoreExtraElements]
     public class EmployeeProfile : AuthUserProfile
-    {        
+    {
+        public string Status {get;set;}
         public EmployeeData EmployeeData { get; set; }
         public EmployeeProfile(Employee emp)
         {
@@ -39,6 +41,11 @@ namespace TechDevs.Accounts
             AgreedToTerms = emp.AgreedToTerms;
             ValidatedEmail = emp.ValidatedEmail;
             EmployeeData = emp.EmployeeData;
+            ProviderName = emp.ProviderName;
+
+            if (emp.Disabled == false) Status = "Active";
+            else if (emp.Invitation == null) Status = "Disabled";
+            else Status = $"Invited - {emp?.Invitation?.Status.Value}";
         }
     }
 }

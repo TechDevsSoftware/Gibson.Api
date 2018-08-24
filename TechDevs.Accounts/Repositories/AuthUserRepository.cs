@@ -143,6 +143,17 @@ namespace TechDevs.Accounts.Repositories
             throw new Exception("Password could not be updated");
         }
 
+        public async Task<TAuthUser> SetDisabled(string userId, bool disabled, string clientId)
+        {
+            UpdateDefinition<TAuthUser> update = Builders<TAuthUser>
+           .Update
+           .Set("Disabled", disabled);
+
+            var result = await _users.UpdateOneAsync(FilterById(userId, clientId), update);
+            if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(userId, clientId);
+            throw new Exception("Disabled flag could not be updated");
+        }
+
         public async Task<bool> UserExists(string email, string clientId)
         {
             var results = await FindByEmail(email, clientId);
@@ -166,12 +177,39 @@ namespace TechDevs.Accounts.Repositories
             throw new Exception("User could not be updated");
         }
 
+        #region Invitations
+        
+        public async Task<TAuthUser> SetInvitation(string userId, AuthUserInvitation invite, string clientId)
+        {
+            var user = await FindById(userId, clientId);
+            if (user == null) throw new Exception("User could not be found");
+
+            var update = Builders<TAuthUser>
+                .Update
+                .Set("Invitation", invite);
+            var result = await _users.UpdateOneAsync(FilterById(user.Id, clientId), update);
+            return await FindById(userId, clientId);
+        }
+
+        #endregion
+
+
+
         private BsonDocument FilterByEmail(string email, string clientId)
         {
             return new BsonDocument
             {
                 { "ClientId", new BsonDocument { { "_id", clientId }}},
                 { "EmailAddress", email }
+            };
+        }
+
+        private BsonDocument FilterById(string id, string clientId)
+        {
+            return new BsonDocument
+            {
+                { "ClientId", new BsonDocument { { "_id", clientId }}},
+                { "_id", id }
             };
         }
     }

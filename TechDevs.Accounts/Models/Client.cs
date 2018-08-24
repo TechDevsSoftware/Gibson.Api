@@ -17,8 +17,8 @@ namespace TechDevs.Accounts
         public string Name { get; set; }
         public string SiteUrl { get; set; }
         public string ClientApiKey { get; set; }
-        public List<Employee> Employees { get; set; }
-        public List<Customer> Customers { get; set; }
+        public List<EmployeeProfile> Employees { get; set; }
+        public List<CustomerProfile> Customers { get; set; }
         public ClientTheme ClientTheme { get; set; }
     }
 
@@ -32,4 +32,5 @@ namespace TechDevs.Accounts
         public string LogoPath { get; set; }
         public byte[] LogoData { get; set; }
     }
+
 }
