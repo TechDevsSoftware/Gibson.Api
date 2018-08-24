@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
+using TechDevs.Accounts.Middleware;
 using TechDevs.Accounts.Repositories;
 using TechDevs.Accounts.Services;
 
@@ -112,11 +113,12 @@ namespace TechDevs.Accounts.WebService
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+               // app.UseDeveloperExceptionPage();
             }
 
             app.UseAuthentication();
 
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
