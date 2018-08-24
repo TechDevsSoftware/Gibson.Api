@@ -6,9 +6,10 @@ namespace TechDevs.Accounts.Services
 {
     public interface IClientService
     {
-        Task<IClient> CreateClient(IClient client);
-        Task<IClient> DeleteClient(string clientId);
-        Task<IClient> GetClient(string clientId);
-        Task<IClient> UpdateClient(string propertyPath, List<Type> data, string clientId);
+        Task<List<Client>> GetClients();
+        Task<Client> CreateClient(ClientRegistration client);
+        Task<Client> DeleteClient(string clientId);
+        Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers = false);
+        Task<Client> UpdateClient(string propertyPath, List<Type> data, string clientId);
     }
 }

@@ -1,17 +1,6 @@
 ﻿namespace TechDevs.Accounts
 {
-    public interface IAuthUserRegistration
-    {
-        string FirstName { get; set; }
-        string LastName { get; set; }
-        string EmailAddress { get; set; }
-        bool AggreedToTerms { get; set; }
-        string ProviderName { get; set; }
-        string ProviderId { get; set; }
-        string Password { get; set; }
-    }
-
-    public class AuthUserRegistration : IAuthUserRegistration
+    public class AuthUserRegistration
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

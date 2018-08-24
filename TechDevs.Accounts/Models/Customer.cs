@@ -6,9 +6,10 @@ namespace TechDevs.Accounts
 {
 
     [BsonIgnoreExtraElements]
-    public class Customer : AuthUser, ICustomer
+    [BsonDiscriminator("Customer", Required = true)]
+    public class Customer : AuthUser
     {
-        public ICustomerData CustomerData { get; set; }
+        public CustomerData CustomerData { get; set; }
 
         public Customer()
         {
@@ -17,7 +18,7 @@ namespace TechDevs.Accounts
     }
 
     [BsonIgnoreExtraElements]
-    public class CustomerData : ICustomerData
+    public class CustomerData
     {
         public List<CustomerVehicle> MyVehicles { get; set; }
         public List<VehicleListing> SavedVehicles { get; set; }
@@ -61,17 +62,10 @@ namespace TechDevs.Accounts
     }
 
     [BsonIgnoreExtraElements]
-    public class CustomerProfile
+    public class CustomerProfile : AuthUserProfile
     {
-        public string Username { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string EmailAddress { get; set; }
-        public bool AgreedToTerms { get; set; }
-        public bool ValidatedEmail { get; set; }
-        public ICustomerData CustomerData { get; set; }
-
-        public CustomerProfile(ICustomer user)
+        public CustomerData CustomerData { get; set; }
+        public CustomerProfile(Customer user)
         {
             Username = user.Username;
             FirstName = user.FirstName;

@@ -36,7 +36,7 @@ namespace TechDevs.Accounts
             return await BuildPayload(builder, user, requestedClaims);
         }
 
-        private Task<JwtBuilder> BuildPayload(JwtBuilder builder, IAuthUser user, string requestedClaims)
+        private Task<JwtBuilder> BuildPayload(JwtBuilder builder, AuthUser user, string requestedClaims)
         {
             if (requestedClaims.Contains("profile"))
             {

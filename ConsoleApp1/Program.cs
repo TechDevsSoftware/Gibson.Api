@@ -12,6 +12,11 @@ namespace ConsoleApp1
 {
     class Program
     {
+        public class DBRef
+        {
+            public string Id { get; set; }
+        }
+
         static void Main(string[] args)
         {
             var custRepo = new CustomerRepo("mongodb://apiuser:Password2@ds020218.mlab.com:20218/accounts", "accounts");
@@ -43,7 +48,7 @@ namespace ConsoleApp1
         public string Name { get; set; }
         public string BusinessTitle { get; set; }
         //ClientTheme Theme { get; set; }
-        public List<MongoDBRef> Customers { get; set; }
+        public List<DBRef> Customers { get; set; }
         public List<MongoDBRef> Employees { get; set; }
     }
 

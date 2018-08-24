@@ -14,9 +14,20 @@ namespace TechDevs.Accounts.Services
             _clientRepo = clientRepo;
         }
 
-        public async Task<IClient> GetClient(string clientId) => await _clientRepo.GetClient(clientId);
-        public async Task<IClient> CreateClient(IClient client) => await _clientRepo.CreateClient(client);
-        public async Task<IClient> DeleteClient(string clientId) => await _clientRepo.DeleteClient(clientId);
-        public async Task<IClient> UpdateClient(string propertyPath, List<Type> data, string clientId) => await _clientRepo.UpdateClient(propertyPath, data, clientId);
+        public async Task<List<Client>> GetClients() => await _clientRepo.GetClients();
+        public async Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers) => await _clientRepo.GetClient(clientId, includeRelatedAuthUsers);
+        public async Task<Client> CreateClient(ClientRegistration reg)
+        {
+            var client = new Client
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = reg.Name,
+                SiteUrl = reg.SiteUrl,
+                ClientApiKey = Guid.NewGuid().ToString()
+            };
+            return await _clientRepo.CreateClient(client);
+        }
+        public async Task<Client> DeleteClient(string clientId) => await _clientRepo.DeleteClient(clientId);
+        public async Task<Client> UpdateClient(string propertyPath, List<Type> data, string clientId) => await _clientRepo.UpdateClient(propertyPath, data, clientId);
     }
 }
