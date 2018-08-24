@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -7,31 +8,38 @@ using System.Threading.Tasks;
 
 namespace TechDevs.Accounts.Repositories
 {
-    public class CustomerRepository : AuthUserRepository<Customer>
+    public class CustomerRepository : AuthUserBaseRepository<Customer>
     {
         public CustomerRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser) : base(dbSettings, normaliser)
         {
         }
     }
 
-    public class EmployeeRepository : AuthUserRepository<Employee>
+    public class EmployeeRepository : AuthUserBaseRepository<Employee>
     {
         public EmployeeRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser) : base(dbSettings, normaliser)
         {
         }
     }
 
-    public abstract class AuthUserRepository<TAuthUser> : IAuthUserRepository<TAuthUser> where TAuthUser : IAuthUser
+    public class UserRepository : AuthUserBaseRepository<AuthUser>
+    {
+        public UserRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser) : base(dbSettings, normaliser)
+        {
+        }
+    }
+
+    public abstract class AuthUserBaseRepository<TAuthUser> : IAuthUserRepository<TAuthUser> where TAuthUser : AuthUser
     {
         readonly IMongoDatabase _database;
-        readonly IMongoCollection<TAuthUser> __users;
+        readonly IMongoCollection<TAuthUser> _users;
         readonly IStringNormaliser _normaliser;
 
-        public AuthUserRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser)
+        public AuthUserBaseRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser)
         {
             var client = new MongoClient(dbSettings.Value.ConnectionString);
             if (client != null) _database = client.GetDatabase(dbSettings.Value.Database);
-            if (_database != null) __users = _database.GetCollection<TAuthUser>("AuthUsers");
+            if (_database != null) _users = _database.GetCollection<TAuthUser>("AuthUsers");
             _normaliser = normaliser;
         }
 
@@ -41,38 +49,52 @@ namespace TechDevs.Accounts.Repositories
             user.Username = user.EmailAddress;
             user.NormalisedUsername = _normaliser.Normalise(user.EmailAddress);
 
-            await __users.InsertOneAsync(user);
+            await _users.InsertOneAsync(user);
             var result = await FindByEmail(user.EmailAddress, clientId);
             return result;
         }
 
         public async Task<bool> Delete(TAuthUser user, string clientId)
         {
-            DeleteResult result = await __users.DeleteOneAsync(FilterByEmail(user.EmailAddress, clientId));
+            DeleteResult result = await _users.DeleteOneAsync(FilterByEmail(user.EmailAddress, clientId));
             return (result.IsAcknowledged && result.DeletedCount > 0);
         }
 
         public async Task<TAuthUser> FindById(string id, string clientId)
         {
-            var result = await __users.Find(FilterById(id, clientId)).FirstOrDefaultAsync();
+            var filter = new BsonDocument
+            {
+                { "ClientId", new BsonDocument { { "_id", clientId }}},
+                { "_id", id}
+            };
+
+            var result = await _users.OfType<TAuthUser>().Find(filter).FirstOrDefaultAsync();
             return result;
         }
 
         public async Task<TAuthUser> FindByEmail(string email, string clientId)
         {
-            var result = await __users.Find(FilterByEmail(email, clientId)).FirstOrDefaultAsync();
-            return result;
+            var result = await _users.OfType<TAuthUser>().FindAsync(FilterByEmail(email, clientId));
+            return await result.FirstOrDefaultAsync();
         }
 
         public async Task<TAuthUser> FindByProvider(string provider, string providerId, string clientId)
         {
-            var result = await __users.Find(FilterByProvider(provider, providerId)).FirstOrDefaultAsync();
+            var filter = new BsonDocument
+            {
+                { "ClientId", new BsonDocument { { "_id", clientId }}},
+                { "ProviderName", provider},
+                { "ProviderId", providerId},
+            };
+
+            var result = await _users.OfType<TAuthUser>().Find(filter).FirstOrDefaultAsync();
             return result;
         }
 
         public async Task<List<TAuthUser>> FindAll(string clientId)
         {
-            var results = await __users.Find(_ => true).ToListAsync();
+            var filter = new BsonDocument { { "ClientId", new BsonDocument { { "_id", clientId } } } };
+            var results = await _users.OfType<TAuthUser>().Find(filter).ToListAsync();
             return results;
         }
 
@@ -83,7 +105,7 @@ namespace TechDevs.Accounts.Repositories
                 .Set("EmailAddress", email)
                 .Set("NormalisedEmail", _normaliser.Normalise(email));
 
-            var result = await __users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
             if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindByEmail(email, clientId);
             throw new Exception("User email could not be updated");
         }
@@ -95,7 +117,7 @@ namespace TechDevs.Accounts.Repositories
                .Set("FirstName", firstName)
                .Set("LastName", lastName);
 
-            var result = await __users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
             return await FindByEmail(user.EmailAddress, clientId);
         }
 
@@ -106,7 +128,7 @@ namespace TechDevs.Accounts.Repositories
               .Set("Username", username)
               .Set("NormalisedUsername", _normaliser.Normalise(username));
 
-            var result = await __users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
             return await FindByEmail(user.EmailAddress, clientId);
         }
 
@@ -116,7 +138,7 @@ namespace TechDevs.Accounts.Repositories
                 .Update
                 .Set("PasswordHash", passwordHash);
 
-            var result = await __users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
+            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
             if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindByEmail(user.EmailAddress, clientId);
             throw new Exception("Password could not be updated");
         }
@@ -129,29 +151,28 @@ namespace TechDevs.Accounts.Repositories
 
         public async Task<TAuthUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id, string clientId)
         {
+            var filter = new BsonDocument
+            {
+                { "ClientId", new BsonDocument { { "_id", clientId }}},
+                { "_id", id}
+            };
+
             UpdateDefinition<TAuthUser> update = Builders<TAuthUser>
                 .Update
                 .Set(propertyPath, data);
 
-            var result = await __users.UpdateOneAsync(FilterById(id, clientId), update);
+            var result = await _users.UpdateOneAsync(filter, update);
             if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(id, clientId);
             throw new Exception("User could not be updated");
         }
-        
-        private FilterDefinition<TAuthUser> FilterByProvider(string provider, string providerId) => Builders<TAuthUser>.Filter.And(
-            Builders<TAuthUser>.Filter.Eq(x => x.ProviderId, providerId),
-            Builders<TAuthUser>.Filter.Eq(x => x.ProviderName, provider)
-        );
 
-        private FilterDefinition<TAuthUser> FilterById(string id, string clientId) => Builders<TAuthUser>.Filter.And(
-            Builders<TAuthUser>.Filter.Eq(x => x.Id, id),
-            Builders<TAuthUser>.Filter.Eq(x => x.ClientId.Id, clientId)
-        );
-
-        private FilterDefinition<TAuthUser> FilterByEmail(string email, string clientId) => Builders<TAuthUser>.Filter.And(
-            Builders<TAuthUser>.Filter.Eq(x => x.NormalisedEmail, email),
-            Builders<TAuthUser>.Filter.Eq(x => x.ClientId.Id, clientId)
-        );
-
+        private BsonDocument FilterByEmail(string email, string clientId)
+        {
+            return new BsonDocument
+            {
+                { "ClientId", new BsonDocument { { "_id", clientId }}},
+                { "EmailAddress", email }
+            };
+        }
     }
 }

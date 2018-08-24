@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Accounts.Services;
 
@@ -20,14 +16,21 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpGet]
-        [Route("{clientId}")]
-        public async Task<IActionResult> GetClient([FromRoute] string clientId)
+        [Route("")]
+        public async Task<IActionResult> GetClients()
         {
-            return new OkObjectResult(await _clientService.GetClient(clientId));
+            return new OkObjectResult(await _clientService.GetClients());
+        }
+
+        [HttpGet]
+        [Route("{clientId}")]
+        public async Task<IActionResult> GetClient([FromRoute] string clientId, [FromQuery] bool includeRelatedAuthUsers = false)
+        {
+            return new OkObjectResult(await _clientService.GetClient(clientId, includeRelatedAuthUsers));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateClient([FromBody] IClient client)
+        public async Task<IActionResult> CreateClient([FromBody] ClientRegistration client)
         {
             return new OkObjectResult(await _clientService.CreateClient(client));
         }
@@ -45,6 +48,5 @@ namespace TechDevs.Accounts.WebService.Controllers
         {
             return new OkObjectResult(await _clientService.DeleteClient(clientId));
         }
-
     }
 }

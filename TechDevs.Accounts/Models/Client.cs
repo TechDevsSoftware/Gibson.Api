@@ -3,16 +3,23 @@ using System.Collections.Generic;
 
 namespace TechDevs.Accounts
 {
+    public class ClientRegistration
+    {
+        public string Name { get; set; }
+        public string SiteUrl { get; set; }
+    }
+
     [BsonDiscriminator("Client")]
     [BsonIgnoreExtraElements]
     public class Client
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string BusinessTitle { get; set; }
-        public List<IEmployee> Employees { get; set; }
-        public List<ICustomer> Customers { get; set; }
-        public ClientTheme CustomerPortalTheme { get; set; }
+        public string SiteUrl { get; set; }
+        public string ClientApiKey { get; set; }
+        public List<Employee> Employees { get; set; }
+        public List<Customer> Customers { get; set; }
+        public ClientTheme ClientTheme { get; set; }
     }
 
     public class ClientTheme

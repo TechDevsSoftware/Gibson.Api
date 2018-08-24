@@ -73,11 +73,13 @@ namespace TechDevs.Accounts.WebService
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
             services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
+            services.AddTransient<IAuthUserRepository<AuthUser>, UserRepository>();
 
             // Services
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IAuthUserService<Customer>, CustomerService>();
             services.AddTransient<IAuthUserService<Employee>, EmployeeService>();
+            services.AddTransient<IAuthUserService<AuthUser>, AuthUserService>();
             services.AddTransient<IAuthTokenService, AuthTokenService>();
 
             // Utils

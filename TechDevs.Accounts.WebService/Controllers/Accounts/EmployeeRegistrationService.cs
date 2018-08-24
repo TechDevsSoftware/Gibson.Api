@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechDevs.Accounts.WebService.Controllers
 {
     [Produces("application/json")]
-    [Route("api/account/register")]
-    public class CustomerRegistrationService : Controller
+    [Route("api/v1/employee/account/register")]
+    public class EmployeeRegistrationService : Controller
     {
-        private readonly IAuthUserService<Customer> _userService;
+        private readonly IAuthUserService<Employee> _userService;
 
-        public CustomerRegistrationService(IAuthUserService<Customer> userService)
+        public EmployeeRegistrationService(IAuthUserService<Employee> userService)
         {
             _userService = userService;
         }
@@ -23,13 +20,13 @@ namespace TechDevs.Accounts.WebService.Controllers
         {
             try
             {
-                if (registration == null) return new BadRequestObjectResult("Invalid registration");
-                var result = await _userService.RegisterUser(new Customer(), registration, clientId);
+                if (registration == null) return new BadRequestObjectResult("Invalid Registration");
+                var result = await _userService.RegisterUser(new Employee(), registration, clientId);
                 return new OkObjectResult(result);
             }
             catch (UserRegistrationException ex)
             {
-                return new BadRequestObjectResult("Validaiton Errors: " + Environment.NewLine + ex.Message);
+                return new BadRequestObjectResult("Validation Errors: " + Environment.NewLine + ex.Message);
             }
             catch (Exception ex)
             {

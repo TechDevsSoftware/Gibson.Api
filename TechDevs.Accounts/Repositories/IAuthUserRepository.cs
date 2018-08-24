@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace TechDevs.Accounts.Repositories
 {
-    public interface IAuthUserRepository<TAuthUser> where TAuthUser : IAuthUser
+    public interface IAuthUserRepository<TAuthUser> where TAuthUser : AuthUser
     {
         Task<bool> Delete(TAuthUser user, string clientId);
         Task<TAuthUser> FindByEmail(string email, string clientId);

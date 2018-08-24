@@ -21,10 +21,22 @@ namespace TechDevs.Accounts
         }
     }
 
-    public abstract class AuthUserService<TAuthUser> : IAuthUserService<TAuthUser> where TAuthUser : IAuthUser, new()
+    public class AuthUserService : AuthUserService<AuthUser>
     {
-        readonly IAuthUserRepository<TAuthUser> _userRepo;
-        readonly IPasswordHasher _passwordHasher;
+        public AuthUserService(IAuthUserRepository<AuthUser> userRepo, IPasswordHasher passwordHasher) : base(userRepo, passwordHasher)
+        {
+        }
+
+        public override Task<AuthUser> RegisterUser(AuthUser newUser, AuthUserRegistration userRegistration, string clientId)
+        {
+            throw new Exception("Must be registered using a Customer or Employee service. Not the base AuthUser service");
+        }
+    }
+
+    public abstract class AuthUserService<TAuthUser> : IAuthUserService<TAuthUser> where TAuthUser : AuthUser, new()
+    {
+        private readonly IAuthUserRepository<TAuthUser> _userRepo;
+        private readonly IPasswordHasher _passwordHasher;
 
         public AuthUserService(IAuthUserRepository<TAuthUser> userRepo, IPasswordHasher passwordHasher)
         {
@@ -32,18 +44,20 @@ namespace TechDevs.Accounts
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<List<TAuthUser>> GetAllUsers(string clientId)
+        public virtual async Task<List<TAuthUser>> GetAllUsers(string clientId)
         {
             var result = await _userRepo.FindAll(clientId);
             return result;
         }
 
-        public async Task<TAuthUser> RegisterUser(TAuthUser newUser, IAuthUserRegistration userRegistration, string clientId)
+        public virtual async Task<TAuthUser> RegisterUser(TAuthUser newUser, AuthUserRegistration userRegistration, string clientId)
         {
             await ValidateCanRegister(userRegistration, clientId);
 
             var newAuthUser = new TAuthUser
             {
+                Id = Guid.NewGuid().ToString(),
+                ClientId = new DBRef { Id = clientId },
                 FirstName = userRegistration.FirstName,
                 LastName = userRegistration.LastName,
                 EmailAddress = userRegistration.EmailAddress,
@@ -57,7 +71,7 @@ namespace TechDevs.Accounts
             return resultAfterPassword;
         }
 
-        public async Task ValidateCanRegister(IAuthUserRegistration userRegistration, string clientId)
+        public virtual async Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientId)
         {
             var validationErrors = new StringBuilder();
 
@@ -83,7 +97,7 @@ namespace TechDevs.Accounts
                 throw new UserRegistrationException(userRegistration, validationErrors.ToString());
         }
 
-        public async Task<TAuthUser> UpdateEmail(string currentEmail, string newEmail, string clientId)
+        public virtual async Task<TAuthUser> UpdateEmail(string currentEmail, string newEmail, string clientId)
         {
             // Get user
             var user = await _userRepo.FindByEmail(currentEmail, clientId);
@@ -100,26 +114,26 @@ namespace TechDevs.Accounts
             return updatedUser;
         }
 
-        public async Task<bool> Delete(string email, string clientId)
+        public virtual async Task<bool> Delete(string email, string clientId)
         {
             var user = await _userRepo.FindByEmail(email, clientId);
             if (user == null) throw new Exception("User not found");
             return await _userRepo.Delete(user, clientId);
         }
 
-        public async Task<TAuthUser> GetByEmail(string email, string clientId)
+        public virtual async Task<TAuthUser> GetByEmail(string email, string clientId)
         {
             var user = await _userRepo.FindByEmail(email, clientId);
             return user;
         }
 
-        public async Task<TAuthUser> GetByProvider(string provider, string providerId, string clientId)
+        public virtual async Task<TAuthUser> GetByProvider(string provider, string providerId, string clientId)
         {
             var user = await _userRepo.FindByProvider(provider, providerId, clientId);
             return user;
         }
 
-        public async Task<TAuthUser> SetPassword(string email, string password, string clientId)
+        public virtual async Task<TAuthUser> SetPassword(string email, string password, string clientId)
         {
             var user = await _userRepo.FindByEmail(email, clientId);
             if (user == null) throw new Exception("User not found");
@@ -128,17 +142,17 @@ namespace TechDevs.Accounts
             return result;
         }
 
-        public Task RequestResetPassword(string email)
+        public virtual Task RequestResetPassword(string email)
         {
             throw new NotImplementedException();
         }
 
-        public Task ResetPassword(string email, string resetPasswordToken, string clientId)
+        public virtual Task ResetPassword(string email, string resetPasswordToken, string clientId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> ValidatePassword(string email, string password, string clientId)
+        public virtual async Task<bool> ValidatePassword(string email, string password, string clientId)
         {
             try
             {
@@ -153,7 +167,7 @@ namespace TechDevs.Accounts
             }
         }
 
-        public async Task<TAuthUser> GetById(string id, string clientId)
+        public virtual async Task<TAuthUser> GetById(string id, string clientId)
         {
             var user = await _userRepo.FindById(id, clientId);
             return user;
