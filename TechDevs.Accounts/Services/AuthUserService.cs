@@ -229,7 +229,7 @@ namespace TechDevs.Accounts
 
             return newUser;
         } 
-
+        
         public virtual async Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientId)
         {
             // Get the user
@@ -261,7 +261,7 @@ namespace TechDevs.Accounts
             return result;
 
         }
-
+        
         #endregion
     }
 

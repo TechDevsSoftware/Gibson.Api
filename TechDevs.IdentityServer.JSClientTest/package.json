@@ -1,9 +1,0 @@
-{
-  "scripts": {
-    "serve": "http-server ./ -p 5003" 
-  },
-  "dependencies": {
-    "http-server": "^0.11.1",
-    "oidc-client": "^1.5.2"
-  }
-}

@@ -100,6 +100,11 @@ namespace TechDevs.Accounts.WebService
                 options.Database = Configuration.GetSection("MongoConnection:Database").Value;
             });
 
+            //services.Configure<EmailSMTPSettings>(options =>
+            //{
+            //    options.SMTPServer = Configuration.GetSection("EmailSMTPSettings:SMTPServer").Value;
+            //    options.SMTPPort = Configuration.GetSection("EmailSMTPSettings:SMTPPort").Value;
+            //});
             services.AddMvc();
 
             services.AddSwaggerGen(c =>

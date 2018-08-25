@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts.WebServic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts", "TechDevs.Accounts\TechDevs.Accounts.csproj", "{283D9A06-AAE1-44DE-A32C-D31F3AADA454}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounts", "Accounts", "{E2B37836-26E3-470A-9EDF-5D04AF9253FB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{E2B37836-26E3-470A-9EDF-5D04AF9253FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Mail", "TechDevs.Mail\TechDevs.Mail.csproj", "{AD090948-AAD5-4A75-9159-986520679193}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,13 +25,17 @@ Global
 		{283D9A06-AAE1-44DE-A32C-D31F3AADA454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{283D9A06-AAE1-44DE-A32C-D31F3AADA454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{283D9A06-AAE1-44DE-A32C-D31F3AADA454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD090948-AAD5-4A75-9159-986520679193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD090948-AAD5-4A75-9159-986520679193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD090948-AAD5-4A75-9159-986520679193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD090948-AAD5-4A75-9159-986520679193}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65} = {E2B37836-26E3-470A-9EDF-5D04AF9253FB}
 		{283D9A06-AAE1-44DE-A32C-D31F3AADA454} = {E2B37836-26E3-470A-9EDF-5D04AF9253FB}
+		{AD090948-AAD5-4A75-9159-986520679193} = {E2B37836-26E3-470A-9EDF-5D04AF9253FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B6649377-4FA8-4BC3-8D58-B6863080EDE7}
