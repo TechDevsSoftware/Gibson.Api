@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TechDevs.Accounts.Models;
 using TechDevs.Accounts.Repositories;
 
 namespace TechDevs.Accounts
@@ -228,6 +229,38 @@ namespace TechDevs.Accounts
 
             return newUser;
         } 
+
+        public virtual async Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientId)
+        {
+            // Get the user
+            var user = await GetByEmail(req.Email, clientId);
+            if (user == null) throw new Exception("User not found");
+
+            // Check that the invitaiton key matches the database
+            if (user?.Invitation?.InvitationKey != req.InviteKey) throw new Exception("Invalid invite token provided");
+
+            // Check that the invitation is still valid
+            if (user?.Invitation?.InviteExpiry < DateTime.Now) throw new Exception("Invitation has expired. Contact your admininstrator to send a new invitation");
+
+            // Set the password
+            user = await SetPassword(user.NormalisedEmail, req.Password, clientId);
+
+            // Activate the account
+            user = await EnableAccount(user.EmailAddress, clientId);
+
+            // Set Invtation Status
+            user = await _userRepo.SetInvitationStatus(user.Id, AuthUserInvitationStatus.Completed, clientId);
+
+            return user;
+        }
+
+        public virtual async Task<TAuthUser> GetUserByInviteKey(string inviteKey, string clientId)
+        {
+            var result = await _userRepo.GetUserByInvitationKey(inviteKey, clientId);
+            if (result == null) throw new Exception("User could not be found");
+            return result;
+
+        }
 
         #endregion
     }

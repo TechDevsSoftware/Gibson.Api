@@ -60,7 +60,7 @@ namespace TechDevs.Accounts.Repositories
             return (result.IsAcknowledged && result.DeletedCount > 0);
         }
 
-        public async Task<TAuthUser> FindById(string id, string clientId)
+        public async Task<TAuthUser>FindById(string id, string clientId)
         {
             var filter = new BsonDocument
             {
@@ -74,6 +74,7 @@ namespace TechDevs.Accounts.Repositories
 
         public async Task<TAuthUser> FindByEmail(string email, string clientId)
         {
+            var json = FilterByEmail(email, clientId);
             var result = await _users.OfType<TAuthUser>().FindAsync(FilterByEmail(email, clientId));
             return await result.FirstOrDefaultAsync();
         }
@@ -191,16 +192,40 @@ namespace TechDevs.Accounts.Repositories
             return await FindById(userId, clientId);
         }
 
+        public async Task<TAuthUser> GetUserByInvitationKey(string invitationKey, string clientId)
+        {
+            var filter = new BsonDocument
+            {
+                { "ClientId._id",  clientId},
+                { "Invitation.InvitationKey", invitationKey}
+            };
+
+            var json = filter.ToJson();
+
+            var result = await _users.OfType<TAuthUser>().Find(filter).FirstOrDefaultAsync();
+            return result;
+        }
+
+        public async Task<TAuthUser> SetInvitationStatus(string userId, AuthUserInvitationStatus status, string clientId)
+        {
+            UpdateDefinition<TAuthUser> update = Builders<TAuthUser>
+               .Update
+               .Set("Invitation.InvitationStatus", status);
+
+            var result = await _users.UpdateOneAsync(FilterById(userId, clientId), update);
+            if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(userId, clientId);
+            throw new Exception("Invitation status could not be updated");
+
+        }
+
         #endregion
-
-
-
+               
         private BsonDocument FilterByEmail(string email, string clientId)
         {
+            var normEmail = _normaliser.Normalise(email);
             return new BsonDocument
             {
-                { "ClientId", new BsonDocument { { "_id", clientId }}},
-                { "EmailAddress", email }
+                { "ClientId._id",clientId }, { "NormalisedEmail", normEmail}
             };
         }
 
@@ -212,5 +237,7 @@ namespace TechDevs.Accounts.Repositories
                 { "_id", id }
             };
         }
+
+
     }
 }

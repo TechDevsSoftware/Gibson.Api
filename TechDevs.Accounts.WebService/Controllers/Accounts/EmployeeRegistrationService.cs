@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TechDevs.Accounts.Models;
 
 namespace TechDevs.Accounts.WebService.Controllers
 {
@@ -23,7 +24,7 @@ namespace TechDevs.Accounts.WebService.Controllers
             {
                 if (registration == null) return new BadRequestObjectResult("Invalid Registration");
                 var result = await _userService.RegisterUser(registration, clientId);
-                return new OkObjectResult(result);
+                return new OkObjectResult(new EmployeeProfile(result));
             }
             catch (UserRegistrationException ex)
             {
@@ -44,7 +45,33 @@ namespace TechDevs.Accounts.WebService.Controllers
                 if (clientId == null) return new BadRequestObjectResult("Invalid ClientId");
                 if (invite == null) return new BadRequestObjectResult("Invalid invitation");
                 var result = await _userService.SubmitInvitation(invite, clientId);
-                return new OkObjectResult(result);
+                return new OkObjectResult(new EmployeeProfile(result));
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.Message);
+            }
+        }
+
+        [HttpGet]   
+        [Route("invite/profile/{inviteKey}")]
+        public async Task<IActionResult> GetUserProfileFromInviteKey(string inviteKey, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
+        {
+            var user = await _userService.GetUserByInviteKey(inviteKey, clientId);
+            if (user == null) return new BadRequestObjectResult("User not found");
+            return new OkObjectResult(new EmployeeProfile(user));
+        }
+
+
+        [HttpPost]
+        [Route("invite/complete")]
+        public async Task<IActionResult> CompleteInviteRegistration([FromBody] AuthUserInvitationAcceptRequest req, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
+        {
+            try
+            {
+                if (clientId == null) return new BadRequestObjectResult("Invalid ClientId");
+                var result = await _userService.AcceptInvitation(req, clientId);
+                return new OkObjectResult(new EmployeeProfile(result));
             }
             catch (Exception ex)
             {
@@ -52,7 +79,4 @@ namespace TechDevs.Accounts.WebService.Controllers
             }
         }
     }
-
-
-
 }

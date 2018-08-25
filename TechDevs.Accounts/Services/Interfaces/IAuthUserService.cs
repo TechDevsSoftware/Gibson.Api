@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TechDevs.Accounts.Models;
 
 namespace TechDevs.Accounts
 {
@@ -18,5 +19,7 @@ namespace TechDevs.Accounts
         Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientId);
         Task<bool> ValidatePassword(string email, string password, string clientId);
         Task<TAuthUser> SubmitInvitation(AuthUserInvitationRequest invite, string clientId);
+        Task<TAuthUser> GetUserByInviteKey(string inviteKey, string clientId);
+        Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientId);
     }
 }

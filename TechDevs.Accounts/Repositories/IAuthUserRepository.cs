@@ -19,5 +19,7 @@ namespace TechDevs.Accounts.Repositories
         Task<bool> UserExists(string email, string clientId);
         Task<TAuthUser> SetInvitation(string userId, AuthUserInvitation invite, string clientId);
         Task<TAuthUser> SetDisabled(string userId, bool disabled, string clientId);
+        Task<TAuthUser> GetUserByInvitationKey(string invitationKey, string clientId);
+        Task<TAuthUser> SetInvitationStatus(string userId, AuthUserInvitationStatus status, string clientId);
     }
 }
