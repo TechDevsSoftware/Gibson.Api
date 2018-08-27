@@ -78,5 +78,14 @@ namespace TechDevs.Accounts.WebService.Controllers
                 return new BadRequestObjectResult(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("invite/resend/{userId}")]
+        public async Task<IActionResult> ResendInvitation(string email, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
+        {
+            await _userService.SendEmailInvitation(email, clientId);
+            return new OkResult();
+        }
+
     }
 }

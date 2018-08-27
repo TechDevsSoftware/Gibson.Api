@@ -21,5 +21,6 @@ namespace TechDevs.Accounts.Repositories
         Task<TAuthUser> SetDisabled(string userId, bool disabled, string clientId);
         Task<TAuthUser> GetUserByInvitationKey(string invitationKey, string clientId);
         Task<TAuthUser> SetInvitationStatus(string userId, AuthUserInvitationStatus status, string clientId);
+        Task<TAuthUser> SetValidatedEmail(string userId, bool validated, string clientId);
     }
 }

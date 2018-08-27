@@ -22,7 +22,7 @@ namespace TechDevs.Accounts.Repositories
         }
     }
 
-    public class UserRepository : AuthUserBaseRepository<AuthUser>
+    public abstract class UserRepository : AuthUserBaseRepository<AuthUser>
     {
         public UserRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser) : base(dbSettings, normaliser)
         {
@@ -62,13 +62,9 @@ namespace TechDevs.Accounts.Repositories
 
         public async Task<TAuthUser>FindById(string id, string clientId)
         {
-            var filter = new BsonDocument
-            {
-                { "ClientId", new BsonDocument { { "_id", clientId }}},
-                { "_id", id}
-            };
-
-            var result = await _users.OfType<TAuthUser>().Find(filter).FirstOrDefaultAsync();
+            var json = FilterById(id, clientId).ToJson();
+            var results = await _users.OfType<TAuthUser>().FindAsync(FilterById(id, clientId));
+            var result = await results.FirstOrDefaultAsync();
             return result;
         }
 
@@ -155,6 +151,18 @@ namespace TechDevs.Accounts.Repositories
             throw new Exception("Disabled flag could not be updated");
         }
 
+        public async Task<TAuthUser> SetValidatedEmail(string userId, bool validated, string clientId)
+        {
+            UpdateDefinition<TAuthUser> update = Builders<TAuthUser>
+           .Update
+           .Set("ValidatedEmail", validated);
+
+            var result = await _users.UpdateOneAsync(FilterById(userId, clientId), update);
+            if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(userId, clientId);
+            throw new Exception("ValidatedEmail flag could not be updated");
+        }
+
+
         public async Task<bool> UserExists(string email, string clientId)
         {
             var results = await FindByEmail(email, clientId);
@@ -233,8 +241,7 @@ namespace TechDevs.Accounts.Repositories
         {
             return new BsonDocument
             {
-                { "ClientId", new BsonDocument { { "_id", clientId }}},
-                { "_id", id }
+                { "ClientId._id",clientId }, { "_id", id}
             };
         }
 

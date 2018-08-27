@@ -8,22 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TechDevs.Accounts.WebService.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/auth")]
-    public class AuthController : Controller
+    public abstract class AuthController<TAuthUser> : Controller where TAuthUser : AuthUser, new()
     {
-        private readonly IAuthTokenService _tokenService;
-        private readonly IAuthUserService<AuthUser> _accountService;
-
-        public AuthController(IAuthTokenService tokenService, IAuthUserService<AuthUser> accountService)
+        private readonly IAuthTokenService<TAuthUser> _tokenService;
+        private readonly IAuthUserService<TAuthUser> _accountService;
+        
+        protected AuthController(IAuthTokenService<TAuthUser> tokenService, IAuthUserService<TAuthUser> accountService)
         {
-            _accountService = accountService;
             _tokenService = tokenService;
+            _accountService = accountService;
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest req, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
+        public async Task<IActionResult> EmployeeLogin([FromBody] LoginRequest req, [FromHeader(Name = "TechDevs-ClientId")] string clientId)
         {
             switch (req.Provider)
             {
@@ -54,14 +52,34 @@ namespace TechDevs.Accounts.WebService.Controllers
                 var token = await _tokenService.CreateToken(user.Id, "profile", clientId);
                 return new OkObjectResult(token);
             }
-            catch (InvalidJwtException ex)
+            catch (InvalidJwtException)
             {
                 return new UnauthorizedResult();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new UnauthorizedResult();
             }
+        }
+    }
+
+    [Produces("application/json")]
+    [Route("api/v1/employee/auth")]
+    public class EmployeAuthController : AuthController<Employee>
+    {
+        public EmployeAuthController(IAuthTokenService<Employee> tokenService, IAuthUserService<Employee> accountService) 
+            : base(tokenService, accountService)
+        {
+        }
+    }
+
+    [Produces("application/json")]
+    [Route("api/v1/customer/auth")]
+    public class CustomerAuthController : AuthController<Customer>
+    {
+        public CustomerAuthController(IAuthTokenService<Customer> tokenService, IAuthUserService<Customer> accountService)
+            : base(tokenService, accountService)
+        {
         }
     }
 }

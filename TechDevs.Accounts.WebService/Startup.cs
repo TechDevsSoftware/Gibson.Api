@@ -2,14 +2,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 using System.Text;
 using TechDevs.Accounts.Middleware;
 using TechDevs.Accounts.Repositories;
 using TechDevs.Accounts.Services;
+using TechDevs.Mail;
 
 namespace TechDevs.Accounts.WebService
 {
@@ -73,18 +76,18 @@ namespace TechDevs.Accounts.WebService
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
             services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
-            services.AddTransient<IAuthUserRepository<AuthUser>, UserRepository>();
 
             // Services
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IAuthUserService<Customer>, CustomerService>();
             services.AddTransient<IAuthUserService<Employee>, EmployeeService>();
-            services.AddTransient<IAuthUserService<AuthUser>, AuthUserService>();
-            services.AddTransient<IAuthTokenService, AuthTokenService>();
+            services.AddTransient<IAuthTokenService<Customer>, AuthTokenService<Customer>>();
+            services.AddTransient<IAuthTokenService<Employee>, AuthTokenService<Employee>>();
 
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
+            services.AddTransient<IEmailer, DotNetEmailer>();
 
             // Configure the passowrd hashing algorithm
             services.Configure<BCryptPasswordHasherOptions>(options =>
@@ -93,18 +96,30 @@ namespace TechDevs.Accounts.WebService
                 options.EnhancedEntropy = false;
             });
 
-            // Configure the mongodb connection string settings for DI
-            services.Configure<MongoDbSettings>(options =>
-            {
-                options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
-                options.Database = Configuration.GetSection("MongoConnection:Database").Value;
-            });
+            // Combine the secrets with the app config             
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
+                .AddUserSecrets<SMTPSettings>()
+                .AddUserSecrets<MongoDbSettings>()
+                .AddUserSecrets<AppSettings>()
+                .AddEnvironmentVariables();
 
-            //services.Configure<EmailSMTPSettings>(options =>
-            //{
-            //    options.SMTPServer = Configuration.GetSection("EmailSMTPSettings:SMTPServer").Value;
-            //    options.SMTPPort = Configuration.GetSection("EmailSMTPSettings:SMTPPort").Value;
-            //});
+            // Configure
+            services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
+            services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
+
+            if(_env.IsDevelopment())
+            {
+                services.Configure<AppSettings>(config =>
+                {
+                    config.InvitationSiteRoot = "http://localhost:4200";
+                });
+            }else
+            {
+                services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
+            }
+            
             services.AddMvc();
 
             services.AddSwaggerGen(c =>

@@ -10,4 +10,9 @@
     {
         public string Id { get; set; }
     }
+
+    public class AppSettings
+    {
+        public string InvitationSiteRoot { get; set; }
+    }
 }

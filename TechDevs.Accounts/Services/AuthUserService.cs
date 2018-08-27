@@ -1,30 +1,36 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TechDevs.Accounts.Models;
 using TechDevs.Accounts.Repositories;
+using TechDevs.Mail;
 
 namespace TechDevs.Accounts
 {
     public class CustomerService : AuthUserService<Customer>
     {
-        public CustomerService(IAuthUserRepository<Customer> userRepo, IPasswordHasher passwordHasher) : base(userRepo, passwordHasher)
+        public CustomerService(IAuthUserRepository<Customer> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
+            : base(userRepo, passwordHasher, emailer, appSettings)
         {
         }
     }
 
     public class EmployeeService : AuthUserService<Employee>
     {
-        public EmployeeService(IAuthUserRepository<Employee> userRepo, IPasswordHasher passwordHasher) : base(userRepo, passwordHasher)
+        public EmployeeService(IAuthUserRepository<Employee> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
+            : base(userRepo, passwordHasher, emailer, appSettings)
         {
         }
     }
 
-    public class AuthUserService : AuthUserService<AuthUser>
+    public abstract class AuthUserService : AuthUserService<AuthUser>
     {
-        public AuthUserService(IAuthUserRepository<AuthUser> userRepo, IPasswordHasher passwordHasher) : base(userRepo, passwordHasher)
+        public AuthUserService(IAuthUserRepository<AuthUser> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
+            : base(userRepo, passwordHasher, emailer, appSettings)
         {
         }
 
@@ -38,11 +44,15 @@ namespace TechDevs.Accounts
     {
         private readonly IAuthUserRepository<TAuthUser> _userRepo;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IEmailer _emailer;
+        private readonly AppSettings _appSettings;
 
-        public AuthUserService(IAuthUserRepository<TAuthUser> userRepo, IPasswordHasher passwordHasher)
+        public AuthUserService(IAuthUserRepository<TAuthUser> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
         {
             _userRepo = userRepo;
             _passwordHasher = passwordHasher;
+            _emailer = emailer;
+            _appSettings = appSettings.Value;
         }
 
         public virtual async Task<List<TAuthUser>> GetAllUsers(string clientId)
@@ -165,8 +175,9 @@ namespace TechDevs.Accounts
                 var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -190,6 +201,14 @@ namespace TechDevs.Accounts
             var user = await _userRepo.FindByEmail(email, clientId);
             if (user == null) throw new Exception("User could not be found");
             var result = await _userRepo.SetDisabled(user.Id, true, clientId);
+            return result;
+        }
+
+        public virtual async Task<TAuthUser> SetValidatedEmail(bool isValidated, string email, string clientId)
+        {
+            var user = await _userRepo.FindByEmail(email, clientId);
+            if (user == null) throw new Exception("User could not be found");
+            var result = await _userRepo.SetValidatedEmail(user.Id, isValidated, clientId);
             return result;
         }
 
@@ -219,13 +238,20 @@ namespace TechDevs.Accounts
             // Register the user
             var user = await RegisterUser(userReq, clientId);
             if (user == null) throw new Exception("Failed to register the user from an invitation request");
-            
+
+            // Build the email notification to the user
+            invitationRecord.InvitationSubject = $"You have been invited to {invite.ClientName}";
+            invitationRecord.InvitationBody = $"" +
+                $"Hi {invite.FirstName}, {Environment.NewLine}" +
+                $"You have been invited to {invite.ClientName} {Environment.NewLine}" +
+                $"Follow this link to complete your registration {Environment.NewLine} {Environment.NewLine}" +
+                $"{_appSettings.InvitationSiteRoot}/clients/{clientId}/employees/invite/{invitationRecord.InvitationKey}";
+
             // Set the invitation record and update
             var newUser = await _userRepo.SetInvitation(user.Id, invitationRecord, clientId);
-            
-            // Send the email notification to the user
-            // var invitationMessage = new InvitaitonMessage(invitationRecord);
-            // _notifications.SendEmail(invitationMessage);
+
+            // Send the email
+            await SendEmailInvitation(user.Username, clientId);
 
             return newUser;
         } 
@@ -248,6 +274,9 @@ namespace TechDevs.Accounts
             // Activate the account
             user = await EnableAccount(user.EmailAddress, clientId);
 
+            // Se the Validated Email flag
+            user = await SetValidatedEmail(true, user.EmailAddress, clientId);
+
             // Set Invtation Status
             user = await _userRepo.SetInvitationStatus(user.Id, AuthUserInvitationStatus.Completed, clientId);
 
@@ -262,6 +291,19 @@ namespace TechDevs.Accounts
 
         }
         
+        public virtual async Task SendEmailInvitation(string email, string clientId)
+        {
+            // Get the user
+            var user = await GetByEmail(email, clientId);
+
+            // Check that the user is pending invite
+            if (user.Invitation.Status.Value != "Pending")
+                throw new Exception("Invalid invite status for sending email");
+                       
+            // Send the email
+            await _emailer.SendSecurityEmail(user.EmailAddress, user.Invitation.InvitationSubject, user.Invitation.InvitationBody, false);
+        }
+
         #endregion
     }
 

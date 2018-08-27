@@ -4,7 +4,7 @@ using TechDevs.Accounts.Models;
 
 namespace TechDevs.Accounts
 {
-    public interface IAuthUserService<TAuthUser> where TAuthUser : AuthUser, new()
+    public interface IAuthUserService<TAuthUser> where TAuthUser : IAuthUser, new()
     {
         Task<bool> Delete(string email, string clientId);
         Task<List<TAuthUser>> GetAllUsers(string clientId);
@@ -21,5 +21,7 @@ namespace TechDevs.Accounts
         Task<TAuthUser> SubmitInvitation(AuthUserInvitationRequest invite, string clientId);
         Task<TAuthUser> GetUserByInviteKey(string inviteKey, string clientId);
         Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientId);
+        Task SendEmailInvitation(string email, string clientId);
+        Task<TAuthUser> SetValidatedEmail(bool isValidated, string email, string clientId);
     }
 }

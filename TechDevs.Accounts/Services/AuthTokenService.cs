@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace TechDevs.Accounts
 {
-    public class AuthTokenService : IAuthTokenService
+    public class AuthTokenService<TAuthUser> : IAuthTokenService<TAuthUser> where TAuthUser : AuthUser, new()
     {
-        private readonly IAuthUserService<Customer> _accountService;
+        private readonly IAuthUserService<TAuthUser> _accountService;
         private readonly string _tokenSecret;
 
-        public AuthTokenService(IAuthUserService<Customer> accountService)
+        public AuthTokenService(IAuthUserService<TAuthUser> accountService)
         {
             _accountService = accountService;
             _tokenSecret = "techdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevs";
@@ -36,7 +36,7 @@ namespace TechDevs.Accounts
             return await BuildPayload(builder, user, requestedClaims);
         }
 
-        private Task<JwtBuilder> BuildPayload(JwtBuilder builder, AuthUser user, string requestedClaims)
+        private Task<JwtBuilder> BuildPayload(JwtBuilder builder, TAuthUser user, string requestedClaims)
         {
             if (requestedClaims.Contains("profile"))
             {

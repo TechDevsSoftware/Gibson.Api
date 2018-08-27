@@ -4,19 +4,25 @@
     <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
     <AssemblyName>TechDevs.Accounts.WebService</AssemblyName>
     <RootNamespace>TechDevs.Accounts</RootNamespace>
+    <UserSecretsId>b83ccb63-58c2-4508-aeda-9948809239e3</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Connected Services\Key Vault\**" />
     <Compile Remove="Interfaces\**" />
     <Compile Remove="wwwroot\**" />
+    <Content Remove="Connected Services\Key Vault\**" />
     <Content Remove="Interfaces\**" />
     <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Connected Services\Key Vault\**" />
     <EmbeddedResource Remove="Interfaces\**" />
     <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Connected Services\Key Vault\**" />
     <None Remove="Interfaces\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.35.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
@@ -30,5 +36,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TechDevs.Accounts\TechDevs.Accounts.csproj" />
+    <ProjectReference Include="..\TechDevs.Mail\TechDevs.Mail.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Connected Services\" />
   </ItemGroup>
 </Project>

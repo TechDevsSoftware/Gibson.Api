@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace TechDevs.Accounts
 {
-    public interface AuthUserRepository
+    public interface IAuthUserRepository
     {
         Task<List<AuthUser>> GetAll();
         Task<AuthUser> Insert(AuthUser user);
@@ -23,7 +23,7 @@ namespace TechDevs.Accounts
         Task<AuthUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id);
     }
 
-    public class MongoUserRepository : AuthUserRepository
+    public class MongoUserRepository : IAuthUserRepository
     {
         readonly IMongoDatabase _database;
         readonly IMongoCollection<AuthUser> _users;

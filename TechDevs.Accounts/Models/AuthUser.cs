@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace TechDevs.Accounts
 {
-    public class AuthUser
+    public class AuthUser : IAuthUser
     {
         public string Id { get; set; }
         public DBRef ClientId { get; set; }
@@ -23,14 +24,17 @@ namespace TechDevs.Accounts
         public bool Disabled { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class AuthUserInvitationRequest
     {
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Message { get; set; }
+        public string ClientName { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class AuthUserInvitation
     {
         public string Email { get; set; }
@@ -39,9 +43,13 @@ namespace TechDevs.Accounts
         public string Message { get; set; }
         public string SentById { get; set; }
         public string InvitationKey { get; set; }
+        public string ClientName { get; set; }
         public AuthUserInvitationStatus Status { get; set; }
         public DateTime InviteSent { get; set; }
         public DateTime InviteExpiry { get; set; }
+        
+        public string InvitationSubject { get; set; }
+        public string InvitationBody { get; set; }
 
         public AuthUserInvitation(AuthUserInvitationRequest req, string sentById)
         {
@@ -53,6 +61,7 @@ namespace TechDevs.Accounts
             InviteSent = DateTime.Now;
             InviteExpiry = InviteSent.AddHours(24);
             Status = AuthUserInvitationStatus.Pending;
+            ClientName = req.ClientName;
         }
     }
 
