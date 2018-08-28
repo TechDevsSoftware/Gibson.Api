@@ -16,6 +16,7 @@ namespace TechDevs.Accounts.Repositories
         Task<Client> CreateClient(Client client);
         Task<Client> UpdateClient<Type>(string propertyPath, List<Type> data, string clientId);
         Task<Client> DeleteClient(string clientId);
+        Task<Client> GetClientByShortKey(string shortKey);
     }
 
     public class ClientRepository : IClientRepository
@@ -77,6 +78,14 @@ namespace TechDevs.Accounts.Repositories
             var result = await _clients.UpdateOneAsync(filter, update);
             if (result.IsAcknowledged && result.ModifiedCount > 0) return await GetClient(clientId);
             throw new Exception("User could not be updated");
+        }
+
+        public async Task<Client> GetClientByShortKey(string shortKey)
+        {
+            var filter = new BsonDocument { { "ShortKey", shortKey } };
+            var clients = await _clients.FindAsync(filter);
+            var client = await clients.FirstOrDefaultAsync();
+            return client;
         }
     }
 }

@@ -18,11 +18,16 @@ namespace TechDevs.Accounts.Services
         public async Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers) => await _clientRepo.GetClient(clientId, includeRelatedAuthUsers);
         public async Task<Client> CreateClient(ClientRegistration reg)
         {
+            // Check that the short key is not already in use
+            var existingClientShortKey = _clientRepo.GetClientByShortKey(reg.ShortKey);
+            if (existingClientShortKey != null) throw new Exception("Short Key is already in use");
+
             var client = new Client
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = reg.Name,
                 SiteUrl = reg.SiteUrl,
+                ShortKey = reg.ShortKey,
                 ClientApiKey = Guid.NewGuid().ToString()
             };
             return await _clientRepo.CreateClient(client);

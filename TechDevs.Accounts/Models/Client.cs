@@ -7,6 +7,7 @@ namespace TechDevs.Accounts
     {
         public string Name { get; set; }
         public string SiteUrl { get; set; }
+        public string ShortKey { get; set; }
     }
 
     [BsonDiscriminator("Client")]
@@ -17,6 +18,7 @@ namespace TechDevs.Accounts
         public string Name { get; set; }
         public string SiteUrl { get; set; }
         public string ClientApiKey { get; set; }
+        public string ShortKey { get; set; }
         public List<EmployeeProfile> Employees { get; set; }
         public List<CustomerProfile> Customers { get; set; }
         public ClientTheme ClientTheme { get; set; }
