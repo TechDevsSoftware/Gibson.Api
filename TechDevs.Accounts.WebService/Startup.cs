@@ -53,8 +53,6 @@ namespace TechDevs.Accounts.WebService
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    //options.Audience = "http://localhost:4200";
-                    //options.Authority = "http://localhost:5101";
                     options.RequireHttpsMetadata = false;
                     
                     options.TokenValidationParameters = new TokenValidationParameters
