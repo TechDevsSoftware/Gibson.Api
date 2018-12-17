@@ -61,34 +61,40 @@ namespace TechDevs.Accounts.WebService.Controllers
     public class EmployeeController : Controller
     {
         private readonly IAuthUserService<Employee> _accountService;
+        private readonly IClientService _clientService;
 
-        public EmployeeController(IAuthUserService<Employee> accountService)
+        public EmployeeController(IAuthUserService<Employee> accountService, IClientService clientService)
         {
             _accountService = accountService;
+            _clientService = clientService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProfile([FromHeader(Name = "TechDevs-ClientId")] string clientId)
+        public async Task<IActionResult> GetProfile([FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
         {
+            var client = await _clientService.GetClientByShortKey(clientKey);
+
             var userId = GetUserIdFromRequest();
             if (userId == null) return new UnauthorizedResult();
 
-            var emp = await _accountService.GetById(userId, clientId);
+            var emp = await _accountService.GetById(userId, client.Id);
             if (emp == null) return new NotFoundResult();
 
             return new OkObjectResult(new EmployeeProfile(emp));
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAccount([FromHeader(Name = "TechDevs-ClientId")] string clientId)
+        public async Task<IActionResult> DeleteAccount([FromHeader(Name = "TechDevs-ClientId")] string clientKey)
         {
+            var client = await _clientService.GetClientByShortKey(clientKey);
+
             var userId = GetUserIdFromRequest();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId, clientId);
+            var user = await _accountService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
-            var result = await _accountService.Delete(user.EmailAddress, clientId);
+            var result = await _accountService.Delete(user.EmailAddress, client.Id);
             if (result == false) return new BadRequestResult();
             return new OkResult();
         }
