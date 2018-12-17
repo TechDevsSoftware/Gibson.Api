@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,8 +49,15 @@ namespace TechDevs.Accounts.Repositories
             user.NormalisedEmail = _normaliser.Normalise(user.EmailAddress);
             user.Username = user.EmailAddress;
             user.NormalisedUsername = _normaliser.Normalise(user.EmailAddress);
-
-            await _users.InsertOneAsync(user);
+            try
+            {
+                await _users.InsertOneAsync(user);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                throw;
+            }
             var result = await FindByEmail(user.EmailAddress, clientId);
             return result;
         }
@@ -60,7 +68,7 @@ namespace TechDevs.Accounts.Repositories
             return (result.IsAcknowledged && result.DeletedCount > 0);
         }
 
-        public async Task<TAuthUser>FindById(string id, string clientId)
+        public async Task<TAuthUser> FindById(string id, string clientId)
         {
             var json = FilterById(id, clientId).ToJson();
             var results = await _users.OfType<TAuthUser>().FindAsync(FilterById(id, clientId));
@@ -71,8 +79,10 @@ namespace TechDevs.Accounts.Repositories
         public async Task<TAuthUser> FindByEmail(string email, string clientId)
         {
             var json = FilterByEmail(email, clientId);
-            var result = await _users.OfType<TAuthUser>().FindAsync(FilterByEmail(email, clientId));
-            return await result.FirstOrDefaultAsync();
+            //var result = await _users.OfType<TAuthUser>().Find(x => x.EmailAddress == email && x.Id == clientId).FirstOrDefaultAsync();
+            var results = await _users.OfType<TAuthUser>().FindAsync(FilterByEmail(email, clientId));
+            var result = await results.FirstOrDefaultAsync();
+            return result;
         }
 
         public async Task<TAuthUser> FindByProvider(string provider, string providerId, string clientId)
@@ -187,7 +197,7 @@ namespace TechDevs.Accounts.Repositories
         }
 
         #region Invitations
-        
+
         public async Task<TAuthUser> SetInvitation(string userId, AuthUserInvitation invite, string clientId)
         {
             var user = await FindById(userId, clientId);
@@ -227,7 +237,7 @@ namespace TechDevs.Accounts.Repositories
         }
 
         #endregion
-               
+
         private BsonDocument FilterByEmail(string email, string clientId)
         {
             var normEmail = _normaliser.Normalise(email);

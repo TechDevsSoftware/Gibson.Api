@@ -16,6 +16,7 @@ namespace TechDevs.Accounts.Services
 
         public async Task<List<Client>> GetClients() => await _clientRepo.GetClients();
         public async Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers) => await _clientRepo.GetClient(clientId, includeRelatedAuthUsers);
+        public async Task<Client> GetClientByShortKey(string key) => await _clientRepo.GetClientByShortKey(key);
         public async Task<Client> CreateClient(ClientRegistration reg)
         {
             // Check that the short key is not already in use
@@ -33,6 +34,10 @@ namespace TechDevs.Accounts.Services
             return await _clientRepo.CreateClient(client);
         }
         public async Task<Client> DeleteClient(string clientId) => await _clientRepo.DeleteClient(clientId);
-        public async Task<Client> UpdateClient(string propertyPath, List<Type> data, string clientId) => await _clientRepo.UpdateClient(propertyPath, data, clientId);
+        public async Task<Client> UpdateClient<T>(string propertyPath, T data, string clientId) => await _clientRepo.UpdateClient(propertyPath, data, clientId);
+        public async Task<Client> UpdateClient(string clientId, Client client)
+        {
+            return await _clientRepo.UpdateClient(clientId, client);
+        }
     }
 }

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
+using TechDevs.Accounts.Utils;
 
 namespace TechDevs.Accounts.Repositories
 {
@@ -14,7 +16,8 @@ namespace TechDevs.Accounts.Repositories
         Task<List<Client>> GetClients();
         Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers = false);
         Task<Client> CreateClient(Client client);
-        Task<Client> UpdateClient<Type>(string propertyPath, List<Type> data, string clientId);
+        Task<Client> UpdateClient<Type>(string propertyPath, Type data, string clientId);
+        Task<Client> UpdateClient(string clientId, Client client);
         Task<Client> DeleteClient(string clientId);
         Task<Client> GetClientByShortKey(string shortKey);
     }
@@ -41,9 +44,7 @@ namespace TechDevs.Accounts.Repositories
 
         public async Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers = false)
         {
-            var filter = Builders<Client>.Filter.Eq(x => x.Id, clientId);
-            var clients = await _clients.FindAsync(x => x.Id == clientId);
-            var client = await clients.FirstOrDefaultAsync();
+            var client = await _clients.Find(x => x.Id == clientId).FirstAsync();
             if (includeRelatedAuthUsers)
             {
                 var clientFilter = new BsonDocument { { "ClientId", new BsonDocument { { "_id", client.Id } } } };
@@ -70,21 +71,30 @@ namespace TechDevs.Accounts.Repositories
             return result;
         }
 
-        public async Task<Client> UpdateClient<Type>(string propertyPath, List<Type> data, string clientId)
+        public async Task<Client> UpdateClient<Type>(string propertyPath, Type data, string clientId)
         {
+            propertyPath = propertyPath.FirstLetterUpper();
+
             FilterDefinition<Client> filter = Builders<Client>.Filter.Eq(x => x.Id, clientId);
             UpdateDefinition<Client> update = Builders<Client>.Update.Set(propertyPath, data);
 
             var result = await _clients.UpdateOneAsync(filter, update);
-            if (result.IsAcknowledged && result.ModifiedCount > 0) return await GetClient(clientId);
-            throw new Exception("User could not be updated");
+            if (result.IsAcknowledged) return await GetClient(clientId);
+            throw new Exception("Client could not be updated");
+        }
+
+        public async Task<Client> UpdateClient(string clientId, Client client)
+        {
+            FilterDefinition<Client> filter = Builders<Client>.Filter.Eq(x => x.Id, clientId);
+            var updateOptions = new UpdateOptions {IsUpsert = false};
+            var result = await _clients.ReplaceOneAsync(filter, client, updateOptions);
+            if (!result.IsAcknowledged || result.ModifiedCount == 0 ) throw new Exception("Client could not be updated");
+            return await GetClient(clientId, false);
         }
 
         public async Task<Client> GetClientByShortKey(string shortKey)
         {
-            var filter = new BsonDocument { { "ShortKey", shortKey } };
-            var clients = await _clients.FindAsync(filter);
-            var client = await clients.FirstOrDefaultAsync();
+            var client = await _clients.Find(x => x.ShortKey == shortKey).FirstOrDefaultAsync();
             return client;
         }
     }

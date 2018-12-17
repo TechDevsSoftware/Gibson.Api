@@ -35,12 +35,18 @@ namespace TechDevs.Accounts.WebService.Controllers
             return new OkObjectResult(await _clientService.CreateClient(client));
         }
 
-        // Not yet supported
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateClient(string clientId)
-        //{
-        //    return new OkObjectResult(await _clientService.UpdateClient(""));
-        //}
+        [HttpPut("{clientId}")]
+        public async Task<IActionResult> UpdateClient(string clientId, [FromBody] ClientUpdate update)
+        {
+            var result = await _clientService.UpdateClient<string>(update.PropertyPath, update.UpdateValue, clientId);
+            return new OkObjectResult(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateClient(string clientId, [FromBody] Client client)
+        {
+            return new OkObjectResult(await _clientService.UpdateClient(clientId, client));
+        }
 
         [HttpDelete]
         [Route("{clientId}")]
@@ -48,5 +54,11 @@ namespace TechDevs.Accounts.WebService.Controllers
         {
             return new OkObjectResult(await _clientService.DeleteClient(clientId));
         }
+    }
+
+    public class ClientUpdate
+    {
+        public string PropertyPath { get; set; }
+        public string UpdateValue { get; set; }
     }
 }

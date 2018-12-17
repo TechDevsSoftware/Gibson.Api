@@ -80,7 +80,7 @@ namespace TechDevs.Accounts
 
             var result = await _userRepo.Insert(newAuthUser, clientId);
             if (userRegistration.IsInvite) return result;
-            
+            if (userRegistration.ProviderName != "TechDevs" && userRegistration.Password == null) return result;
             var resultAfterPassword = await SetPassword(result.EmailAddress, userRegistration.Password, clientId);
             return resultAfterPassword;
         }
