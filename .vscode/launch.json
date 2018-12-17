@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/TechDevs.Core.UserManagement.API/bin/Debug/netcoreapp2.0/TechDevs.Core.UserManagement.API.dll",
+            "program": "${workspaceFolder}/TechDevs.Accounts.WebService/bin/Debug/netcoreapp2.0/TechDevs.Accounts.WebService.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/TechDevs.Core.UserManagement.API",
+            "cwd": "${workspaceFolder}/TechDevs.Accounts.WebService",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -42,5 +42,5 @@
             "request": "attach",
             "processId": "${command:pickProcess}"
         }
-    ]
+    ,]
 }
