@@ -28,7 +28,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest req, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
         {
             // Get the clientId from the clientKey
-            var client = await _clientService.GetClientByShortKey(clientKey); 
+            var client = await _clientService.GetClientByShortKey(clientKey);
             switch (req.Provider)
             {
                 case "TechDevs":
@@ -45,7 +45,7 @@ namespace TechDevs.Accounts.WebService.Controllers
             var valid = await _accountService.ValidatePassword(email, password, clientId);
             if (!valid) return new UnauthorizedResult();
             var user = await _accountService.GetByEmail(email, clientId);
-            var token = await _tokenService.CreateToken(user.Id, "profile", clientId);
+            var token = _tokenService.CreateToken(user.Id, "profile", clientId);
             return new OkObjectResult(token);
         }
 
@@ -74,7 +74,7 @@ namespace TechDevs.Accounts.WebService.Controllers
                     user = regResult;
                 } 
 
-                var token = await _tokenService.CreateToken(user.Id, "profile", clientId);
+                var token = _tokenService.CreateToken(user.Id, "profile", clientId);
                 return new OkObjectResult(token);
             }
             catch (InvalidJwtException)

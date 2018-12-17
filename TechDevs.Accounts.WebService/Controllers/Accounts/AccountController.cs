@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TechDevs.Accounts.ExtMethods;
 using TechDevs.Accounts.Services;
 
 namespace TechDevs.Accounts.WebService.Controllers
@@ -22,8 +23,8 @@ namespace TechDevs.Accounts.WebService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProfile([FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
         {
-            var client = await _clientService.GetClientByShortKey(clientKey); 
-            var userId = GetUserIdFromRequest();
+            var client = await _clientService.GetClientByShortKey(clientKey);
+            var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
             var user = await _accountService.GetById(userId, client.Id);
@@ -37,7 +38,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
 
-            var userId = GetUserIdFromRequest();
+            var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
             var user = await _accountService.GetById(userId, client.Id);
@@ -46,13 +47,6 @@ namespace TechDevs.Accounts.WebService.Controllers
             var result = await _accountService.Delete(user.EmailAddress, client.Id);
             if (result == false) return new BadRequestResult();
             return new OkResult();
-        }
-
-        private string GetUserIdFromRequest()
-        {
-            var sub = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-            if (sub == null) sub = User.FindFirst("sub")?.Value;
-            return sub;
         }
     }
 
@@ -74,7 +68,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
 
-            var userId = GetUserIdFromRequest();
+            var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
             var emp = await _accountService.GetById(userId, client.Id);
@@ -88,7 +82,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
 
-            var userId = GetUserIdFromRequest();
+            var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
             var user = await _accountService.GetById(userId, client.Id);
@@ -97,13 +91,6 @@ namespace TechDevs.Accounts.WebService.Controllers
             var result = await _accountService.Delete(user.EmailAddress, client.Id);
             if (result == false) return new BadRequestResult();
             return new OkResult();
-        }
-
-        private string GetUserIdFromRequest()
-        {
-            var sub = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-            if (sub == null) sub = User.FindFirst("sub")?.Value;
-            return sub;
         }
     }
 }

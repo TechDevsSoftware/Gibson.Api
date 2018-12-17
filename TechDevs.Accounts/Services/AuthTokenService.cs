@@ -1,7 +1,12 @@
-﻿using JWT.Algorithms;
-using JWT.Builder;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TechDevs.Accounts
 {
@@ -13,40 +18,46 @@ namespace TechDevs.Accounts
         public AuthTokenService(IAuthUserService<TAuthUser> accountService)
         {
             _accountService = accountService;
-            _tokenSecret = "techdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevs";
+            _tokenSecret = "TechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKey";
         }
 
-        public async Task<string> CreateToken(string userId, string requestedClaims, string clientId)
+        public string CreateToken(string userId, string requestedClaims, string clientId)
         {
-            var builder = new JwtBuilder()
-                  .AddClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds())
-                  .AddClaim("sub", userId)
-                  .WithAlgorithm(new HMACSHA256Algorithm())
-                  .WithSecret(_tokenSecret);
-
-            builder = await BuildPayload(builder, userId, requestedClaims, clientId);
-            var token = builder.Build();
-            return token;
-        }
-
-        private async Task<JwtBuilder> BuildPayload(JwtBuilder builder, string userId, string requestedClaims, string clientId)
-        {
-            var user = await _accountService.GetById(userId, clientId);
-            if (user == null) throw new Exception("User not found");
-            return await BuildPayload(builder, user, requestedClaims);
-        }
-
-        private Task<JwtBuilder> BuildPayload(JwtBuilder builder, TAuthUser user, string requestedClaims)
-        {
-            if (requestedClaims.Contains("profile"))
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_tokenSecret);
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                builder = builder
-                    .AddClaim(ClaimName.GivenName, user.FirstName)
-                    .AddClaim(ClaimName.FamilyName, user.LastName)
-                    .AddClaim(ClaimName.FullName, $"{user.FirstName} {user.LastName}")
-                    .AddClaim(ClaimName.PreferredEmail, user.EmailAddress);
-            }
-            return Task.FromResult(builder);
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, userId)
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var result = tokenHandler.WriteToken(token);
+            return result;
         }
+
+        // private async Task<JwtBuilder> BuildPayload(JwtBuilder builder, string userId, string requestedClaims, string clientId)
+        // {
+        //     var user = await _accountService.GetById(userId, clientId);
+        //     if (user == null) throw new Exception("User not found");
+        //     return await BuildPayload(builder, user, requestedClaims);
+        // }
+
+        // private Task<JwtBuilder> BuildPayload(JwtBuilder builder, TAuthUser user, string requestedClaims)
+        // {
+        //     if (requestedClaims.Contains("profile"))
+        //     {
+        //         builder = builder
+        //             .AddClaim(ClaimName.GivenName, user.FirstName)
+        //             .AddClaim(ClaimName.FamilyName, user.LastName)
+        //             .AddClaim(ClaimName.FullName, $"{user.FirstName} {user.LastName}")
+        //             .AddClaim(ClaimName.PreferredEmail, user.EmailAddress);
+        //     }
+        //     return Task.FromResult(builder);
+        // }
     }
 }

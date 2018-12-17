@@ -42,28 +42,26 @@ namespace TechDevs.Accounts.WebService
                 });
             });
 
-            services.AddMvcCore()
-               .AddAuthorization()
-               .AddJsonFormatters();
+            // services.AddMvcCore()
+            //    .AddJsonFormatters();
 
-            var identityServer = (_env.IsDevelopment()) ? "http://localhost:5000" : "https://techdevs-identityserver.azurewebsites.net";
-
-            services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.RequireHttpsMetadata = false;
-                    
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("techdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevstechdevs")),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true
-                    };
-
-                });
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("TechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKey")),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             BsonClassMap.RegisterClassMap<Customer>(); // do it before you access DB
             BsonClassMap.RegisterClassMap<CustomerData>(); // do it before you access DB
@@ -76,6 +74,7 @@ namespace TechDevs.Accounts.WebService
 
             // Services
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IMyVehicleService, MyVehicleService>();
             services.AddTransient<IAuthUserService<Customer>, CustomerService>();
             services.AddTransient<IAuthUserService<Employee>, EmployeeService>();
             services.AddTransient<IAuthTokenService<Customer>, AuthTokenService<Customer>>();
@@ -106,17 +105,18 @@ namespace TechDevs.Accounts.WebService
             services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
 
-            if(_env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
                 services.Configure<AppSettings>(config =>
                 {
                     config.InvitationSiteRoot = "http://localhost:4200";
                 });
-            }else
+            }
+            else
             {
                 services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             }
-            
+
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -132,7 +132,7 @@ namespace TechDevs.Accounts.WebService
 
             if (env.IsDevelopment())
             {
-               // app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
             }
 
             app.UseAuthentication();

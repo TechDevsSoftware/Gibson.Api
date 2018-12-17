@@ -11,7 +11,9 @@ namespace TechDevs.Accounts.ExtMethods
 
         public static string UserId(this Controller controller)
         {
-                return controller.User.FindFirst("sub")?.Value;
+            var user = controller.User;
+            var val = user.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+            return val;
         }
     }
 }
