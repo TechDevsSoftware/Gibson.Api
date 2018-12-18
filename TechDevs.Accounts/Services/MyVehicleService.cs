@@ -71,6 +71,7 @@ namespace TechDevs.Accounts
                    Model = lookupVehicle.model,
                    FuelType = lookupVehicle.fuelType,
                    Colour = lookupVehicle.primaryColour,
+                   Year = int.Parse(lookupVehicle.firstUsedDate.Substring(0,4)),
                    MOTResults = (lookupVehicle.motTests == null) ? new List<MotResult>() : lookupVehicle.motTests.Select(x => new MotResult
                    {
                        TestResult = x.testResult,
@@ -79,7 +80,12 @@ namespace TechDevs.Accounts
                        MotTestNumber = x.motTestNumber,
                        OdometerResultType = x.odometerResultType,
                        OdometerUnit = x.odometerUnit,
-                       OdometerValue = x.odometerValue
+                       OdometerValue = x.odometerValue,
+                       Comments = (x.rfrAndComments == null) ? new List<MotComment>() : x.rfrAndComments.Select(c => new MotComment
+                       {
+                           Text = c.text,
+                           Type = c.type
+                       }).ToList()                   
                    }).ToList()
                };
 
@@ -100,7 +106,13 @@ namespace TechDevs.Accounts
         public string odometerUnit { get; set; }
         public string odometerResultType { get; set; }
         public string motTestNumber { get; set; }
-        public List<object> rfrAndComments { get; set; }
+        public List<RawMotComment> rfrAndComments { get; set; }
+    }
+
+    public class RawMotComment
+    {
+        public string text {get;set;}
+        public string type {get;set;}
     }
 
     public class LookupVehicle

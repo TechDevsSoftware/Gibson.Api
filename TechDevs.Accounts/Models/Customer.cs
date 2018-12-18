@@ -87,6 +87,13 @@ namespace TechDevs.Accounts
         public string OdometerUnit { get; set; }
         public string OdometerResultType { get; set; }
         public string MotTestNumber { get; set; }
-        public List<object> RfrAndComments { get; set; }
+        public List<MotComment> Comments { get; set; }
+    }
+
+    [BsonIgnoreExtraElements]
+    public class MotComment
+    {
+        public string Text { get; set; }
+        public string Type { get; set; }
     }
 }
