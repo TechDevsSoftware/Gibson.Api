@@ -22,9 +22,15 @@ namespace TechDevs.Accounts.WebService.Controllers
             return new OkObjectResult(await _clientService.GetClients());
         }
 
+        [HttpGet("current")]
+        public async Task<IActionResult> GetCurrentClient([FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        {
+            return new OkObjectResult(await _clientService.GetClientByShortKey(clientKey));
+        }
+
         [HttpGet]
         [Route("{clientId}")]
-        public async Task<IActionResult> GetClient([FromRoute] string clientId, [FromQuery] bool includeRelatedAuthUsers = false)
+        public async Task<IActionResult> GetClientById([FromRoute] string clientId, [FromQuery] bool includeRelatedAuthUsers = false)
         {
             return new OkObjectResult(await _clientService.GetClient(clientId, includeRelatedAuthUsers));
         }

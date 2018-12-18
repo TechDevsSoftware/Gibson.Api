@@ -78,7 +78,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAccount([FromHeader(Name = "TechDevs-ClientId")] string clientKey)
+        public async Task<IActionResult> DeleteAccount([FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
 
