@@ -15,8 +15,11 @@ namespace TechDevs.Accounts.Services
 
         public async Task<Client> SetParameter(string clientId, string key, string value)
         {
-            // Get the clinet by first deleting any xisting confilcting params
-            var client = await RemoveParameter(clientId, key);
+            // Delete any existing confilcting params
+            await RemoveParameter(clientId, key);
+            
+            var client = await _clientRepo.GetClient(clientId);
+            if (client == null) throw new Exception("Client could not be found");
 
             // Add the new parameter
             client.ClientTheme.Parameters.Add(new CSSParameter { Key = key, Value = value });
@@ -31,10 +34,16 @@ namespace TechDevs.Accounts.Services
             var client = await _clientRepo.GetClient(clientId);
             if (client == null) throw new Exception("Client could not be found");
 
-            if(client.ClientTheme.Parameters == null) {
+            if (client.ClientTheme == null) 
+            {
+                client.ClientTheme = new ClientTheme();
+            }
+
+            if (client.ClientTheme.Parameters == null)
+            {
                 client.ClientTheme.Parameters = new System.Collections.Generic.List<CSSParameter>();
             }
-            
+
             // Remove any parameters already there
             client.ClientTheme.Parameters.RemoveAll(x => x.Key == key);
 

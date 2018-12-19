@@ -18,7 +18,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpPost("{clientKey}/theme/parameters")]
-        public async Task<IActionResult> RemoveParameter([FromRoute]string clientKey, [FromBody]CSSParameter parameter)
+        public async Task<IActionResult> AddParameter([FromRoute]string clientKey, [FromBody]CSSParameter parameter)
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
             if (client == null) return new BadRequestObjectResult("Client could not be found");
