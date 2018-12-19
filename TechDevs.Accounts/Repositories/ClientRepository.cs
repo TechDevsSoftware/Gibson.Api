@@ -87,8 +87,11 @@ namespace TechDevs.Accounts.Repositories
         {
             FilterDefinition<Client> filter = Builders<Client>.Filter.Eq(x => x.Id, clientId);
             var updateOptions = new UpdateOptions {IsUpsert = false};
+            
+            client.Id = clientId;
+
             var result = await _clients.ReplaceOneAsync(filter, client, updateOptions);
-            if (!result.IsAcknowledged || result.ModifiedCount == 0 ) throw new Exception("Client could not be updated");
+            if (!result.IsAcknowledged) throw new Exception("Client could not be updated");
             return await GetClient(clientId, false);
         }
 

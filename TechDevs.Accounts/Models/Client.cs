@@ -33,6 +33,13 @@ namespace TechDevs.Accounts
         public string DangerColour { get; set; }
         public string LogoPath { get; set; }
         public byte[] LogoData { get; set; }
+        public List<CSSParameter> Parameters { get; set; }
+    }
+
+    public class CSSParameter
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 
 }

@@ -74,6 +74,7 @@ namespace TechDevs.Accounts.WebService
 
             // Services
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IClientThemeService, ClientThemeService>();
             services.AddTransient<IMyVehicleService, MyVehicleService>();
             services.AddTransient<IAuthUserService<Customer>, CustomerService>();
             services.AddTransient<IAuthUserService<Employee>, EmployeeService>();
