@@ -24,6 +24,7 @@ namespace TechDevs.Accounts
         public ClientTheme ClientTheme { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class ClientTheme
     {
         public string Font { get; set; }
@@ -36,6 +37,7 @@ namespace TechDevs.Accounts
         public List<CSSParameter> Parameters { get; set; }
     }
 
+    [BsonIgnoreExtraElements]
     public class CSSParameter
     {
         public string Key { get; set; }
