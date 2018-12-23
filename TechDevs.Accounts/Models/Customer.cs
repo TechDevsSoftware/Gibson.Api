@@ -51,6 +51,7 @@ namespace TechDevs.Accounts
         public string Colour { get; set; }
         public string FuelType { get; set; }
         public int Year { get; set; }
+        public DateTime? MOTExpiryDate { get; set; }
         public List<MotResult> MOTResults { get; set; }
     }
 
