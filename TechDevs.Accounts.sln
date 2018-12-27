@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts.WebService", "TechDevs.Accounts.WebService\TechDevs.Accounts.WebService.csproj", "{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts.WebService", "WebServices\TechDevs.Accounts.WebService\TechDevs.Accounts.WebService.csproj", "{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts", "TechDevs.Accounts\TechDevs.Accounts.csproj", "{283D9A06-AAE1-44DE-A32C-D31F3AADA454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Accounts", "lib\TechDevs.Accounts\TechDevs.Accounts.csproj", "{283D9A06-AAE1-44DE-A32C-D31F3AADA454}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{E2B37836-26E3-470A-9EDF-5D04AF9253FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Mail", "TechDevs.Mail\TechDevs.Mail.csproj", "{6D134414-9B41-48FD-B549-C4521AFCA797}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Mail", "libs\TechDevs.Mail\TechDevs.Mail.csproj", "{6D134414-9B41-48FD-B549-C4521AFCA797}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
