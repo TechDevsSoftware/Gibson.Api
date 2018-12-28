@@ -16,7 +16,6 @@ namespace TechDevs.Accounts
         Task<AuthUser> Insert(AuthUser user);
         Task<AuthUser> SetEmail(AuthUser user, string email);
         Task<AuthUser> SetUsername(AuthUser user, string username);
-        Task<AuthUser> SetName(AuthUser user, string firstName, string lastName);
         Task<AuthUser> SetPassword(AuthUser user, string hashedPassword);
         Task<AuthUser> FindByEmail(string email);
         Task<AuthUser> FindById(string id);
@@ -87,17 +86,6 @@ namespace TechDevs.Accounts
             throw new Exception("User email could not be updated");
         }
 
-        public async Task<AuthUser> SetName(AuthUser user, string firstName, string lastName)
-        {
-            UpdateDefinition<AuthUser> update = Builders<AuthUser>
-               .Update
-               .Set("FirstName", firstName)
-               .Set("LastName", lastName);
-
-            var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress), update);
-            return await FindByEmail(user.EmailAddress);
-        }
-
         public async Task<AuthUser> SetUsername(AuthUser user, string username)
         {
             UpdateDefinition<AuthUser> update = Builders<AuthUser>
@@ -133,7 +121,7 @@ namespace TechDevs.Accounts
                 .Set(propertyPath, data);
 
             var result = await _users.UpdateOneAsync(FilterById(id), update);
-            if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(id);
+            if (result.IsAcknowledged) return await FindById(id);
             throw new Exception("User could not be updated");
         }
 

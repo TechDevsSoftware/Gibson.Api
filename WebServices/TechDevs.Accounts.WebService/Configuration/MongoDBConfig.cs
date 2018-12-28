@@ -16,6 +16,7 @@ namespace TechDevs.Accounts.WebService
             {
                 c.SetDiscriminator("Customer");
                 c.SetDiscriminatorIsRequired(true);
+                c.AutoMap();
             });
 
             BsonClassMap.RegisterClassMap<Employee>(c =>

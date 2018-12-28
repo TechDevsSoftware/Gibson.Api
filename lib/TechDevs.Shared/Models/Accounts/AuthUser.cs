@@ -16,6 +16,7 @@
         public string PasswordHash { get; set; }
         public string ProviderName { get; set; }
         public string ProviderId { get; set; }
+        public string ContactNumber { get; set; }
 
         public AuthUserInvitation Invitation { get; set; }
         public bool Disabled { get; set; }

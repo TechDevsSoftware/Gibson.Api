@@ -128,6 +128,28 @@ namespace TechDevs.Accounts
             return updatedUser;
         }
 
+        public virtual async Task<TAuthUser> UpdateName(string email, string firstName, string lastName, string clientId)
+        {
+            // Get User
+            var user = await _userRepo.FindByEmail(email, clientId);
+            if (user == null) throw new Exception("User not found");
+
+            var result = (firstName != user.FirstName) ? await _userRepo.UpdateUser("FirstName", firstName, user.Id, clientId) : user;
+            result = (lastName != user.LastName) ? await _userRepo.UpdateUser("LastName", lastName, user.Id, clientId) : result;
+
+            return result;
+        }
+
+        public virtual async Task<TAuthUser> UpdateContactNuber(string email, string contactNumber, string clientId)
+        {
+            // Get User
+            var user = await _userRepo.FindByEmail(email, clientId);
+            if (user == null) throw new Exception("User not found");
+            var result = await _userRepo.UpdateUser("ContactNumber", contactNumber, user.Id, clientId);
+            return result;
+
+        }
+
         public virtual async Task<bool> Delete(string email, string clientId)
         {
             var user = await _userRepo.FindByEmail(email, clientId);
@@ -228,13 +250,13 @@ namespace TechDevs.Accounts
                 ProviderName = "TechDevs",
                 FirstName = invite.FirstName,
                 LastName = invite.LastName,
-                EmailAddress = invite.Email        
+                EmailAddress = invite.Email
             };
 
             // Check to see if the user already exists
             var existingUser = await GetByEmail(invitationRecord.Email, clientId);
             if (existingUser != null) throw new Exception("User is already registered");
-            
+
             // Register the user
             var user = await RegisterUser(userReq, clientId);
             if (user == null) throw new Exception("Failed to register the user from an invitation request");
@@ -254,8 +276,8 @@ namespace TechDevs.Accounts
             await SendEmailInvitation(user.Username, clientId);
 
             return newUser;
-        } 
-        
+        }
+
         public virtual async Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientId)
         {
             // Get the user
@@ -290,7 +312,7 @@ namespace TechDevs.Accounts
             return result;
 
         }
-        
+
         public virtual async Task SendEmailInvitation(string email, string clientId)
         {
             // Get the user
@@ -299,7 +321,7 @@ namespace TechDevs.Accounts
             // Check that the user is pending invite
             if (user.Invitation.Status.Value != "Pending")
                 throw new Exception("Invalid invite status for sending email");
-                       
+
             // Send the email
             await _emailer.SendSecurityEmail(user.EmailAddress, user.Invitation.InvitationSubject, user.Invitation.InvitationBody, false);
         }

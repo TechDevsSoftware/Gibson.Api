@@ -16,6 +16,7 @@ namespace TechDevs.Accounts.Repositories
         Task<TAuthUser> SetName(TAuthUser user, string firstName, string lastName, string clientId);
         Task<TAuthUser> SetPassword(TAuthUser user, string passwordHash, string clientId);
         Task<TAuthUser> SetUsername(TAuthUser user, string username, string clientId);
+        Task<TAuthUser> UpdateUser<Type>(string propertyPath, Type data, string id, string clientId);
         Task<TAuthUser> UpdateUser<Type>(string propertyPath, List<Type> data, string id, string clientId);
         Task<bool> UserExists(string email, string clientId);
         Task<TAuthUser> SetInvitation(string userId, AuthUserInvitation invite, string clientId);

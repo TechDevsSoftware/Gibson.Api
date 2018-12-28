@@ -16,6 +16,8 @@ namespace TechDevs.Accounts
         Task ResetPassword(string email, string resetPasswordToken, string clientId);
         Task<TAuthUser> SetPassword(string email, string password, string clientId);
         Task<TAuthUser> UpdateEmail(string currentEmail, string newEmail, string clientId);
+        Task<TAuthUser> UpdateName(string email, string firstName, string lastName, string clientId);
+        Task<TAuthUser> UpdateContactNuber(string email, string contactNumber, string clientId);
         Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientId);
         Task<bool> ValidatePassword(string email, string password, string clientId);
         Task<TAuthUser> SubmitInvitation(AuthUserInvitationRequest invite, string clientId);

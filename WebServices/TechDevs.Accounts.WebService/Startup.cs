@@ -5,7 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TechDevs.Accounts.Middleware;
 using TechDevs.Accounts.Repositories;
@@ -66,7 +68,7 @@ namespace TechDevs.Accounts.WebService
                 };
             });
 
-           
+
 
             // Repositories
             services.AddTransient<IClientRepository, ClientRepository>();
@@ -124,6 +126,10 @@ namespace TechDevs.Accounts.WebService
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "User Profile API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme { In = "header", Description = "Please enter JWT with Bearer into field", Name = "Authorization", Type = "apiKey" });
+                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
+                    { "Bearer", Enumerable.Empty<string>() },
+                });
             });
         }
 

@@ -128,6 +128,8 @@ namespace TechDevs.Accounts.Repositories
                .Set("LastName", lastName);
 
             var result = await _users.UpdateOneAsync(FilterByEmail(user.EmailAddress, clientId), update);
+            if (!result.IsAcknowledged) throw new Exception("Update failed");
+            if (result.ModifiedCount == 0) throw new Exception("Update failed");
             return await FindByEmail(user.EmailAddress, clientId);
         }
 
@@ -196,6 +198,23 @@ namespace TechDevs.Accounts.Repositories
 
             var result = await _users.UpdateOneAsync(filter, update);
             if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(id, clientId);
+            throw new Exception("User could not be updated");
+        }
+      
+        public async Task<TAuthUser> UpdateUser<Type>(string propertyPath, Type data, string id, string clientId)
+        {
+            var filter = new BsonDocument
+            {
+                { "ClientId", new BsonDocument { { "_id", clientId }}},
+                { "_id", id}
+            };
+
+            UpdateDefinition<TAuthUser> update = Builders<TAuthUser>
+                .Update
+                .Set(propertyPath, data);
+
+            var result = await _users.UpdateOneAsync(filter, update);
+            if (result.IsAcknowledged) return await FindById(id, clientId);
             throw new Exception("User could not be updated");
         }
 

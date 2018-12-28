@@ -3,6 +3,7 @@ namespace TechDevs.Shared.Models
     public class CustomerProfile : AuthUserProfile
     {
         public CustomerData CustomerData { get; set; }
+
         public CustomerProfile(Customer user)
         {
             Username = user.Username;
@@ -12,7 +13,8 @@ namespace TechDevs.Shared.Models
             AgreedToTerms = user.AgreedToTerms;
             ValidatedEmail = user.ValidatedEmail;
             CustomerData = user.CustomerData;
+            ContactNumber = user.ContactNumber;
+            ProviderName = user.ProviderName;
         }
     }
-
 }

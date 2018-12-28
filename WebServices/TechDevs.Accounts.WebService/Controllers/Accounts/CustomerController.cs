@@ -35,48 +35,34 @@ namespace TechDevs.Accounts.WebService.Controllers
             return new OkObjectResult(new CustomerProfile(user));
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAccount([FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        [HttpPost("setname")]
+        public async Task<IActionResult> UpdateAccountName([FromHeader(Name = "TechDevs-ClientKey")] string clientKey, [FromQuery] string firstName, [FromQuery] string lastName)
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
-
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
             var user = await _accountService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
-            var result = await _accountService.Delete(user.EmailAddress, client.Id);
-            if (result == false) return new BadRequestResult();
-            return new OkResult();
-        }
-    }
+            var result = await _accountService.UpdateName(user.EmailAddress, firstName, lastName, client.Id);
 
-    [Authorize]
-    [Route("api/v1/employee/account")]
-    public class EmployeeController : Controller
-    {
-        private readonly IAuthUserService<Employee> _accountService;
-        private readonly IClientService _clientService;
-
-        public EmployeeController(IAuthUserService<Employee> accountService, IClientService clientService)
-        {
-            _accountService = accountService;
-            _clientService = clientService;
+            return new OkObjectResult(new CustomerProfile(result));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetProfile([FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        [HttpPost("setcontactdetails")]
+        public async Task<IActionResult> UpdateAccountContactDetails([FromHeader(Name = "TechDevs-ClientKey")] string clientKey, [FromQuery]string contactNumber)
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
-
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
-            var emp = await _accountService.GetById(userId, client.Id);
-            if (emp == null) return new NotFoundResult();
+            var user = await _accountService.GetById(userId, client.Id);
+            if (user == null) return new NotFoundResult();
 
-            return new OkObjectResult(new EmployeeProfile(emp));
+            var result = await _accountService.UpdateContactNuber(user.EmailAddress, contactNumber, client.Id);
+
+            return new OkObjectResult(new CustomerProfile(result));
         }
 
         [HttpDelete]
