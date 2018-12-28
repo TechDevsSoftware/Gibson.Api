@@ -22,7 +22,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddVehicle([FromBody] CustomerVehicle vehicle,  [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        public async Task<IActionResult> AddVehicle([FromBody] CustomerVehicle vehicle, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
         {
             try
             {

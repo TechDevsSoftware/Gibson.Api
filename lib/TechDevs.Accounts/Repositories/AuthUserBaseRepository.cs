@@ -12,27 +12,6 @@ using TechDevs.Shared.Utils;
 
 namespace TechDevs.Accounts.Repositories
 {
-    public class CustomerRepository : AuthUserBaseRepository<Customer>
-    {
-        public CustomerRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser) : base(dbSettings, normaliser)
-        {
-        }
-    }
-
-    public class EmployeeRepository : AuthUserBaseRepository<Employee>
-    {
-        public EmployeeRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser) : base(dbSettings, normaliser)
-        {
-        }
-    }
-
-    public abstract class UserRepository : AuthUserBaseRepository<AuthUser>
-    {
-        public UserRepository(IOptions<MongoDbSettings> dbSettings, IStringNormaliser normaliser) : base(dbSettings, normaliser)
-        {
-        }
-    }
-
     public abstract class AuthUserBaseRepository<TAuthUser> : IAuthUserRepository<TAuthUser> where TAuthUser : AuthUser
     {
         readonly IMongoDatabase _database;

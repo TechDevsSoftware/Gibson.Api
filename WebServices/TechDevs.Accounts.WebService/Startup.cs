@@ -15,7 +15,7 @@ using TechDevs.Clients;
 using TechDevs.Clients.Theme;
 using TechDevs.Mail;
 using TechDevs.MyVehicles;
-using TechDevs.Shared;
+using TechDevs.NotificationPreferences;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
 
@@ -83,6 +83,8 @@ namespace TechDevs.Accounts.WebService
             services.AddTransient<IAuthUserService<Employee>, EmployeeService>();
             services.AddTransient<IAuthTokenService<Customer>, AuthTokenService<Customer>>();
             services.AddTransient<IAuthTokenService<Employee>, AuthTokenService<Employee>>();
+            services.AddTransient<INotificationPreferencesService, NotificationPreferencesService>();
+            services.AddTransient<ICustomerService, CustomerService>();
 
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();

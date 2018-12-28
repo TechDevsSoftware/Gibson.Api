@@ -1,12 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
     <ProjectReference Include="..\TechDevs.Accounts\TechDevs.Accounts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

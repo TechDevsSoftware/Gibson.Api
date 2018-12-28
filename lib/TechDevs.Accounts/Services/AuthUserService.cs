@@ -11,21 +11,6 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Accounts
 {
-    public class CustomerService : AuthUserService<Customer>
-    {
-        public CustomerService(IAuthUserRepository<Customer> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
-            : base(userRepo, passwordHasher, emailer, appSettings)
-        {
-        }
-    }
-
-    public class EmployeeService : AuthUserService<Employee>
-    {
-        public EmployeeService(IAuthUserRepository<Employee> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
-            : base(userRepo, passwordHasher, emailer, appSettings)
-        {
-        }
-    }
 
     public abstract class AuthUserService : AuthUserService<AuthUser>
     {
@@ -42,7 +27,7 @@ namespace TechDevs.Accounts
 
     public abstract class AuthUserService<TAuthUser> : IAuthUserService<TAuthUser> where TAuthUser : AuthUser, new()
     {
-        private readonly IAuthUserRepository<TAuthUser> _userRepo;
+        public readonly IAuthUserRepository<TAuthUser> _userRepo;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEmailer _emailer;
         private readonly AppSettings _appSettings;
@@ -147,7 +132,6 @@ namespace TechDevs.Accounts
             if (user == null) throw new Exception("User not found");
             var result = await _userRepo.UpdateUser("ContactNumber", contactNumber, user.Id, clientId);
             return result;
-
         }
 
         public virtual async Task<bool> Delete(string email, string clientId)
