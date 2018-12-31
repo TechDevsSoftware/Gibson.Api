@@ -43,6 +43,7 @@
     <ProjectReference Include="..\..\lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj" />
     <ProjectReference Include="..\..\lib\TechDevs.NotificationPreferences\TechDevs.NotificationPreferences.csproj" />
     <ProjectReference Include="..\..\lib\TechDevs.MarketingPreferences\TechDevs.MarketingPreferences.csproj" />
+    <ProjectReference Include="..\..\lib\TechDevs.Clients.Offers\TechDevs.Clients.Offers.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />

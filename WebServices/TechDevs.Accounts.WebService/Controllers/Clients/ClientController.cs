@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
+using TechDevs.Clients.Offers;
 using TechDevs.Shared.Models;
 
 namespace TechDevs.Accounts.WebService.Controllers
@@ -11,10 +12,12 @@ namespace TechDevs.Accounts.WebService.Controllers
     public class ClientController : Controller
     {
         private readonly IClientService _clientService;
+        private readonly IBasicOffersService _basicOffersService;
 
-        public ClientController(IClientService clientService)
+        public ClientController(IClientService clientService, IBasicOffersService basicOffersService)
         {
             _clientService = clientService;
+            _basicOffersService = basicOffersService;
         }
 
         [HttpGet]
@@ -61,6 +64,18 @@ namespace TechDevs.Accounts.WebService.Controllers
         public async Task<IActionResult> DeleteClient([FromRoute] string clientId)
         {
             return new OkObjectResult(await _clientService.DeleteClient(clientId));
+        }
+
+        [HttpPost("data/basicoffers")]
+        public async Task<IActionResult> UpdateBasicOffer([FromBody] BasicOffer offer, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        {
+            return new OkObjectResult(await _basicOffersService.UpdateBasicOffer(offer, clientKey));
+        }
+
+        [HttpDelete("data/basicoffers/{offerId}")]
+        public async Task<IActionResult> DeleteBasicOffer([FromRoute] string offerId, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        {
+            return new OkObjectResult(await _basicOffersService.DeleteBasicOffer(offerId, clientKey));
         }
     }
 

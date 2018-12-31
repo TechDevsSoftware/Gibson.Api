@@ -19,6 +19,7 @@ using TechDevs.NotificationPreferences;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
 using TechDevs.MarketingPreferences;
+using TechDevs.Clients.Offers;
 
 namespace TechDevs.Accounts.WebService
 {
@@ -87,6 +88,7 @@ namespace TechDevs.Accounts.WebService
             services.AddTransient<INotificationPreferencesService, NotificationPreferencesService>();
             services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
             services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IBasicOffersService, BasicOffersService>();
 
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();

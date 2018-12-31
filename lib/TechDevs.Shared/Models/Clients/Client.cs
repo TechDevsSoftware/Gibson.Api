@@ -12,5 +12,14 @@ namespace TechDevs.Shared.Models
         public List<EmployeeProfile> Employees { get; set; }
         public List<CustomerProfile> Customers { get; set; }
         public ClientTheme ClientTheme { get; set; }
+        public ClientData ClientData { get; set; }
+
+        public Client()
+        {
+            ClientTheme = new ClientTheme();
+            ClientData = new ClientData();
+            Employees = new List<EmployeeProfile>();
+            Customers = new List<CustomerProfile>();
+        }
     }
 }
