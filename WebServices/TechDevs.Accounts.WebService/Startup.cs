@@ -18,6 +18,7 @@ using TechDevs.MyVehicles;
 using TechDevs.NotificationPreferences;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
+using TechDevs.MarketingPreferences;
 
 namespace TechDevs.Accounts.WebService
 {
@@ -84,6 +85,7 @@ namespace TechDevs.Accounts.WebService
             services.AddTransient<IAuthTokenService<Customer>, AuthTokenService<Customer>>();
             services.AddTransient<IAuthTokenService<Employee>, AuthTokenService<Employee>>();
             services.AddTransient<INotificationPreferencesService, NotificationPreferencesService>();
+            services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
             services.AddTransient<ICustomerService, CustomerService>();
 
             // Utils

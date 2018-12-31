@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TechDevs.Accounts\TechDevs.Accounts.csproj" />
+    <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="netstandard">
+      <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\sdk\NuGetFallbackFolder\netstandard.library\2.0.3\build\netstandard2.0\ref\netstandard.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

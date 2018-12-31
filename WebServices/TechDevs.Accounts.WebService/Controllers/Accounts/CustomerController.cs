@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -79,6 +80,26 @@ namespace TechDevs.Accounts.WebService.Controllers
             var result = await _accountService.Delete(user.EmailAddress, client.Id);
             if (result == false) return new BadRequestResult();
             return new OkResult();
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser([FromBody] AuthUserRegistration registration, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        {
+            try
+            {
+                var client = await _clientService.GetClientByShortKey(clientKey);
+                if (registration == null) return new BadRequestObjectResult("Invalid registration");
+                var result = await _accountService.RegisterUser(registration, client.Id);
+                return new OkObjectResult(result);
+            }
+            catch (UserRegistrationException ex)
+            {
+                return new BadRequestObjectResult("Validaiton Errors: " + Environment.NewLine + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex.Message);
+            }
         }
     }
 }

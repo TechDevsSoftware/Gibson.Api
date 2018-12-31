@@ -19,6 +19,7 @@
     <None Remove="Connected Services\Key Vault\**" />
     <None Remove="Interfaces\**" />
     <None Remove="wwwroot\**" />
+    <Compile Remove="Controllers\Accounts\CustomerNotificationPreferencesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.35.1" />
@@ -41,6 +42,7 @@
     <ProjectReference Include="..\..\lib\TechDevs.Mail\TechDevs.Mail.csproj" />
     <ProjectReference Include="..\..\lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj" />
     <ProjectReference Include="..\..\lib\TechDevs.NotificationPreferences\TechDevs.NotificationPreferences.csproj" />
+    <ProjectReference Include="..\..\lib\TechDevs.MarketingPreferences\TechDevs.MarketingPreferences.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
