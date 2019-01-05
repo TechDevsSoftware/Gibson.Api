@@ -136,6 +136,7 @@ namespace TechDevs.Accounts.WebService
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                     { "Bearer", Enumerable.Empty<string>() },
                 });
+                c.OperationFilter<TechDevsClientKeyHeaderFilter>();
             });
         }
 
