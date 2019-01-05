@@ -39,9 +39,29 @@ namespace TechDevs.Accounts.WebService.Controllers
     [Route("api/v1/employees")]
     public class EmployeeController : AccountController<Employee>
     {
+        private readonly IAuthUserService<Employee> _accountService;
+        private readonly IClientService _clientService;
+
         public EmployeeController(IAuthTokenService<Employee> tokenService, IAuthUserService<Employee> accountService, IClientService clientService)
             : base(tokenService, accountService, clientService)
         {
+            _accountService = accountService;
+            _clientService = clientService;
+        }
+
+
+        [HttpGet]
+        [Produces(typeof(EmployeeProfile))]
+        public override async Task<IActionResult> GetProfile()
+        {
+            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var userId = this.UserId();
+            if (userId == null) return new UnauthorizedResult();
+
+            var user = await _accountService.GetById(userId, client.Id);
+            if (user == null) return new NotFoundResult();
+
+            return new OkObjectResult(new EmployeeProfile(user));
         }
     }
 
