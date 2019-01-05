@@ -22,11 +22,11 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddVehicle([FromBody] CustomerVehicle vehicle, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        public async Task<IActionResult> AddVehicle([FromBody] CustomerVehicle vehicle)
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(clientKey);
+                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
 
                 var userId = this.UserId();
                 if (userId == null) return new UnauthorizedResult();
@@ -41,11 +41,11 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> RemoveVehicle(string registration, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        public async Task<IActionResult> RemoveVehicle(string registration)
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(clientKey);
+                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
                 var userId = this.UserId();
                 if (userId == null) return new UnauthorizedResult();
 

@@ -3,15 +3,7 @@ using System.Collections.Generic;
 
 namespace TechDevs.Shared.Models
 {
-    public class ClientData
-    {
-        public List<BasicOffer> BasicOffers { get; set; }
 
-        public ClientData()
-        {
-            BasicOffers = new List<BasicOffer>();
-        }
-    }
 
     public class BasicOffer
     {

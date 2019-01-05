@@ -14,20 +14,36 @@ namespace TechDevs.Accounts.WebService.Controllers
         private readonly IClientService _clientService;
         private readonly INotificationPreferencesService _notificationPreferences;
         private readonly IMarketingPreferencesService _marketingService;
+        private readonly ICustomerService _customerService;
 
-        public CustomerDataController(IClientService clientService, IMarketingPreferencesService marketingService, INotificationPreferencesService notificationPreferences)
+        public CustomerDataController(
+            IClientService clientService,
+            IMarketingPreferencesService marketingService,
+            INotificationPreferencesService notificationPreferences,
+            ICustomerService customerService
+            )
         {
             _clientService = clientService;
             _notificationPreferences = notificationPreferences;
             _marketingService = marketingService;
+            _customerService = customerService;
+        }
+
+        [HttpGet]
+        [Produces(typeof(Customer))]
+        public async Task<IActionResult> GetCustomerData()
+        {
+            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            return new OkObjectResult(await _customerService.GetById(this.UserId(), client.Id));
         }
 
         [HttpPost("preferences/marketing")]
-        public async Task<IActionResult> UpdateMarketingPreferences([FromBody] MarketingNotificationPreferences marketingPreferences, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        [Produces(typeof(Customer))]
+        public async Task<IActionResult> UpdateMarketingPreferences([FromBody] MarketingNotificationPreferences marketingPreferences)
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(clientKey);
+                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
                 var userId = this.UserId();
                 if (userId == null) return new UnauthorizedResult();
 
@@ -41,11 +57,12 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpPost("preferences/notifications")]
-        public async Task<IActionResult> UpdateNotificationPreferences([FromBody] CustomerNotificationPreferences notificationPreferences, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        [Produces(typeof(Customer))]
+        public async Task<IActionResult> UpdateNotificationPreferences([FromBody] CustomerNotificationPreferences notificationPreferences)
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(clientKey);
+                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
                 var userId = this.UserId();
                 if (userId == null) return new UnauthorizedResult();
 

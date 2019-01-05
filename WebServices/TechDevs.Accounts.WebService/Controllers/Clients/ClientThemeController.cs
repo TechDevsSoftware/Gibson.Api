@@ -19,6 +19,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpPost("{clientKey}/theme/parameters")]
+        [Produces(typeof(Client))]
         public async Task<IActionResult> AddParameter([FromRoute]string clientKey, [FromBody]CSSParameter parameter)
         {
             var client = await _clientService.GetClientByShortKey(clientKey);
@@ -27,6 +28,7 @@ namespace TechDevs.Accounts.WebService.Controllers
         }
 
         [HttpDelete("{clientKey}/theme/parameters")]
+        [Produces(typeof(Client))]
         public async Task<IActionResult> RemoveParameter([FromRoute]string clientKey, [FromQuery]string key)
         {
             var client = await _clientService.GetClientByShortKey(clientKey);

@@ -22,7 +22,7 @@ namespace TechDevs.Accounts
             _tokenSecret = "TechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKey";
         }
 
-        public string CreateToken(string userId, string requestedClaims, string clientId)
+        public string CreateToken(string userId)
         {
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();

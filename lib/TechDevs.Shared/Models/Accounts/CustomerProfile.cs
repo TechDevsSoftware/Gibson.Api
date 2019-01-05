@@ -4,17 +4,18 @@ namespace TechDevs.Shared.Models
     {
         public CustomerData CustomerData { get; set; }
 
-        public CustomerProfile(Customer user)
+        public CustomerProfile(Customer cust)
         {
-            Username = user.Username;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            EmailAddress = user.EmailAddress;
-            AgreedToTerms = user.AgreedToTerms;
-            ValidatedEmail = user.ValidatedEmail;
-            CustomerData = user.CustomerData;
-            ContactNumber = user.ContactNumber;
-            ProviderName = user.ProviderName;
+            CustomerData = cust.CustomerData;
+
+            Username = cust.Username;
+            FirstName = cust.FirstName;
+            LastName = cust.LastName;
+            EmailAddress = cust.EmailAddress;
+            AgreedToTerms = cust.AgreedToTerms;
+            ProviderName = cust.ProviderName;
+            ContactNumber = cust.ContactNumber;
+
         }
     }
 }

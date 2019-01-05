@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
@@ -11,12 +12,13 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Accounts.WebService.Controllers
 {
+    [AllowAnonymous]
     public abstract class AuthController<TAuthUser> : Controller where TAuthUser : AuthUser, new()
     {
         private readonly IAuthTokenService<TAuthUser> _tokenService;
         private readonly IAuthUserService<TAuthUser> _accountService;
         private readonly IClientService _clientService;
-        
+
         protected AuthController(IAuthTokenService<TAuthUser> tokenService, IAuthUserService<TAuthUser> accountService, IClientService clientService)
         {
             _tokenService = tokenService;
@@ -26,16 +28,17 @@ namespace TechDevs.Accounts.WebService.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest req, [FromHeader(Name = "TechDevs-ClientKey")] string clientKey)
+        [Produces(typeof(string))]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             // Get the clientId from the clientKey
-            var client = await _clientService.GetClientByShortKey(clientKey);
-            switch (req.Provider)
+            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            switch (request.Provider)
             {
                 case "TechDevs":
-                    return await LoginWithTechDevs(req.Email, req.Password, client.Id);
+                    return await LoginWithTechDevs(request.Email, request.Password, client.Id);
                 case "Google":
-                    return await LoginWithGoogle(req.ProviderIdToken, client.Id);
+                    return await LoginWithGoogle(request.ProviderIdToken, client.Id);
                 default:
                     return new BadRequestObjectResult("Unsupported auth provider");
             }
@@ -46,7 +49,7 @@ namespace TechDevs.Accounts.WebService.Controllers
             var valid = await _accountService.ValidatePassword(email, password, clientId);
             if (!valid) return new UnauthorizedResult();
             var user = await _accountService.GetByEmail(email, clientId);
-            var token = _tokenService.CreateToken(user.Id, "profile", clientId);
+            var token = _tokenService.CreateToken(user.Id);
             return new OkObjectResult(token);
         }
 
@@ -57,9 +60,9 @@ namespace TechDevs.Accounts.WebService.Controllers
                 var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
                 var user = await _accountService.GetByProvider("Google", payload.Subject, clientId);
 
-                if(user == null)
+                if (user == null)
                 {
-                    var regRequest = new AuthUserRegistration 
+                    var regRequest = new AuthUserRegistration
                     {
                         FirstName = payload.GivenName,
                         LastName = payload.FamilyName,
@@ -73,9 +76,9 @@ namespace TechDevs.Accounts.WebService.Controllers
                     };
                     var regResult = await _accountService.RegisterUser(regRequest, clientId);
                     user = regResult;
-                } 
+                }
 
-                var token = _tokenService.CreateToken(user.Id, "profile", clientId);
+                var token = _tokenService.CreateToken(user.Id);
                 return new OkObjectResult(token);
             }
             catch (InvalidJwtException)
@@ -87,26 +90,6 @@ namespace TechDevs.Accounts.WebService.Controllers
                 Debug.WriteLine(ex.Message);
                 return new UnauthorizedResult();
             }
-        }
-    }
-
-    [Produces("application/json")]
-    [Route("api/v1/employee/auth")]
-    public class EmployeAuthController : AuthController<Employee>
-    {
-        public EmployeAuthController(IAuthTokenService<Employee> tokenService, IAuthUserService<Employee> accountService, IClientService clientService) 
-            : base(tokenService, accountService, clientService)
-        {
-        }
-    }
-
-    [Produces("application/json")]
-    [Route("api/v1/customer/auth")]
-    public class CustomerAuthController : AuthController<Customer>
-    {
-        public CustomerAuthController(IAuthTokenService<Customer> tokenService, IAuthUserService<Customer> accountService, IClientService clientService)
-            : base(tokenService, accountService, clientService)
-        {
         }
     }
 }

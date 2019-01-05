@@ -11,8 +11,9 @@ namespace TechDevs.Shared.Models
         public string ProviderName { get; set; }
         public string ContactNumber { get; set; }
 
-        public AuthUserProfile() { }
-        public AuthUserProfile(Customer c)
+        public AuthUserProfile() {}
+
+        public AuthUserProfile(AuthUser c)
         {
             Username = c.Username;
             FirstName = c.FirstName;
@@ -21,17 +22,6 @@ namespace TechDevs.Shared.Models
             AgreedToTerms = c.AgreedToTerms;
             ProviderName = c.ProviderName;
             ContactNumber = c.ContactNumber;
-        }
-
-        public AuthUserProfile(Employee e)
-        {
-            Username = e.Username;
-            FirstName = e.FirstName;
-            LastName = e.LastName;
-            EmailAddress = e.EmailAddress;
-            AgreedToTerms = e.AgreedToTerms;
-            ProviderName = e.ProviderName;
-            ContactNumber = e.ContactNumber;
         }
     }
 }

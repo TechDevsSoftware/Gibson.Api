@@ -61,8 +61,8 @@ namespace TechDevs.Clients
                 var employees = await _users.OfType<Employee>().Find(clientFilter).ToListAsync();
                 var customers = await _users.OfType<Customer>().Find(clientFilter).ToListAsync();
 
-                client.Employees = employees.Select(e => new EmployeeProfile(e)).ToList();
-                client.Customers = customers.Select(e => new CustomerProfile(e)).ToList();
+                client.Employees = employees.Select(e => new AuthUserProfile(e)).ToList();
+                client.Customers = customers.Select(e => new AuthUserProfile(e)).ToList();
             }
             return client;
         }

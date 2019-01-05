@@ -20,5 +20,7 @@
 
         public AuthUserInvitation Invitation { get; set; }
         public bool Disabled { get; set; }
+
+        public AuthUser() {}
     }
 }
