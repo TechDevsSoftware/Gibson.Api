@@ -13,10 +13,16 @@ namespace TechDevs.Clients.Offers
             _clientRepository = clientRepository;
         }
 
-        public async Task<Client> UpdateBasicOffer(BasicOffer offer, string clientKey)
+        public async Task<Client> UpdateBasicOffer(BasicOffer offer, string clientId)
         {
             // Get the client and the existing offer
-            var client = await _clientRepository.GetClientByShortKey(clientKey);
+            var client = await _clientRepository.GetClient(clientId);
+
+            if(client.ClientData == null) {
+                client.ClientData = new ClientData();
+                client.ClientData.BasicOffers = new System.Collections.Generic.List<BasicOffer>();
+            }
+
             var existingOfferIndex = client?.ClientData?.BasicOffers.FindIndex(x => x.Id == offer.Id);
             if (!existingOfferIndex.HasValue || existingOfferIndex.Value == -1)
             {
@@ -33,10 +39,10 @@ namespace TechDevs.Clients.Offers
             return result;
         }
 
-        public async Task<Client> DeleteBasicOffer(string offerId, string clientKey)
+        public async Task<Client> DeleteBasicOffer(string offerId, string clientId)
         {
             // Get the client and the existing offer
-            var client = await _clientRepository.GetClientByShortKey(clientKey);
+            var client = await _clientRepository.GetClient(clientId);
             var existingOfferIndex = client?.ClientData?.BasicOffers.FindIndex(x => x.Id == offerId);
             if (!existingOfferIndex.HasValue || existingOfferIndex.Value == -1) throw new Exception("Offer could not be found");
             // Replace the existing offer
