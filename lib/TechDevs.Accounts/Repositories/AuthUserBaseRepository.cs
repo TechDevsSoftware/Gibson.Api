@@ -50,7 +50,7 @@ namespace TechDevs.Accounts.Repositories
             return (result.IsAcknowledged && result.DeletedCount > 0);
         }
 
-        public async Task<TAuthUser> FindById(string id, string clientId)
+        public virtual async Task<TAuthUser> FindById(string id, string clientId)
         {
             var json = FilterById(id, clientId).ToJson();
             var results = await _users.OfType<TAuthUser>().FindAsync(FilterById(id, clientId));
@@ -58,10 +58,9 @@ namespace TechDevs.Accounts.Repositories
             return result;
         }
 
-        public async Task<TAuthUser> FindByEmail(string email, string clientId)
+        public virtual async Task<TAuthUser> FindByEmail(string email, string clientId)
         {
             var json = FilterByEmail(email, clientId);
-            //var result = await _users.OfType<TAuthUser>().Find(x => x.EmailAddress == email && x.Id == clientId).FirstOrDefaultAsync();
             var results = await _users.OfType<TAuthUser>().FindAsync(FilterByEmail(email, clientId));
             var result = await results.FirstOrDefaultAsync();
             return result;
