@@ -22,6 +22,8 @@
     <Compile Remove="Controllers\Accounts\CustomerNotificationPreferencesController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Audit.NET.MongoDB" Version="14.0.2" />
+    <PackageReference Include="Audit.WebApi.Core" Version="14.0.2" />
     <PackageReference Include="Google.Apis.Auth" Version="1.35.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />

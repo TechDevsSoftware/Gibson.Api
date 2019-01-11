@@ -20,6 +20,9 @@ using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
 using TechDevs.MarketingPreferences;
 using TechDevs.Clients.Offers;
+using Audit.WebApi;
+using Audit.Core;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace TechDevs.Accounts.WebService
 {
@@ -70,8 +73,6 @@ namespace TechDevs.Accounts.WebService
                 };
             });
 
-
-
             // Repositories
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
@@ -110,7 +111,6 @@ namespace TechDevs.Accounts.WebService
                 .AddUserSecrets<MongoDbSettings>()
                 .AddUserSecrets<AppSettings>()
                 .AddEnvironmentVariables();
-
             // Configure
             services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
@@ -127,7 +127,28 @@ namespace TechDevs.Accounts.WebService
                 services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             }
 
-            services.AddMvc();
+            // Setup the API Audit DB
+            Audit.Core.Configuration
+                .Setup()
+                .UseMongoDB(config => config
+                    .ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
+                    .Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
+                    .Collection("APIAudit"));
+
+
+            services.AddMvc(mvc =>
+         {
+             mvc.AddAuditFilter(config => config
+                  .LogAllActions()
+                 // .LogActionIf(x => true)
+                 .WithEventType("{verb}.{controller}.{action}")
+                 .IncludeHeaders(ctx => !ctx.ModelState.IsValid)
+                 .IncludeRequestBody()
+                 .IncludeModelState()
+                 .IncludeResponseBody());
+         });
+
+            // services.AddMvc();
 
             services.AddSwaggerGen(c =>
             {
@@ -145,20 +166,90 @@ namespace TechDevs.Accounts.WebService
         {
             app.UseCors("default");
 
+
+            // Add Custom configuration for Audit API
+
+            SensitiveInformation.Custom();
+
+            app.Use(async (context, next) =>
+            {  // <----
+                context.Request.EnableRewind();
+                await next();
+            });
+
+
+
+            // app.UseAuditMiddleware(_ => _
+            //             .FilterByRequest(rq => !rq.Path.Value.EndsWith("favicon.ico"))
+            //             .WithEventType("{verb}:{url}")
+            //             .IncludeHeaders()
+            //             .IncludeResponseHeaders()
+            //             .IncludeRequestBody()
+            //             .IncludeResponseBody());
+
+
+            // app.UseAuditMiddleware(_ => _
+            // .WithEventType("{verb}:{url}")
+            // .IncludeHeaders()
+            //              .IncludeResponseHeaders()
+            //              .IncludeRequestBody()
+            //              .IncludeResponseBody());
+
+
+
+
+
+
             if (env.IsDevelopment())
             {
                 // app.UseDeveloperExceptionPage();
             }
 
+
+
             app.UseAuthentication();
 
-            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Profile API v1");
             });
+
+
+        }
+    }
+
+    public static class SensitiveInformation
+    {
+        public static void Custom()
+        {
+            Audit.Core.Configuration.AddCustomAction(Audit.Core.ActionType.OnEventSaving, action =>
+            {
+                var mvc = action.Event.GetWebApiAuditAction();//.GetMvcAuditAction();
+
+                if (mvc.ActionName.ToUpper() == "LOGIN")
+                {
+                    mvc.RequestBody.Value = null;
+                    if (mvc.ActionParameters.ContainsKey("request"))
+                    {
+                        dynamic x = mvc.ActionParameters["request"];
+                        mvc.ActionParameters["request"] = RemoveSensitiveData(x);
+                    }
+                }
+            });
+        }
+
+        private static object RemoveSensitiveData(object vm)
+        {
+            return vm;
+        }
+
+        private static LoginRequest RemoveSensitiveData(LoginRequest vm)
+        {
+            vm.Password = "{RemovedSensitiveInformation}";
+            return vm;
         }
     }
 }
