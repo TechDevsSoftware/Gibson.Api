@@ -66,5 +66,24 @@ namespace TechDevs.Accounts.WebService.Controllers
             var result = await _myVehicleService.LookupVehicle(registration);
             return new OkObjectResult(result);
         }
+
+        [HttpPost("refreshmot")]
+        public async Task<IActionResult> UpdateVehicleMOTData(string registration)
+        {
+            try
+            {
+                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+                var userId = this.UserId();
+                if (userId == null) return new UnauthorizedResult();
+
+                var result = await _myVehicleService.UpdateVehicleMOTData(registration, userId, client.Id);
+                return new OkObjectResult(result);
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+        }
     }
 }

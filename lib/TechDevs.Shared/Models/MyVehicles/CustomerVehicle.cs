@@ -13,5 +13,6 @@ namespace TechDevs.Shared.Models
         public int Year { get; set; }
         public DateTime? MOTExpiryDate { get; set; }
         public List<MotResult> MOTResults { get; set; }
+        public DateTime? LastUpdated { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace TechDevs.MyVehicles
             if (user == null) throw new Exception("User not found");
 
             if (user.CustomerData.MyVehicles.Any(v => v.Registration == vehicle.Registration)) throw new Exception("Vehicle already added. Cannot duplicate vehicle registrations.");
-
+            
             user.CustomerData.MyVehicles.Add(vehicle);
 
             var result = await _userRepo.UpdateUser<CustomerVehicle>("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
@@ -42,6 +42,23 @@ namespace TechDevs.MyVehicles
 
             var result = await _userRepo.UpdateUser<CustomerVehicle>("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
             return result;
+        }
+
+        public async Task<Customer> UpdateVehicleMOTData(string registration, string userId, string clientId)
+        {
+            var user = await _userRepo.FindById(userId, clientId);
+            if (user == null) throw new Exception("User not found");
+
+            var existingVehicle = user.CustomerData.MyVehicles.Find(x => x.Registration == registration);
+
+            var latestMOTData = await LookupVehicle(registration);
+            if(existingVehicle != latestMOTData)
+            {
+                user.CustomerData.MyVehicles[user.CustomerData.MyVehicles.FindIndex(x => x.Registration == registration)] = latestMOTData;
+                var result = await _userRepo.UpdateUser<CustomerVehicle>("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
+                return result;
+            }
+            return user;
         }
 
         public async Task<CustomerVehicle> LookupVehicle(string registration)
@@ -89,7 +106,7 @@ namespace TechDevs.MyVehicles
                         }).ToList()
                     }).ToList()
                 };
-                
+                vehicle.LastUpdated = DateTime.UtcNow;
                 return vehicle;
             }
 
