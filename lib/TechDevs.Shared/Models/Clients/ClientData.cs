@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace TechDevs.Shared.Models
 {
-
-
     public class BasicOffer
     {
         public string Id { get; set; }

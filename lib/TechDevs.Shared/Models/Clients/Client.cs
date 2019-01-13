@@ -13,16 +13,23 @@ namespace TechDevs.Shared.Models
         public List<AuthUserProfile> Customers { get; set; }
         public ClientTheme ClientTheme { get; set; }
         public ClientData ClientData { get; set; }
+        public ClientSubscription Subscription { get; set; }
 
         public Client()
         {
+            Subscription = new ClientSubscription();
             ClientTheme = new ClientTheme();
             ClientData = new ClientData();
             Employees = new List<AuthUserProfile>();
             Customers = new List<AuthUserProfile>();
         }
     }
-    
+
+    public enum SubscriptionStatus
+    {
+        None, Active, Expired, Disabled
+    }
+
     public class ClientData
     {
         public List<BasicOffer> BasicOffers { get; set; }

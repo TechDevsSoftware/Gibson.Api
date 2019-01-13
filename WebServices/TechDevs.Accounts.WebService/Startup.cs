@@ -23,6 +23,7 @@ using TechDevs.Clients.Offers;
 using Audit.WebApi;
 using Audit.Core;
 using Microsoft.AspNetCore.Http.Internal;
+using TechDevs.Products;
 
 namespace TechDevs.Accounts.WebService
 {
@@ -90,6 +91,9 @@ namespace TechDevs.Accounts.WebService
             services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IBasicOffersService, BasicOffersService>();
+            services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<IProductsRepository, ProductsRepository>();
+            services.AddTransient<IClientSubscriptionService, ClientSubscriptionService>();
 
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
