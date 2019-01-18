@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
-    <ProjectReference Include="..\TechDevs.Accounts\TechDevs.Accounts.csproj" />
+    <ProjectReference Include="..\TechDevs.Users\TechDevs.Users.csproj" />
   </ItemGroup>
 
   <ItemGroup>

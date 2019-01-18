@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="moq" Version="4.10.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Mongo2Go" Version="2.2.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TechDevs.Clients\TechDevs.Clients.csproj" />
+    <ProjectReference Include="..\..\WebServices\TechDevs.Accounts.WebService\TechDevs.Gibson.WebService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Client_SeedData.json" />
+    <None Remove="appSettings %28copy%29.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Client_SeedData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="ClientServiceUnitTests.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+</Project>

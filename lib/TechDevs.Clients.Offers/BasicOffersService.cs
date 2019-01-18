@@ -13,14 +13,19 @@ namespace TechDevs.Clients.Offers
             _clientRepository = clientRepository;
         }
 
+        // If ClientData IsNull New Up A new client Data
+
         public async Task<Client> UpdateBasicOffer(BasicOffer offer, string clientId)
         {
             // Get the client and the existing offer
             var client = await _clientRepository.GetClient(clientId);
 
-            if(client.ClientData == null) {
-                client.ClientData = new ClientData();
-                client.ClientData.BasicOffers = new System.Collections.Generic.List<BasicOffer>();
+            if (client.ClientData == null)
+            {
+                client.ClientData = new ClientData
+                {
+                    BasicOffers = new System.Collections.Generic.List<BasicOffer>()
+                };
             }
 
             var existingOfferIndex = client?.ClientData?.BasicOffers.FindIndex(x => x.Id == offer.Id);
@@ -38,6 +43,8 @@ namespace TechDevs.Clients.Offers
             var result = await _clientRepository.UpdateClient("ClientData.BasicOffers", client.ClientData.BasicOffers, client.Id);
             return result;
         }
+
+        // If Offer cannot be found throw exception
 
         public async Task<Client> DeleteBasicOffer(string offerId, string clientId)
         {

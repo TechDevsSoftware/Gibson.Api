@@ -1,8 +1,8 @@
-using MongoDB.Bson.Serialization;
+﻿using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Accounts.WebService
+namespace TechDevs.Gibson.WebService
 {
     public static class MongoDBConfig
     {

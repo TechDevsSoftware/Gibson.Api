@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TechDevs.Accounts.Middleware;
-using TechDevs.Accounts.Repositories;
 using TechDevs.Clients;
 using TechDevs.Clients.Theme;
 using TechDevs.Mail;
@@ -23,8 +21,11 @@ using TechDevs.Clients.Offers;
 using Audit.WebApi;
 using Audit.Core;
 using Microsoft.AspNetCore.Http.Internal;
+using TechDevs.Customers;
+using TechDevs.Employees;
+using TechDevs.Users;
 
-namespace TechDevs.Accounts.WebService
+namespace TechDevs.Gibson.WebService
 {
     public class Startup
     {
@@ -111,11 +112,24 @@ namespace TechDevs.Accounts.WebService
                 .AddUserSecrets<MongoDbSettings>()
                 .AddUserSecrets<AppSettings>()
                 .AddEnvironmentVariables();
+
             // Configure
             services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
-            services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
 
-            if (_env.IsDevelopment())
+            if (_env.IsEnvironment("IntegrationTesting"))
+            {
+                services.Configure<MongoDbSettings>(config =>
+                {
+                    config.ConnectionString = "mongodb://127.0.0.1:27017/";
+                    config.Database = "accounts";
+                });
+            }
+            else
+            {
+                services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
+            }
+
+            if (_env.IsDevelopment() || _env.IsEnvironment("IntegrationTesting"))
             {
                 services.Configure<AppSettings>(config =>
                 {
@@ -128,19 +142,23 @@ namespace TechDevs.Accounts.WebService
             }
 
             // Setup the API Audit DB
-            Audit.Core.Configuration
-                .Setup()
-                .UseMongoDB(config => config
-                    .ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
-                    .Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
-                    .Collection("APIAudit"));
+
+            if (_env.IsProduction() || _env.IsStaging())
+            {
+                Audit.Core.Configuration
+                     .Setup()
+                     .UseMongoDB(config => config
+                                 .ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
+                                 .Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
+                                 .Collection("APIAudit"));
+
+            }
 
 
             services.AddMvc(mvc =>
          {
              mvc.AddAuditFilter(config => config
                   .LogAllActions()
-                 // .LogActionIf(x => true)
                  .WithEventType("{verb}.{controller}.{action}")
                  .IncludeHeaders(ctx => !ctx.ModelState.IsValid)
                  .IncludeRequestBody()

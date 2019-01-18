@@ -6,8 +6,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json;
-using TechDevs.Accounts.Repositories;
 using TechDevs.Shared.Models;
+using TechDevs.Users;
 
 namespace TechDevs.MyVehicles
 {

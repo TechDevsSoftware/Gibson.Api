@@ -1,11 +1,12 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
 using TechDevs.Shared.Models;
+using TechDevs.Users;
 
-namespace TechDevs.Accounts.WebService.Controllers
+namespace TechDevs.Gibson.WebService.Controllers
 {
     [Route("api/v1/customers")]
     public class CustomerController : AccountController<Customer>

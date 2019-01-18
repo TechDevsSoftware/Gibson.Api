@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\TechDevs.Accounts\TechDevs.Accounts.csproj" />
     <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
+    <ProjectReference Include="..\TechDevs.Customers\TechDevs.Customers.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

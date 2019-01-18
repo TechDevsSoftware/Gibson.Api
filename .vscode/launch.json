@@ -10,10 +10,10 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/WebServices/TechDevs.Accounts.WebService/bin/Debug/netcoreapp2.0/TechDevs.Accounts.WebService.dll",
+            "program": "${workspaceFolder}/WebServices/TechDevs.Users.WebService/bin/Debug/netcoreapp2.0/TechDevs.Users.WebService.dll",
             "args": [
             ],
-            "cwd": "${workspaceFolder}/WebServices/TechDevs.Accounts.WebService",
+            "cwd": "${workspaceFolder}/WebServices/TechDevs.Users.WebService",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
