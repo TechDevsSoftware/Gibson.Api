@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using TechDevs.Accounts;
 using TechDevs.Shared.Models;
+using TechDevs.Customers;
 
 namespace TechDevs.NotificationPreferences
 {

@@ -1,0 +1,503 @@
+﻿{
+  "_id": "3061cd9e-f525-4af9-b906-0a78fa8355ec",
+  "Name": "TechDevs Administration",
+  "SiteUrl": "http://localhost:4200",
+  "ClientApiKey": "3f13b805-ea1d-448e-b103-06e16ce71136",
+  "Employees": null,
+  "Customers": null,
+  "ClientTheme": null,
+  "ShortKey": "techdevs"
+},
+{
+  "_id": "8f416fe2-2591-47f5-8a85-6ebceed14dac",
+  "Name": "TechDevs Dealership",
+  "SiteUrl": "https://techdevs.net",
+  "ClientApiKey": "a1135639-fccb-477c-b19a-aae6c4ee89fe",
+  "ShortKey": "tdtest",
+  "Employees": null,
+  "Customers": null,
+  "ClientTheme": {
+    "Font": null,
+    "PrimaryColour": "#6bcb00",
+    "SecondaryColour": "#2f2f2f2",
+    "WarningColour": null,
+    "DangerColour": null,
+    "LogoPath": "https://gibson-dealership-portal.netlify.com/assets/images/td.png",
+    "LogoData": null,
+    "Parameters": [
+      {
+        "Key": "--td-primary",
+        "Value": "#6fc908"
+      },
+      {
+        "Key": "--td-secondary",
+        "Value": "#1c1d21"
+      }
+    ]
+  }
+},{
+  "_id": "096f3054-efcd-4826-880f-a46cacb1c36a",
+  "Name": "Linslade Tyres",
+  "SiteUrl": "http://linsladetyres.co.uk",
+  "ClientApiKey": "a7e9830f-ee45-49e9-8492-23a21babd53b",
+  "ShortKey": "linsladetyres",
+  "Employees": null,
+  "Customers": null,
+  "ClientTheme": {
+    "Font": null,
+    "PrimaryColour": null,
+    "SecondaryColour": null,
+    "WarningColour": null,
+    "DangerColour": null,
+    "LogoPath": "https://www.linsladetyres.com/wp-content/uploads/2016/10/Linslade_header.png",
+    "LogoData": null,
+    "Parameters": [
+      {
+        "Key": "--td-secondary",
+        "Value": "#a90000"
+      },
+      {
+        "Key": "--td-primary",
+        "Value": "#1d1e67"
+      }
+    ]
+  }
+},
+{
+  "_id": "f3e35497-18ed-410b-9569-707f0ce6e70e",
+  "Name": "Bennys Tyres",
+  "SiteUrl": "http://bennystyres.com",
+  "ClientApiKey": "11c60622-44e6-4493-9872-0eef4dfa4d51",
+  "ShortKey": "bennys-tyres",
+  "Employees": [],
+  "Customers": [
+    {
+      "Username": "amobilefox@gmail.com",
+      "FirstName": "Adam",
+      "LastName": "Fox",
+      "EmailAddress": "amobilefox@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    }
+  ],
+  "ClientTheme": null,
+  "ClientData": {
+    "BasicOffers": []
+  }
+},
+{
+  "_id": "78fb4cb7-54d2-4069-90dd-dcf37aea728d",
+  "Name": "Kwik Fit",
+  "SiteUrl": "http://kwikfit.com",
+  "ClientApiKey": "240974d5-9baf-4cd1-a7e1-86ada3991bd9",
+  "ShortKey": "kwikfit",
+  "Employees": null,
+  "Customers": null,
+  "ClientTheme": {
+    "Font": null,
+    "PrimaryColour": null,
+    "SecondaryColour": null,
+    "WarningColour": null,
+    "DangerColour": null,
+    "LogoPath": "https://www.kwik-fit.com/images/template/main-logo_600x120_blue.png",
+    "LogoData": null,
+    "Parameters": [
+      {
+        "Key": "--td-primary",
+        "Value": "#0364b0\t"
+      },
+      {
+        "Key": "--td-secondary",
+        "Value": "#fcaf17"
+      }
+    ]
+  },
+  "ClientData": {
+    "BasicOffers": []
+  }
+},
+{
+  "_id": "0901ce46-bc9e-4de7-a2bf-b81b87e47f64",
+  "Name": "Car Shop",
+  "SiteUrl": "https://carshop.co.uk",
+  "ClientApiKey": "a1135639-fccb-477c-b19a-aae6c4ee89fe",
+  "ShortKey": "carshop",
+  "Employees": [
+    {
+      "Username": "stevekent55@me.com",
+      "FirstName": "Sophie",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@me.com",
+      "AgreedToTerms": false,
+      "ValidatedEmail": false,
+      "ProviderName": "TechDevs",
+      "ContactNumber": null
+    },
+    {
+      "Username": "stevekent55@live.com",
+      "FirstName": "George",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@live.com",
+      "AgreedToTerms": false,
+      "ValidatedEmail": false,
+      "ProviderName": "TechDevs",
+      "ContactNumber": null
+    }
+  ],
+  "Customers": [
+    {
+      "Username": "stevekent55@me.com",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@me.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": null,
+      "ContactNumber": null
+    },
+    {
+      "Username": "dmarsala89@gmail.com",
+      "FirstName": "Denise",
+      "LastName": "Marsala",
+      "EmailAddress": "dmarsala89@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": "null"
+    },
+    {
+      "Username": "adam@techdevs.net",
+      "FirstName": "Adam",
+      "LastName": "Fox",
+      "EmailAddress": "adam@techdevs.net",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": null,
+      "ContactNumber": null
+    },
+    {
+      "Username": "stevekent55@live.com",
+      "FirstName": "George",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@live.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": null,
+      "ContactNumber": null
+    },
+    {
+      "Username": "marsala@homail.co.uk",
+      "FirstName": "Denise",
+      "LastName": "Marsala",
+      "EmailAddress": "marsala@homail.co.uk",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "TechDevs",
+      "ContactNumber": null
+    },
+    {
+      "Username": "stevekent55@gmail.com",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": "null"
+    },
+    {
+      "Username": "amobilefox@gmail.com",
+      "FirstName": "Adam",
+      "LastName": "Fox",
+      "EmailAddress": "amobilefox@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "steve@techdevs.net",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "steve@techdevs.net",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": "07514344326"
+    }
+  ],
+  "ClientTheme": {
+    "Font": "",
+    "PrimaryColour": null,
+    "SecondaryColour": null,
+    "WarningColour": null,
+    "DangerColour": null,
+    "LogoPath": "https://www.carshop.co.uk/images/carshop-logo-landscape.svg",
+    "LogoData": null,
+    "Parameters": [
+      {
+        "Key": "--td-login-background",
+        "Value": "#fff"
+      },
+      {
+        "Key": "--td-primary",
+        "Value": "#eb018b"
+      },
+      {
+        "Key": "--td-secondary",
+        "Value": "#00adee"
+      }
+    ]
+  },
+  "ClientData": {
+    "BasicOffers": [
+      {
+        "_id": "34a5776e-cdb2-43f3-a05c-705cb83e7c69",
+        "OfferCode": "MOT10",
+        "Title": "10% off MOT's now only £49",
+        "Description": "This is the description for the offer",
+        "ImageSrc": "https://blog.swanswaygarages.com/s3/uploads/2017/10/MOT-Checks-under-car.jpg",
+        "Badge": "10% off",
+        "Enabled": true
+      },
+      {
+        "_id": "0fc9bdc3-beac-4caa-be8d-a71182361e4d",
+        "OfferCode": "SERVICE30",
+        "Title": "30% off a full service now only £99",
+        "Description": null,
+        "ImageSrc": "https://cdn.am-online.com/media/1/root/car-garage-service-mot-stock-image_w268.jpg",
+        "Badge": "30% off",
+        "Enabled": true
+      },
+      {
+        "_id": "64f8e59f-42cc-4edd-bc81-554286efa7b8",
+        "OfferCode": "sdfsdf",
+        "Title": "adafdsdf",
+        "Description": "sfsdfsdf",
+        "ImageSrc": "https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX20097626.jpg",
+        "Badge": null,
+        "Enabled": true
+      },
+      {
+        "_id": "df5b3da6-3e86-4a4b-846b-2ea8e96b94fa",
+        "OfferCode": "nknlnlk",
+        "Title": "Steve New Test",
+        "Description": "sdeknflksn",
+        "ImageSrc": "https://cdn.am-online.com/media/1/root/car-garage-service-mot-stock-image_w268.jpg",
+        "Badge": null,
+        "Enabled": true
+      }
+    ]
+  }
+},
+{
+  "_id": "00bd9fef-910c-4434-844c-449f1fbb48e1",
+  "Name": "NMJ Motorhouse",
+  "SiteUrl": "https://www.nmjmotorhouse.co.uk",
+  "ClientApiKey": "a1135639-fccb-477c-b19a-aae6c4ee89fe",
+  "ShortKey": "nmj",
+  "Employees": [
+    {
+      "Username": "amobilefox@gmail.com",
+      "FirstName": "Adam",
+      "LastName": "Fox",
+      "EmailAddress": "amobilefox@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "adam@nmjmotorhouse.co.uk",
+      "FirstName": "Adam",
+      "LastName": "Fox",
+      "EmailAddress": "adam@nmjmotorhouse.co.uk",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "bobby@nmjmotorhouse.co.uk",
+      "FirstName": "Bobby",
+      "LastName": "Turner",
+      "EmailAddress": "bobby@nmjmotorhouse.co.uk",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "stevekent55@gmail.com",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@gmail.com",
+      "AgreedToTerms": false,
+      "ValidatedEmail": false,
+      "ProviderName": "TechDevs",
+      "ContactNumber": null
+    }
+  ],
+  "Customers": [
+    {
+      "Username": "marsala@techdevs.net",
+      "FirstName": "Denise",
+      "LastName": "Marsala",
+      "EmailAddress": "marsala@techdevs.net",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": null,
+      "ContactNumber": null
+    },
+    {
+      "Username": "adam.fox@specialistcars.co.uk",
+      "FirstName": "Adam",
+      "LastName": "Fox",
+      "EmailAddress": "adam.fox@specialistcars.co.uk",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "steve@fakeemail.com",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "steve@fakeemail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "TechDevs",
+      "ContactNumber": null
+    },
+    {
+      "Username": "steve@techdevs.net",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "steve@techdevs.net",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "stevekent55@gmail.com",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "test@techdevs.net",
+      "FirstName": "George",
+      "LastName": "Kent",
+      "EmailAddress": "test@techdevs.net",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": null,
+      "ContactNumber": null
+    },
+    {
+      "Username": "stevekent55@me.com",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "stevekent55@me.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": null,
+      "ContactNumber": "null"
+    },
+    {
+      "Username": "steve@fake.com",
+      "FirstName": "Steve",
+      "LastName": "Kent",
+      "EmailAddress": "steve@fake.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "TechDevs",
+      "ContactNumber": null
+    },
+    {
+      "Username": "bobby@nmjmotorhouse.co.uk",
+      "FirstName": "Bobby",
+      "LastName": "Turner",
+      "EmailAddress": "bobby@nmjmotorhouse.co.uk",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "TechDevs",
+      "ContactNumber": null
+    },
+    {
+      "Username": "dmarsala89@gmail.com",
+      "FirstName": "Denise",
+      "LastName": "Marsala",
+      "EmailAddress": "dmarsala89@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    },
+    {
+      "Username": "amobilefox@gmail.com",
+      "FirstName": "Adam",
+      "LastName": "Fox",
+      "EmailAddress": "amobilefox@gmail.com",
+      "AgreedToTerms": true,
+      "ValidatedEmail": false,
+      "ProviderName": "Google",
+      "ContactNumber": null
+    }
+  ],
+  "ClientTheme": {
+    "Font": null,
+    "PrimaryColour": "#19468a",
+    "SecondaryColour": "#2f2f2f2",
+    "WarningColour": null,
+    "DangerColour": null,
+    "LogoPath": "https://i.ibb.co/jbPbXZx/rsz-nmjlogo.png",
+    "LogoData": null,
+    "Parameters": [
+      {
+        "Key": "--td-logo-background",
+        "Value": "#19468a"
+      },
+      {
+        "Key": "--td-primary",
+        "Value": "#19468a"
+      },
+      {
+        "Key": "--td-menu-background",
+        "Value": "#19468a"
+      },
+      {
+        "Key": "--td-menu-text",
+        "Value": "#fff"
+      },
+      {
+        "Key": "--td-menu-text-active",
+        "Value": "#ccc"
+      },
+      {
+        "Key": "--td-secondary",
+        "Value": "#000"
+      }
+    ]
+  },
+  "ClientData": {
+    "BasicOffers": [
+      {
+        "_id": "46147880-b2d9-4c1e-b56d-784def901296",
+        "OfferCode": "MOT15",
+        "Title": "Save 15% on an MOT",
+        "Description": "Valid until February 20th 2019",
+        "ImageSrc": "https://cdn.images.express.co.uk/img/dynamic/24/590x/MOT-test-1023203.jpg?r=1537973977252",
+        "Badge": null,
+        "Enabled": true
+      }
+    ]
+  }
+}

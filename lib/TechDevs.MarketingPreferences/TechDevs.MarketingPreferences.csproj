@@ -8,8 +8,8 @@
     <Compile Remove="Class1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TechDevs.Accounts\TechDevs.Accounts.csproj" />
     <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
+    <ProjectReference Include="..\TechDevs.Customers\TechDevs.Customers.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="netstandard">

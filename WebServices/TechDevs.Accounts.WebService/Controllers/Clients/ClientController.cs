@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Accounts.WebService.Controllers
+namespace TechDevs.Gibson.WebService.Controllers
 {
     [Route("api/v1/clients")]
     public class ClientController : Controller

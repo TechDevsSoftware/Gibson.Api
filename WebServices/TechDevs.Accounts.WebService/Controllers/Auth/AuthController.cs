@@ -9,8 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
 using TechDevs.Shared.Models;
+using TechDevs.Users;
 
-namespace TechDevs.Accounts.WebService.Controllers
+namespace TechDevs.Gibson.WebService.Controllers
 {
     [AllowAnonymous]
     public abstract class AuthController<TAuthUser> : Controller where TAuthUser : AuthUser, new()

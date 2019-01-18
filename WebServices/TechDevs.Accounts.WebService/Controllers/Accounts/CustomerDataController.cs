@@ -5,8 +5,9 @@ using TechDevs.Clients;
 using TechDevs.Shared.Models;
 using TechDevs.MarketingPreferences;
 using TechDevs.NotificationPreferences;
+using TechDevs.Customers;
 
-namespace TechDevs.Accounts.WebService.Controllers
+namespace TechDevs.Gibson.WebService.Controllers
 {
     [Route("api/v1/customer/account")]
     public class CustomerDataController : Controller

@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
 using TechDevs.Clients.Offers;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Accounts.WebService.Controllers
+namespace TechDevs.Gibson.WebService.Controllers
 {
     [Route("api/v1/clients/data/basicoffers")]
     public class BasicOffersController : Controller

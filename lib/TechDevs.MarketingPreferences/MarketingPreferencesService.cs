@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using TechDevs.Accounts;
+using TechDevs.Customers;
 using TechDevs.Shared.Models;
 
 namespace TechDevs.MarketingPreferences

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace TechDevs.Accounts.Middleware
+namespace TechDevs.Users.Middleware
 {
     public class ErrorHandlingMiddleware
     {
