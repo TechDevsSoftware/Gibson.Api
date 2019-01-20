@@ -19,7 +19,6 @@
     <None Remove="Connected Services\Key Vault\**" />
     <None Remove="Interfaces\**" />
     <None Remove="wwwroot\**" />
-    <Compile Remove="Controllers\Accounts\CustomerNotificationPreferencesController.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Audit.NET.MongoDB" Version="14.0.2" />
@@ -52,6 +51,7 @@
     <ProjectReference Include="..\..\lib\TechDevs.Employees\TechDevs.Employees.csproj" />
     <ProjectReference Include="..\..\lib\TechDevs.Clients.Theme\TechDevs.Clients.Theme.csproj" />
     <ProjectReference Include="..\..\lib\TechDevs.Users\TechDevs.Users.csproj" />
+    <ProjectReference Include="..\..\lib\TechDevs.Clients.BookingRequests\TechDevs.Clients.BookingRequests.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />

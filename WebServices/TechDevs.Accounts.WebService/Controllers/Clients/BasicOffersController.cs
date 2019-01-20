@@ -6,6 +6,7 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.WebService.Controllers
 {
+
     [Route("api/v1/clients/data/basicoffers")]
     public class BasicOffersController : Controller
     {

@@ -31,6 +31,11 @@ namespace TechDevs.Gibson.WebService.Controllers
         public async Task<IActionResult> GetClientById([FromRoute] string clientId, [FromQuery] bool includeRelatedAuthUsers = false) =>
             new OkObjectResult(await _clientService.GetClient(clientId, includeRelatedAuthUsers));
 
+        [HttpGet("customer")]
+        [Produces(typeof(List<PublicClient>))]
+        public async Task<IActionResult> GetClientsByCustomerEmail([FromQuery] string customerEmail) =>
+            new OkObjectResult(await _clientService.GetClientsByCustomer(customerEmail));
+
         [HttpPost]
         [Produces(typeof(Client))]
         public async Task<IActionResult> CreateClient([FromBody] ClientRegistration client)

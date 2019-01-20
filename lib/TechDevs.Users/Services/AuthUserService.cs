@@ -75,28 +75,28 @@ namespace TechDevs.Users
 
         public virtual async Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientId)
         {
-            var validationErrors = new StringBuilder();
+            var validationErrors = new List<string>();
 
             // User must have agreed to the terms
             if (!userRegistration.IsInvite && !userRegistration.AggreedToTerms)
-                validationErrors.Append("Must agree to terms and conditions");
+                validationErrors.Add("Must agree to terms and conditions");
 
             // Email address cannot already exist
             if (await _userRepo.UserExists(userRegistration.EmailAddress, clientId))
-                validationErrors.AppendLine("Email address has already been registered");
+                validationErrors.Add("Email address has already been registered");
 
             // Email address must be valid format
             const string emailRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
             if (!Regex.IsMatch(userRegistration.EmailAddress, emailRegex, RegexOptions.IgnoreCase))
-                validationErrors.AppendLine("Email address is invalid");
+                validationErrors.Add("Email address is invalid");
 
             // Check required fields
-            if (string.IsNullOrEmpty(userRegistration.FirstName)) validationErrors.AppendLine("First name is required");
-            if (string.IsNullOrEmpty(userRegistration.LastName)) validationErrors.Append("Last name is required");
-            if (string.IsNullOrEmpty(userRegistration.EmailAddress)) validationErrors.Append("Email address is required");
+            if (string.IsNullOrEmpty(userRegistration.FirstName)) validationErrors.Add("First name is required");
+            if (string.IsNullOrEmpty(userRegistration.LastName)) validationErrors.Add("Last name is required");
+            if (string.IsNullOrEmpty(userRegistration.EmailAddress)) validationErrors.Add("Email address is required");
 
-            if (validationErrors.Length > 0)
-                throw new UserRegistrationException(userRegistration, validationErrors.ToString());
+            if (validationErrors.Count > 0)
+                throw new UserRegistrationException(userRegistration, validationErrors, "Registration validation failed");
         }
 
         public virtual async Task<TAuthUser> UpdateEmail(string currentEmail, string newEmail, string clientId)

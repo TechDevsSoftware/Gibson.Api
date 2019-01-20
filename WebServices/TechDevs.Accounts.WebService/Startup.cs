@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using TechDevs.Customers;
 using TechDevs.Employees;
 using TechDevs.Users;
+using TechDevs.Clients.BookingRequests;
 
 namespace TechDevs.Gibson.WebService
 {
@@ -91,6 +92,7 @@ namespace TechDevs.Gibson.WebService
             services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IBasicOffersService, BasicOffersService>();
+            services.AddTransient<IBookingRequestService, BookingRequestService>();
 
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
@@ -143,30 +145,24 @@ namespace TechDevs.Gibson.WebService
 
             // Setup the API Audit DB
 
-            if (_env.IsProduction() || _env.IsStaging())
-            {
-                Audit.Core.Configuration
-                     .Setup()
-                     .UseMongoDB(config => config
-                                 .ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
-                                 .Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
-                                 .Collection("APIAudit"));
-
-            }
-
+            Audit.Core.Configuration
+                 .Setup()
+                 .UseMongoDB(config => config
+                             .ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
+                             .Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
+                             .Collection("APIAudit"));
 
             services.AddMvc(mvc =>
-         {
-             mvc.AddAuditFilter(config => config
-                  .LogAllActions()
-                 .WithEventType("{verb}.{controller}.{action}")
-                 .IncludeHeaders(ctx => !ctx.ModelState.IsValid)
-                 .IncludeRequestBody()
-                 .IncludeModelState()
-                 .IncludeResponseBody());
-         });
+            {
+                mvc.AddAuditFilter(config => config
+                     .LogAllActions()
+                    .WithEventType("{verb}.{controller}.{action}")
+                    .IncludeHeaders(ctx => !ctx.ModelState.IsValid)
+                    .IncludeRequestBody()
+                    .IncludeModelState()
+                    .IncludeResponseBody());
+            });
 
-            // services.AddMvc();
 
             services.AddSwaggerGen(c =>
             {
@@ -184,50 +180,27 @@ namespace TechDevs.Gibson.WebService
         {
             app.UseCors("default");
 
-
             // Add Custom configuration for Audit API
-
-            SensitiveInformation.Custom();
-
-            app.Use(async (context, next) =>
-            {  // <----
-                context.Request.EnableRewind();
-                await next();
-            });
-
-
-
-            // app.UseAuditMiddleware(_ => _
-            //             .FilterByRequest(rq => !rq.Path.Value.EndsWith("favicon.ico"))
-            //             .WithEventType("{verb}:{url}")
-            //             .IncludeHeaders()
-            //             .IncludeResponseHeaders()
-            //             .IncludeRequestBody()
-            //             .IncludeResponseBody());
-
-
-            // app.UseAuditMiddleware(_ => _
-            // .WithEventType("{verb}:{url}")
-            // .IncludeHeaders()
-            //              .IncludeResponseHeaders()
-            //              .IncludeRequestBody()
-            //              .IncludeResponseBody());
-
-
-
-
-
-
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
-                // app.UseDeveloperExceptionPage();
+                SensitiveInformation.Custom();
+
+                app.Use(async (context, next) =>
+                {  // <----
+                    context.Request.EnableRewind();
+                    await next();
+                });
+
+
+                app.UseAuditMiddleware(_ => _
+                                       .WithEventType("{verb}:{url}")
+                                       .IncludeHeaders()
+                                       .IncludeResponseHeaders()
+                                       .IncludeRequestBody()
+                                       .IncludeResponseBody());
             }
 
-
-
             app.UseAuthentication();
-
-            //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>

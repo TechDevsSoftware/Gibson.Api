@@ -11,13 +11,13 @@ namespace TechDevs.Gibson.WebService.Controllers
     [Route("api/v1/customers")]
     public class CustomerController : AccountController<Customer>
     {
-        private readonly IAuthUserService<Customer> _accountService;
+        private readonly IAuthUserService<Customer> _customerService;
         private readonly IClientService _clientService;
 
         public CustomerController(IAuthTokenService<Customer> tokenService, IAuthUserService<Customer> accountService, IClientService clientService)
             : base(tokenService, accountService, clientService)
         {
-            _accountService = accountService;
+            _customerService = accountService;
             _clientService = clientService;
         }
 
@@ -30,7 +30,7 @@ namespace TechDevs.Gibson.WebService.Controllers
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId, client.Id);
+            var user = await _customerService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
             return new OkObjectResult(new CustomerProfile(user));
@@ -69,13 +69,13 @@ namespace TechDevs.Gibson.WebService.Controllers
     [Authorize]
     public abstract class AccountController<TAuthUser> : AuthController<TAuthUser> where TAuthUser : AuthUser, new()
     {
-        private readonly IAuthUserService<TAuthUser> _accountService;
+        private readonly IAuthUserService<TAuthUser> _userService;
         private readonly IClientService _clientService;
 
         protected AccountController(IAuthTokenService<TAuthUser> tokenService, IAuthUserService<TAuthUser> accountService, IClientService clientService)
             : base(tokenService, accountService, clientService)
         {
-            _accountService = accountService;
+            _userService = accountService;
             _clientService = clientService;
         }
 
@@ -87,7 +87,7 @@ namespace TechDevs.Gibson.WebService.Controllers
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId, client.Id);
+            var user = await _userService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
             return new OkObjectResult(new AuthUserProfile(user));
@@ -102,10 +102,10 @@ namespace TechDevs.Gibson.WebService.Controllers
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId, client.Id);
+            var user = await _userService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
-            var result = await _accountService.Delete(user.EmailAddress, client.Id);
+            var result = await _userService.Delete(user.EmailAddress, client.Id);
             if (result == false) return new BadRequestResult();
             return new OkResult();
         }
@@ -119,7 +119,7 @@ namespace TechDevs.Gibson.WebService.Controllers
             {
                 var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
                 if (invite == null) return new BadRequestObjectResult("Invalid invitation");
-                var result = await _accountService.SubmitInvitation(invite, client.Id);
+                var result = await _userService.SubmitInvitation(invite, client.Id);
                 return new OkObjectResult(new AuthUserProfile(result));
             }
             catch (Exception ex)
@@ -134,7 +134,7 @@ namespace TechDevs.Gibson.WebService.Controllers
         public async Task<IActionResult> GetUserProfileFromInviteKey(string inviteKey)
         {
             var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            var user = await _accountService.GetUserByInviteKey(inviteKey, client.Id);
+            var user = await _userService.GetUserByInviteKey(inviteKey, client.Id);
             if (user == null) return new BadRequestObjectResult("User not found");
             return new OkObjectResult(new AuthUserProfile(user));
         }
@@ -147,7 +147,7 @@ namespace TechDevs.Gibson.WebService.Controllers
             try
             {
                 var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-                var result = await _accountService.AcceptInvitation(request, client.Id);
+                var result = await _userService.AcceptInvitation(request, client.Id);
                 return new OkObjectResult(new AuthUserProfile(result));
             }
             catch (Exception ex)
@@ -162,7 +162,7 @@ namespace TechDevs.Gibson.WebService.Controllers
         public async Task<IActionResult> ResendInvitation(string email)
         {
             var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            await _accountService.SendEmailInvitation(email, client.Id);
+            await _userService.SendEmailInvitation(email, client.Id);
             return new OkResult();
         }
 
@@ -174,10 +174,10 @@ namespace TechDevs.Gibson.WebService.Controllers
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId, client.Id);
+            var user = await _userService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
-            var result = await _accountService.UpdateName(user.EmailAddress, firstName, lastName, client.Id);
+            var result = await _userService.UpdateName(user.EmailAddress, firstName, lastName, client.Id);
 
             return new OkObjectResult(new AuthUserProfile(result));
         }
@@ -190,10 +190,10 @@ namespace TechDevs.Gibson.WebService.Controllers
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId, client.Id);
+            var user = await _userService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
-            var result = await _accountService.UpdateContactNuber(user.EmailAddress, contactNumber, client.Id);
+            var result = await _userService.UpdateContactNuber(user.EmailAddress, contactNumber, client.Id);
 
             return new OkObjectResult(new AuthUserProfile(result));
         }
@@ -207,12 +207,12 @@ namespace TechDevs.Gibson.WebService.Controllers
             {
                 var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
                 if (registration == null) return new BadRequestObjectResult("Invalid Registration");
-                var result = await _accountService.RegisterUser(registration, client.Id);
+                var result = await _userService.RegisterUser(registration, client.Id);
                 return new OkObjectResult(new AuthUserProfile(result));
             }
             catch (UserRegistrationException ex)
             {
-                return new BadRequestObjectResult("Validation Errors: " + Environment.NewLine + ex.Message);
+                return new BadRequestObjectResult(ex.RegistrationErrors);
             }
             catch (Exception ex)
             {

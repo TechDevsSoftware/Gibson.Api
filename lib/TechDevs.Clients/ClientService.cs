@@ -46,6 +46,12 @@ namespace TechDevs.Clients
             }
             return await _clientRepo.UpdateClient(clientId, client);
         }
+        public async Task<List<PublicClient>> GetClientsByCustomer(string customerEmail)
+        {
+            var clients = await _clientRepo.GetClientsByCustomer(customerEmail);
+            var result = clients.Select(c => new PublicClient(c));
+            return result.ToList();
+        }
 
         private async Task<bool> ShortKeyAvailable(string clientKey)
         {
