@@ -22,14 +22,4 @@ namespace TechDevs.Shared.Models
             Customers = new List<AuthUserProfile>();
         }
     }
-    
-    public class ClientData
-    {
-        public List<BasicOffer> BasicOffers { get; set; }
-
-        public ClientData()
-        {
-            BasicOffers = new List<BasicOffer>();
-        }
-    }
 }

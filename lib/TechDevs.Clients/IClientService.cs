@@ -14,5 +14,6 @@ namespace TechDevs.Clients
         Task<Client> GetClientByShortKey(string key);
         Task<Client> UpdateClient<T>(string propertyPath, T data, string clientId);
         Task<Client> UpdateClient(string clientId, Client client);
+        Task<List<PublicClient>> GetClientsByCustomer(string customerEmail);
     }
 }

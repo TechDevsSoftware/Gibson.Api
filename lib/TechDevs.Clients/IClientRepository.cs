@@ -13,5 +13,6 @@ namespace TechDevs.Clients
         Task<Client> UpdateClient(string clientId, Client client);
         Task<Client> DeleteClient(string clientId);
         Task<Client> GetClientByShortKey(string shortKey);
+        Task<List<Client>> GetClientsByCustomer(string customerEmail);
     }
 }

@@ -14,6 +14,7 @@ namespace TechDevs.Clients
     {
         private readonly IMongoDatabase _database;
         private readonly IMongoCollection<AuthUser> _users;
+        private readonly IMongoCollection<Customer> _customers;
         private readonly IMongoCollection<Client> _clients;
 
         public ClientRepository(IOptions<MongoDbSettings> dbSettings)
@@ -22,6 +23,7 @@ namespace TechDevs.Clients
             _database = client.GetDatabase(dbSettings.Value.Database);
             _clients = _database.GetCollection<Client>("Clients");
             _users = _database.GetCollection<AuthUser>("AuthUsers");
+            _customers = _database.GetCollection<Customer>("AuthUsers");
         }
 
         public async Task<List<Client>> GetClients()
@@ -86,6 +88,14 @@ namespace TechDevs.Clients
         {
             var client = await _clients.Find(x => x.ShortKey == shortKey).FirstOrDefaultAsync();
             return client;
+        }
+
+        public async Task<List<Client>> GetClientsByCustomer(string customerEmail)
+        {
+            var customers = await _customers.Find(x => x.EmailAddress == customerEmail).ToListAsync();
+            var clientIds = customers.Select(x => x.ClientId.Id);
+            var clients = await _clients.Find(x => clientIds.Contains(x.Id)).ToListAsync();
+            return clients;
         }
     }
 }
