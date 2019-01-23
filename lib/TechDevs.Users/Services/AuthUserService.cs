@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TechDevs.Clients;
 using TechDevs.Mail;
 using TechDevs.Shared.Models;
 
@@ -17,8 +18,9 @@ namespace TechDevs.Users
             IAuthUserRepository<AuthUser> userRepo,
             IPasswordHasher passwordHasher,
             IEmailer emailer,
-            IOptions<AppSettings> appSettings)
-            : base(userRepo, passwordHasher, emailer, appSettings)
+            IOptions<AppSettings> appSettings,
+            IClientService clientService)
+            : base(userRepo, passwordHasher, emailer, appSettings, clientService)
         {
         }
 
@@ -33,18 +35,31 @@ namespace TechDevs.Users
         public readonly IAuthUserRepository<TAuthUser> _userRepo;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEmailer _emailer;
+        private readonly IClientService _clientService;
         private readonly AppSettings _appSettings;
 
-        public AuthUserService(IAuthUserRepository<TAuthUser> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
+        public AuthUserService(
+            IAuthUserRepository<TAuthUser> userRepo,
+            IPasswordHasher passwordHasher,
+            IEmailer emailer,
+            IOptions<AppSettings> appSettings,
+            IClientService clientService)
         {
             _userRepo = userRepo;
             _passwordHasher = passwordHasher;
             _emailer = emailer;
+            _clientService = clientService;
             _appSettings = appSettings.Value;
         }
 
         public virtual async Task<List<TAuthUser>> GetAllUsers(string clientId)
         {
+            // If the clientId is not a valid Guid, check for shortkey
+            if (!IsGuid(clientId))
+            {
+                var client = await _clientService.GetClientByShortKey(clientId);
+                if (client != null) clientId = client.Id;
+            }
             var result = await _userRepo.FindAll(clientId);
             return result;
         }
@@ -314,6 +329,11 @@ namespace TechDevs.Users
         }
 
         #endregion
+
+        private bool IsGuid(string key)
+        {
+            return Guid.TryParse(key, out var guid);
+        }
     }
 
 }

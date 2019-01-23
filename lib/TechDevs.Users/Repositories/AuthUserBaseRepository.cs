@@ -176,7 +176,7 @@ namespace TechDevs.Users
             if (result.IsAcknowledged && result.ModifiedCount > 0) return await FindById(id, clientId);
             throw new Exception("User could not be updated");
         }
-      
+
         public async Task<TAuthUser> UpdateUser<Type>(string propertyPath, Type data, string id, string clientId)
         {
             var filter = new BsonDocument

@@ -36,6 +36,7 @@ namespace TechDevs.Shared.Models
     {
         public Guid Id { get; set; }
         public DBRef CustomerId { get; set; }
+        public Customer Customer { get; set; }
         public string VehicleRegistration { get; set; }
         public bool MOT { get; set; }
         public bool Service { get; set; }
