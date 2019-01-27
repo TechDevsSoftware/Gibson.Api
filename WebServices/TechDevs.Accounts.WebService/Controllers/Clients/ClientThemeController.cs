@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Gibson.WebService.Controllers
+namespace TechDevs.Gibson.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/v1/clients")]

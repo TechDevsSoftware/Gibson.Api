@@ -1,30 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
 using TechDevs.Shared.Models;
 using TechDevs.Users;
 
-namespace TechDevs.Gibson.WebService.Controllers
+namespace TechDevs.Gibson.Api.Controllers
 {
     [AllowAnonymous]
     public abstract class AuthController<TAuthUser> : Controller where TAuthUser : AuthUser, new()
     {
         private readonly IAuthTokenService<TAuthUser> _tokenService;
-        private readonly IAuthUserService<TAuthUser> _accountService;
+        private readonly IUserService<TAuthUser> _accountService;
         private readonly IClientService _clientService;
+        private readonly IAuthService<TAuthUser> auth;
 
-        protected AuthController(IAuthTokenService<TAuthUser> tokenService, IAuthUserService<TAuthUser> accountService, IClientService clientService)
+        protected AuthController(IAuthTokenService<TAuthUser> tokenService, IUserService<TAuthUser> accountService, IClientService clientService, IAuthService<TAuthUser> auth)
         {
             _tokenService = tokenService;
             _accountService = accountService;
             _clientService = clientService;
+            this.auth = auth;
         }
 
         [HttpPost]
@@ -37,29 +36,29 @@ namespace TechDevs.Gibson.WebService.Controllers
             switch (request.Provider)
             {
                 case "TechDevs":
-                    return await LoginWithTechDevs(request.Email, request.Password, client.Id);
+                    return await LoginWithTechDevs(request.Email, request.Password, client);
                 case "Google":
-                    return await LoginWithGoogle(request.ProviderIdToken, client.Id);
+                    return await LoginWithGoogle(request.ProviderIdToken, client);
                 default:
                     return new BadRequestObjectResult("Unsupported auth provider");
             }
         }
 
-        private async Task<IActionResult> LoginWithTechDevs(string email, string password, string clientId)
+        private async Task<IActionResult> LoginWithTechDevs(string email, string password, Client client)
         {
-            var valid = await _accountService.ValidatePassword(email, password, clientId);
+            var valid = await auth.ValidatePassword(email, password, client.Id);
             if (!valid) return new UnauthorizedResult();
-            var user = await _accountService.GetByEmail(email, clientId);
-            var token = _tokenService.CreateToken(user.Id);
+            var user = await _accountService.GetByEmail(email, client.Id);
+            var token = _tokenService.CreateToken(user.Id, client.ShortKey);
             return new OkObjectResult(token);
         }
 
-        private async Task<IActionResult> LoginWithGoogle(string idToken, string clientId)
+        private async Task<IActionResult> LoginWithGoogle(string idToken, Client client)
         {
             try
             {
                 var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
-                var user = await _accountService.GetByProvider("Google", payload.Subject, clientId);
+                var user = await _accountService.GetByProvider("Google", payload.Subject, client.Id);
 
                 if (user == null)
                 {
@@ -75,11 +74,11 @@ namespace TechDevs.Gibson.WebService.Controllers
                         ChangePasswordOnFirstLogin = false,
                         IsInvite = false
                     };
-                    var regResult = await _accountService.RegisterUser(regRequest, clientId);
+                    var regResult = await _accountService.RegisterUser(regRequest, client.Id);
                     user = regResult;
                 }
 
-                var token = _tokenService.CreateToken(user.Id);
+                var token = _tokenService.CreateToken(user.Id, client.ShortKey);
                 return new OkObjectResult(token);
             }
             catch (InvalidJwtException)

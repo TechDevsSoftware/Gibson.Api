@@ -7,7 +7,7 @@ using TechDevs.MarketingPreferences;
 using TechDevs.NotificationPreferences;
 using TechDevs.Customers;
 
-namespace TechDevs.Gibson.WebService.Controllers
+namespace TechDevs.Gibson.Api.Controllers
 {
     [Route("api/v1/customer/account")]
     public class CustomerDataController : Controller

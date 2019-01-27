@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TechDevs.Clients;
@@ -12,15 +10,17 @@ using TechDevs.Shared.Models;
 namespace TechDevs.Users
 {
 
-    public class AuthUserService : AuthUserService<AuthUser>
+
+    public class UserService : UserService<AuthUser>
     {
-        public AuthUserService(
+        public UserService(
             IAuthUserRepository<AuthUser> userRepo,
             IPasswordHasher passwordHasher,
             IEmailer emailer,
             IOptions<AppSettings> appSettings,
-            IClientService clientService)
-            : base(userRepo, passwordHasher, emailer, appSettings, clientService)
+            IClientService clientService,
+            IAuthTokenService<AuthUser> tokenService)
+            : base(userRepo, passwordHasher, emailer, appSettings, clientService, tokenService)
         {
         }
 
@@ -30,48 +30,49 @@ namespace TechDevs.Users
         }
     }
 
-    public abstract class AuthUserService<TAuthUser> : IAuthUserService<TAuthUser> where TAuthUser : AuthUser, new()
+    public abstract class UserService<TAuthUser> : IUserService<TAuthUser> where TAuthUser : AuthUser, new()
     {
         public readonly IAuthUserRepository<TAuthUser> _userRepo;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEmailer _emailer;
         private readonly IClientService _clientService;
+        private readonly IAuthTokenService<TAuthUser> tokenService;
         private readonly AppSettings _appSettings;
 
-        public AuthUserService(
+        public UserService(
             IAuthUserRepository<TAuthUser> userRepo,
             IPasswordHasher passwordHasher,
             IEmailer emailer,
             IOptions<AppSettings> appSettings,
-            IClientService clientService)
+            IClientService clientService,
+            IAuthTokenService<TAuthUser> tokenService)
         {
             _userRepo = userRepo;
             _passwordHasher = passwordHasher;
             _emailer = emailer;
             _clientService = clientService;
+            this.tokenService = tokenService;
             _appSettings = appSettings.Value;
         }
 
-        public virtual async Task<List<TAuthUser>> GetAllUsers(string clientId)
+
+        public virtual async Task<List<TAuthUser>> GetAllUsers(string clientIdOrKey)
         {
-            // If the clientId is not a valid Guid, check for shortkey
-            if (!IsGuid(clientId))
-            {
-                var client = await _clientService.GetClientByShortKey(clientId);
-                if (client != null) clientId = client.Id;
-            }
-            var result = await _userRepo.FindAll(clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var result = await _userRepo.FindAll(client.Id);
             return result;
         }
 
-        public virtual async Task<TAuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientId)
+        public virtual async Task<TAuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientIdOrKey)
         {
-            await ValidateCanRegister(userRegistration, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+
+            await ValidateCanRegister(userRegistration, client.Id);
 
             var newAuthUser = new TAuthUser
             {
                 Id = Guid.NewGuid().ToString(),
-                ClientId = new DBRef { Id = clientId },
+                ClientId = new DBRef { Id = client.Id },
                 FirstName = userRegistration.FirstName,
                 LastName = userRegistration.LastName,
                 EmailAddress = userRegistration.EmailAddress,
@@ -81,15 +82,16 @@ namespace TechDevs.Users
                 Disabled = userRegistration.IsInvite
             };
 
-            var result = await _userRepo.Insert(newAuthUser, clientId);
+            var result = await _userRepo.Insert(newAuthUser, client.Id);
             if (userRegistration.IsInvite) return result;
             if (userRegistration.ProviderName != "TechDevs" && userRegistration.Password == null) return result;
-            var resultAfterPassword = await SetPassword(result.EmailAddress, userRegistration.Password, clientId);
+            var resultAfterPassword = await SetPassword(result.EmailAddress, userRegistration.Password, client.Id);
             return resultAfterPassword;
         }
 
-        public virtual async Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientId)
+        public virtual async Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientIdOrKey)
         {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             var validationErrors = new List<string>();
 
             // User must have agreed to the terms
@@ -97,7 +99,7 @@ namespace TechDevs.Users
                 validationErrors.Add("Must agree to terms and conditions");
 
             // Email address cannot already exist
-            if (await _userRepo.UserExists(userRegistration.EmailAddress, clientId))
+            if (await _userRepo.UserExists(userRegistration.EmailAddress, client.Id))
                 validationErrors.Add("Email address has already been registered");
 
             // Email address must be valid format
@@ -114,69 +116,76 @@ namespace TechDevs.Users
                 throw new UserRegistrationException(userRegistration, validationErrors, "Registration validation failed");
         }
 
-        public virtual async Task<TAuthUser> UpdateEmail(string currentEmail, string newEmail, string clientId)
+        public virtual async Task<TAuthUser> UpdateEmail(string currentEmail, string newEmail, string clientIdOrKey)
         {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             // Get user
-            var user = await _userRepo.FindByEmail(currentEmail, clientId);
+            var user = await _userRepo.FindByEmail(currentEmail, client.Id);
             if (user == null) throw new Exception("User not found");
             // Check that the new email is not already taken
-            var existingEmail = await _userRepo.FindByEmail(newEmail, clientId);
+            var existingEmail = await _userRepo.FindByEmail(newEmail, client.Id);
             if (existingEmail != null) throw new Exception("Email address already in use");
             // Change the email
-            await _userRepo.SetUsername(user, newEmail, clientId);
-            var updatedUser = await _userRepo.SetEmail(user, newEmail, clientId);
+            await _userRepo.SetUsername(user, newEmail, client.Id);
+            var updatedUser = await _userRepo.SetEmail(user, newEmail, client.Id);
             if (updatedUser == null) throw new Exception("Email update failed");
             // Set the username along with the username as we dont need a seperate username
-            await _userRepo.SetUsername(user, newEmail, clientId);
+            await _userRepo.SetUsername(user, newEmail, client.Id);
             return updatedUser;
         }
 
-        public virtual async Task<TAuthUser> UpdateName(string email, string firstName, string lastName, string clientId)
+        public virtual async Task<TAuthUser> UpdateName(string email, string firstName, string lastName, string clientIdOrKey)
         {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             // Get User
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User not found");
 
-            var result = (firstName != user.FirstName) ? await _userRepo.UpdateUser("FirstName", firstName, user.Id, clientId) : user;
-            result = (lastName != user.LastName) ? await _userRepo.UpdateUser("LastName", lastName, user.Id, clientId) : result;
+            var result = (firstName != user.FirstName) ? await _userRepo.UpdateUser("FirstName", firstName, user.Id, client.Id) : user;
+            result = (lastName != user.LastName) ? await _userRepo.UpdateUser("LastName", lastName, user.Id, client.Id) : result;
 
             return result;
         }
 
-        public virtual async Task<TAuthUser> UpdateContactNuber(string email, string contactNumber, string clientId)
+        public virtual async Task<TAuthUser> UpdateContactNuber(string email, string contactNumber, string clientIdOrKey)
         {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             // Get User
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User not found");
-            var result = await _userRepo.UpdateUser("ContactNumber", contactNumber, user.Id, clientId);
+            var result = await _userRepo.UpdateUser("ContactNumber", contactNumber, user.Id, client.Id);
             return result;
         }
 
-        public virtual async Task<bool> Delete(string email, string clientId)
+        public virtual async Task<bool> Delete(string email, string clientIdOrKey)
         {
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User not found");
-            return await _userRepo.Delete(user, clientId);
+            return await _userRepo.Delete(user, client.Id);
         }
 
-        public virtual async Task<TAuthUser> GetByEmail(string email, string clientId)
+        public virtual async Task<TAuthUser> GetByEmail(string email, string clientIdOrKey)
         {
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             return user;
         }
 
-        public virtual async Task<TAuthUser> GetByProvider(string provider, string providerId, string clientId)
+        public virtual async Task<TAuthUser> GetByProvider(string provider, string providerId, string clientIdOrKey)
         {
-            var user = await _userRepo.FindByProvider(provider, providerId, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindByProvider(provider, providerId, client.Id);
             return user;
         }
 
-        public virtual async Task<TAuthUser> SetPassword(string email, string password, string clientId)
+        public virtual async Task<TAuthUser> SetPassword(string email, string password, string clientIdOrKey)
         {
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User not found");
             var hashedPassword = _passwordHasher.HashPassword(user, password);
-            var result = await _userRepo.SetPassword(user, hashedPassword, clientId);
+            var result = await _userRepo.SetPassword(user, hashedPassword, client.Id);
             return result;
         }
 
@@ -185,61 +194,50 @@ namespace TechDevs.Users
             throw new NotImplementedException();
         }
 
-        public virtual Task ResetPassword(string email, string resetPasswordToken, string clientId)
+        public virtual Task ResetPassword(string email, string resetPasswordToken, string clientIdOrKey)
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<bool> ValidatePassword(string email, string password, string clientId)
+        public virtual async Task<TAuthUser> GetById(string id, string clientIdOrKey)
         {
-            try
-            {
-                var user = await _userRepo.FindByEmail(email, clientId);
-                if (user == null) return false;
-                var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        public virtual async Task<TAuthUser> GetById(string id, string clientId)
-        {
-            var user = await _userRepo.FindById(id, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindById(id, client.Id);
             return user;
         }
 
-        public virtual async Task<TAuthUser> EnableAccount(string email, string clientId)
+        public virtual async Task<TAuthUser> EnableAccount(string email, string clientIdOrKey)
         {
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User could not be found");
-            var result = await _userRepo.SetDisabled(user.Id, false, clientId);
+            var result = await _userRepo.SetDisabled(user.Id, false, client.Id);
             return result;
         }
 
-        public virtual async Task<TAuthUser> DisableAccount(string email, string clientId)
+        public virtual async Task<TAuthUser> DisableAccount(string email, string clientIdOrKey)
         {
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User could not be found");
-            var result = await _userRepo.SetDisabled(user.Id, true, clientId);
+            var result = await _userRepo.SetDisabled(user.Id, true, client.Id);
             return result;
         }
 
-        public virtual async Task<TAuthUser> SetValidatedEmail(bool isValidated, string email, string clientId)
+        public virtual async Task<TAuthUser> SetValidatedEmail(bool isValidated, string email, string clientIdOrKey)
         {
-            var user = await _userRepo.FindByEmail(email, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User could not be found");
-            var result = await _userRepo.SetValidatedEmail(user.Id, isValidated, clientId);
+            var result = await _userRepo.SetValidatedEmail(user.Id, isValidated, client.Id);
             return result;
         }
 
         #region Invites
 
-        public virtual async Task<TAuthUser> SubmitInvitation(AuthUserInvitationRequest invite, string clientId)
+        public virtual async Task<TAuthUser> SubmitInvitation(AuthUserInvitationRequest invite, string clientIdOrKey)
         {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             // Generate the Invitation
             var fakeSentByUserId = Guid.NewGuid().ToString();
             var invitationRecord = new AuthUserInvitation(invite, fakeSentByUserId);
@@ -256,11 +254,11 @@ namespace TechDevs.Users
             };
 
             // Check to see if the user already exists
-            var existingUser = await GetByEmail(invitationRecord.Email, clientId);
+            var existingUser = await GetByEmail(invitationRecord.Email, client.Id);
             if (existingUser != null) throw new Exception("User is already registered");
 
             // Register the user
-            var user = await RegisterUser(userReq, clientId);
+            var user = await RegisterUser(userReq, client.Id);
             if (user == null) throw new Exception("Failed to register the user from an invitation request");
 
             // Build the email notification to the user
@@ -269,21 +267,22 @@ namespace TechDevs.Users
                 $"Hi {invite.FirstName}, {Environment.NewLine}" +
                 $"You have been invited to {invite.ClientName} {Environment.NewLine}" +
                 $"Follow this link to complete your registration {Environment.NewLine} {Environment.NewLine}" +
-                $"{_appSettings.InvitationSiteRoot}/clients/{clientId}/employees/invite/{invitationRecord.InvitationKey}";
+                $"{_appSettings.InvitationSiteRoot}/clients/{client.Id}/employees/invite/{invitationRecord.InvitationKey}";
 
             // Set the invitation record and update
-            var newUser = await _userRepo.SetInvitation(user.Id, invitationRecord, clientId);
+            var newUser = await _userRepo.SetInvitation(user.Id, invitationRecord, client.Id);
 
             // Send the email
-            await SendEmailInvitation(user.Username, clientId);
+            await SendEmailInvitation(user.Username, client.Id);
 
             return newUser;
         }
 
-        public virtual async Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientId)
+        public virtual async Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientIdOrKey)
         {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             // Get the user
-            var user = await GetByEmail(req.Email, clientId);
+            var user = await GetByEmail(req.Email, client.Id);
             if (user == null) throw new Exception("User not found");
 
             // Check that the invitaiton key matches the database
@@ -293,32 +292,34 @@ namespace TechDevs.Users
             if (user?.Invitation?.InviteExpiry < DateTime.Now) throw new Exception("Invitation has expired. Contact your admininstrator to send a new invitation");
 
             // Set the password
-            user = await SetPassword(user.NormalisedEmail, req.Password, clientId);
+            user = await SetPassword(user.NormalisedEmail, req.Password, client.Id);
 
             // Activate the account
-            user = await EnableAccount(user.EmailAddress, clientId);
+            user = await EnableAccount(user.EmailAddress, client.Id);
 
             // Se the Validated Email flag
-            user = await SetValidatedEmail(true, user.EmailAddress, clientId);
+            user = await SetValidatedEmail(true, user.EmailAddress, client.Id);
 
             // Set Invtation Status
-            user = await _userRepo.SetInvitationStatus(user.Id, AuthUserInvitationStatus.Completed, clientId);
+            user = await _userRepo.SetInvitationStatus(user.Id, AuthUserInvitationStatus.Completed, client.Id);
 
             return user;
         }
 
-        public virtual async Task<TAuthUser> GetUserByInviteKey(string inviteKey, string clientId)
+        public virtual async Task<TAuthUser> GetUserByInviteKey(string inviteKey, string clientIdOrKey)
         {
-            var result = await _userRepo.GetUserByInvitationKey(inviteKey, clientId);
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            var result = await _userRepo.GetUserByInvitationKey(inviteKey, client.Id);
             if (result == null) throw new Exception("User could not be found");
             return result;
 
         }
 
-        public virtual async Task SendEmailInvitation(string email, string clientId)
+        public virtual async Task SendEmailInvitation(string email, string clientIdOrKey)
         {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             // Get the user
-            var user = await GetByEmail(email, clientId);
+            var user = await GetByEmail(email, client.Id);
 
             // Check that the user is pending invite
             if (user.Invitation.Status.Value != "Pending")
@@ -328,12 +329,18 @@ namespace TechDevs.Users
             await _emailer.SendSecurityEmail(user.EmailAddress, user.Invitation.InvitationSubject, user.Invitation.InvitationBody, false);
         }
 
+        public async Task<TAuthUser> GetByJwtToken(string token, string clientIdOrKey)
+        {
+            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
+            // Extract the user id from the jwt token
+            var userId = tokenService.UserIdFromToken(token, clientIdOrKey);
+            if (string.IsNullOrEmpty(userId)) throw new Exception("Jwt Token did not contain a valid userId");
+            return await GetById(userId, clientIdOrKey);
+        }
+
         #endregion
 
-        private bool IsGuid(string key)
-        {
-            return Guid.TryParse(key, out var guid);
-        }
+
     }
 
 }

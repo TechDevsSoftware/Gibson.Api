@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Conventions;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Gibson.WebService
+namespace TechDevs.Gibson.Api
 {
     public static class MongoDBConfig
     {

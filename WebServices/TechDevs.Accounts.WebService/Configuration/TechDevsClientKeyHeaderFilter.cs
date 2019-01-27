@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace TechDevs.Gibson.WebService
+namespace TechDevs.Gibson.Api
 {
     public class TechDevsClientKeyHeaderFilter : IOperationFilter
     {

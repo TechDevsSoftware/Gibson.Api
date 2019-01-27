@@ -5,6 +5,7 @@ namespace TechDevs.Users
 {
     public interface IAuthTokenService<TAuthUser> where TAuthUser : AuthUser, new()
     {
-        string CreateToken(string userId);
+        string CreateToken(string userId, string clientKey);
+        string UserIdFromToken(string token, string clientIdorKey);
     }
 }

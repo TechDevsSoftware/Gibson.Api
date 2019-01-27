@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TechDevs.Clients\TechDevs.Clients.csproj" />
-    <ProjectReference Include="..\..\WebServices\TechDevs.Accounts.WebService\TechDevs.Gibson.WebService.csproj" />
+    <ProjectReference Include="..\..\WebServices\TechDevs.Accounts.WebService\TechDevs.Gibson.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +32,9 @@
     <Content Include="Client_SeedData.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="EmptyClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="ClientServiceUnitTests.cs">

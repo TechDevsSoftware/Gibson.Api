@@ -6,15 +6,16 @@ using TechDevs.Clients;
 
 namespace TechDevs.Employees
 {
-    public class EmployeeService : AuthUserService<Employee>
+    public class EmployeeService : UserService<Employee>, IEmployeeService
     {
         public EmployeeService(
             IAuthUserRepository<Employee> userRepo, 
             IPasswordHasher passwordHasher, 
             IEmailer emailer, 
             IOptions<AppSettings> appSettings,
-            IClientService clientService)
-            : base(userRepo, passwordHasher, emailer, appSettings, clientService)
+            IClientService clientService,
+            IAuthTokenService<Employee> tokenService)
+            : base(userRepo, passwordHasher, emailer, appSettings, clientService, tokenService)
         {
 
         }

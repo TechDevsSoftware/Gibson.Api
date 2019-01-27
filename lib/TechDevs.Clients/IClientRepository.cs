@@ -6,6 +6,7 @@ namespace TechDevs.Clients
 {
     public interface IClientRepository
     {
+        Task<ClientIdentifier> GetClientIdentifier(string clientIdOrKey);
         Task<List<Client>> GetClients();
         Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers = false);
         Task<Client> CreateClient(Client client);

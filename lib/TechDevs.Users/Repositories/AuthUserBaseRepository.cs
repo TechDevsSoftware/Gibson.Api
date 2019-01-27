@@ -4,12 +4,52 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
+using static TechDevs.Shared.Models.Shared.Repository;
 
 namespace TechDevs.Users
 {
+
+
+    public class MockRepository<T> : IRepository<T> where T : class, IClientEntity
+    {
+        private List<T> db = new List<T>();
+
+        public Task<T> Create(T entity, Guid clientId)
+        {
+            db.Add(entity);
+            return Task.FromResult(entity);
+        }
+
+        public Task Delete(Guid id, Guid clientId)
+        {
+            db.RemoveAt(db.FindIndex(x => x.Id == id && x.ClientId == clientId));
+            return Task.CompletedTask;
+        }
+
+        public Task<List<T>> FindAll(Guid clientId)
+        {
+            var res =  db.Where(x => x.ClientId == clientId).ToList();
+            return Task.FromResult(res);
+        }
+
+        public Task<T> FindById(Guid id, Guid clientId)
+        {
+            return Task.FromResult(db.FirstOrDefault(x => x.Id == id && x.ClientId == clientId));
+        }
+
+        public Task<T> Update(T entity, Guid clientId)
+        {
+            var index = db.FindIndex(x => x.Id == entity.Id && x.ClientId == clientId);
+            db[index] = entity;
+            return Task.FromResult(entity);
+        }
+    }
+
+
     public abstract class AuthUserBaseRepository<TAuthUser> : IAuthUserRepository<TAuthUser> where TAuthUser : AuthUser
     {
         readonly IMongoDatabase _database;

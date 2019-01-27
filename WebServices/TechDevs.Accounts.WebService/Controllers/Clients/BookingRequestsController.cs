@@ -6,7 +6,7 @@ using TechDevs.Clients;
 using TechDevs.Clients.BookingRequests;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Gibson.WebService.Controllers
+namespace TechDevs.Gibson.Api.Controllers
 {
     [Authorize]
     [Route("api/v1/clients/data/bookingrequests")]

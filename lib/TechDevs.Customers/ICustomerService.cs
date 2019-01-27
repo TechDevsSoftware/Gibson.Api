@@ -4,7 +4,7 @@ using TechDevs.Users;
 
 namespace TechDevs.Customers
 {
-    public interface ICustomerService : IAuthUserService<Customer>
+    public interface ICustomerService : IUserService<Customer>
     {
         Task<Customer> UpdateCustomerData<CustDataType>(string userId, string customerDataPathName, CustDataType custData, string clientId);
     }

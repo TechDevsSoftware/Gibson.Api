@@ -4,7 +4,7 @@ using TechDevs.Clients;
 using TechDevs.Clients.Offers;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Gibson.WebService.Controllers
+namespace TechDevs.Gibson.Api.Controllers
 {
 
     [Route("api/v1/clients/data/basicoffers")]

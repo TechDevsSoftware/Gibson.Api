@@ -17,11 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TechDevs.Mail\TechDevs.Mail.csproj" />
     <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
+    <ProjectReference Include="..\TechDevs.Clients\TechDevs.Clients.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="TechDevs.Clients">
-      <HintPath>..\TechDevs.Clients\bin\Debug\netstandard2.0\TechDevs.Clients.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
