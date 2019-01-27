@@ -26,6 +26,27 @@ namespace TechDevs.Clients
             _customers = _database.GetCollection<Customer>("AuthUsers");
         }
 
+        private bool IsGuid(string key)
+        {
+            return Guid.TryParse(key, out var guid);
+        }
+
+        public async Task<ClientIdentifier> GetClientIdentifier(string clientIdOrKey)
+        {
+            // If the clientId is not a valid Guid, check for shortkey
+            FilterDefinition<Client> filter;
+            if (IsGuid(clientIdOrKey))
+                filter = Builders<Client>.Filter.Eq(p => p.Id, clientIdOrKey);
+            else
+                filter = Builders<Client>.Filter.Eq(p => p.ShortKey, clientIdOrKey);
+
+            var fields = Builders<Client>.Projection.Include(p => p.Id).Include(p => p.ShortKey).Include(p => p.Name);
+            var options = new FindOptions<Client>() { Projection = fields };
+            var result = await _clients.FindAsync(filter, options);
+            var client = await result.FirstOrDefaultAsync();
+            return new ClientIdentifier { Id = client.Id, Name = client.Name, ShortKey = client.ShortKey };
+        }
+
         public async Task<List<Client>> GetClients()
         {
             var clients = await _clients.FindAsync(x => true);

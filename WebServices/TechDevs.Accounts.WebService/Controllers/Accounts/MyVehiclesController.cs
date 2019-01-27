@@ -6,7 +6,7 @@ using TechDevs.Clients;
 using TechDevs.MyVehicles;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Gibson.WebService.Controllers
+namespace TechDevs.Gibson.Api.Controllers
 {
     [Route("api/v1/account/myvehicles")]
     [Authorize]

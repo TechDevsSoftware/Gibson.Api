@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace TechDevs.Gibson.WebService
+namespace TechDevs.Gibson.Api
 {
     public static class ExtMethods
     {

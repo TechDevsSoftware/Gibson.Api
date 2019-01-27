@@ -15,6 +15,7 @@ namespace TechDevs.Clients
             _clientRepo = clientRepo;
         }
 
+        public async Task<ClientIdentifier> GetClientIdentifier(string clientIdOrKey) => await _clientRepo.GetClientIdentifier(clientIdOrKey);
         public async Task<List<Client>> GetClients() => await _clientRepo.GetClients();
         public async Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers) => await _clientRepo.GetClient(clientId, includeRelatedAuthUsers);
         public async Task<Client> GetClientByShortKey(string key) => await _clientRepo.GetClientByShortKey(key);
@@ -52,7 +53,6 @@ namespace TechDevs.Clients
             var result = clients.Select(c => new PublicClient(c));
             return result.ToList();
         }
-
         private async Task<bool> ShortKeyAvailable(string clientKey)
         {
             var existingClientShortKey = await _clientRepo.GetClientByShortKey(clientKey);

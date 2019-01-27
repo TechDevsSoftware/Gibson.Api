@@ -1,16 +1,23 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
+using TechDevs.Clients;
 using TechDevs.Mail;
 using TechDevs.Shared.Models;
 using TechDevs.Users;
 
 namespace TechDevs.Customers
 {
-    public class CustomerService : AuthUserService<Customer>, ICustomerService
+    public class CustomerService : UserService<Customer>, ICustomerService
     {
-        public CustomerService(IAuthUserRepository<Customer> userRepo, IPasswordHasher passwordHasher, IEmailer emailer, IOptions<AppSettings> appSettings)
-            : base(userRepo, passwordHasher, emailer, appSettings)
+        public CustomerService(
+            IAuthUserRepository<Customer> userRepo, 
+            IPasswordHasher passwordHasher, 
+            IEmailer emailer,
+            IOptions<AppSettings> appSettings,
+            IClientService clientService,
+            IAuthTokenService<Customer> tokenService)
+            : base(userRepo, passwordHasher, emailer, appSettings, clientService, tokenService)
         {
         }
 

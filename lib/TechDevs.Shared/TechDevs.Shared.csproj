@@ -9,4 +9,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Shared\" />
+  </ItemGroup>
 </Project>

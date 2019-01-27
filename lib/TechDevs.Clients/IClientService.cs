@@ -7,6 +7,7 @@ namespace TechDevs.Clients
 {
     public interface IClientService
     {
+        Task<ClientIdentifier> GetClientIdentifier(string clientIdOrKey);
         Task<List<Client>> GetClients();
         Task<Client> CreateClient(ClientRegistration client);
         Task<Client> DeleteClient(string clientId);

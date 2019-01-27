@@ -3,21 +3,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
+using TechDevs.Customers;
+using TechDevs.Employees;
 using TechDevs.Shared.Models;
 using TechDevs.Users;
 
-namespace TechDevs.Gibson.WebService.Controllers
+namespace TechDevs.Gibson.Api.Controllers
 {
     [Route("api/v1/customers")]
     public class CustomerController : AccountController<Customer>
     {
-        private readonly IAuthUserService<Customer> _customerService;
+        private readonly ICustomerService _customerService;
         private readonly IClientService _clientService;
 
-        public CustomerController(IAuthTokenService<Customer> tokenService, IAuthUserService<Customer> accountService, IClientService clientService)
-            : base(tokenService, accountService, clientService)
+        public CustomerController(IAuthTokenService<Customer> tokenService, ICustomerService customerService, IClientService clientService, IAuthService<Customer> auth)
+            : base(tokenService, customerService, clientService, auth)
         {
-            _customerService = accountService;
+            _customerService = customerService;
             _clientService = clientService;
         }
 
@@ -40,13 +42,13 @@ namespace TechDevs.Gibson.WebService.Controllers
     [Route("api/v1/employees")]
     public class EmployeeController : AccountController<Employee>
     {
-        private readonly IAuthUserService<Employee> _accountService;
+        private readonly IEmployeeService _employeeService;
         private readonly IClientService _clientService;
 
-        public EmployeeController(IAuthTokenService<Employee> tokenService, IAuthUserService<Employee> accountService, IClientService clientService)
-            : base(tokenService, accountService, clientService)
+        public EmployeeController(IAuthTokenService<Employee> tokenService,IEmployeeService employeeService, IClientService clientService, IAuthService<Employee> auth)
+            : base(tokenService, employeeService, clientService, auth)
         {
-            _accountService = accountService;
+            _employeeService = employeeService;
             _clientService = clientService;
         }
 
@@ -59,7 +61,7 @@ namespace TechDevs.Gibson.WebService.Controllers
             var userId = this.UserId();
             if (userId == null) return new UnauthorizedResult();
 
-            var user = await _accountService.GetById(userId, client.Id);
+            var user = await _employeeService.GetById(userId, client.Id);
             if (user == null) return new NotFoundResult();
 
             return new OkObjectResult(new EmployeeProfile(user));
@@ -69,11 +71,11 @@ namespace TechDevs.Gibson.WebService.Controllers
     [Authorize]
     public abstract class AccountController<TAuthUser> : AuthController<TAuthUser> where TAuthUser : AuthUser, new()
     {
-        private readonly IAuthUserService<TAuthUser> _userService;
+        private readonly IUserService<TAuthUser> _userService;
         private readonly IClientService _clientService;
 
-        protected AccountController(IAuthTokenService<TAuthUser> tokenService, IAuthUserService<TAuthUser> accountService, IClientService clientService)
-            : base(tokenService, accountService, clientService)
+        protected AccountController(IAuthTokenService<TAuthUser> tokenService, IUserService<TAuthUser> accountService, IClientService clientService, IAuthService<TAuthUser> auth)
+            : base(tokenService, accountService, clientService, auth)
         {
             _userService = accountService;
             _clientService = clientService;

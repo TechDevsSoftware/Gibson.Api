@@ -22,11 +22,17 @@ using Audit.WebApi;
 using Audit.Core;
 using Microsoft.AspNetCore.Http.Internal;
 using TechDevs.Customers;
-using TechDevs.Employees;
 using TechDevs.Users;
 using TechDevs.Clients.BookingRequests;
+using GraphQL.Types;
+using GraphQL;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using Microsoft.AspNetCore.Http;
+using TechDevs.Employees;
+using TechDevs.Users.GraphQL.Resolvers;
 
-namespace TechDevs.Gibson.WebService
+namespace TechDevs.Gibson.Api
 {
     public class Startup
     {
@@ -79,25 +85,61 @@ namespace TechDevs.Gibson.WebService
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
             services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
-
+            services.AddTransient<IAuthUserRepository<AuthUser>, UserRepository>();
             // Services
+            services.AddTransient<IUserService<AuthUser>, UserService>();
+            services.AddTransient<IUserService<Customer>, CustomerService>();
+            services.AddTransient<IUserService<Employee>, EmployeeService>();
+            services.AddTransient<IAuthService<Customer>, AuthService<Customer>>();
+            services.AddTransient<IAuthService<AuthUser>, AuthService<AuthUser>>();
+            services.AddTransient<IAuthService<Employee>, AuthService<Employee>>();
+            services.AddTransient<IAuthTokenService<AuthUser>, AuthTokenService<AuthUser>>();
+            services.AddTransient<IAuthTokenService<Customer>, AuthTokenService<Customer>>();
+            services.AddTransient<IAuthTokenService<Employee>, AuthTokenService<Employee>>();
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IClientThemeService, ClientThemeService>();
             services.AddTransient<IMyVehicleService, MyVehicleService>();
-            services.AddTransient<IAuthUserService<Customer>, CustomerService>();
-            services.AddTransient<IAuthUserService<Employee>, EmployeeService>();
-            services.AddTransient<IAuthTokenService<Customer>, AuthTokenService<Customer>>();
-            services.AddTransient<IAuthTokenService<Employee>, AuthTokenService<Employee>>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+
             services.AddTransient<INotificationPreferencesService, NotificationPreferencesService>();
             services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
-            services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IBasicOffersService, BasicOffersService>();
             services.AddTransient<IBookingRequestService, BookingRequestService>();
+
+            // Resolvers
+            services.AddTransient<ClientResolver>();
 
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
             services.AddTransient<IEmailer, DotNetEmailer>();
+
+            // GraphQL Models
+            services.AddTransient<MotCommentModel>();
+            services.AddTransient<MotResultModel>();
+            services.AddTransient<ClientThemeModel>();
+            services.AddTransient<CSSParameterModel>();
+            services.AddTransient<BookingRequestModel>();
+            services.AddTransient<ClientModel>();
+            services.AddTransient<EmployeeModel>();
+            services.AddTransient<ClientDataModel>();
+            services.AddTransient<BasicOfferModel>();
+            services.AddTransient<CustomerModel>();
+            services.AddTransient<CustomerDataModel>();
+            services.AddTransient<CustomerVehicleModel>();
+            services.AddTransient<MarketingNotificationPreferencesModel>();
+            services.AddTransient<CustomerNotificationPreferencesModel>();
+            // GraphQL Query
+            services.AddTransient<GibsonQuery>();
+            // GraphQL Schema
+            services.AddTransient<ISchema, GibsonSchema>();
+            // GraphQL Dependency Resolver
+            services.AddTransient<IDependencyResolver>(c => new FuncDependencyResolver(type => c.GetRequiredService(type)));
+            // HttpAccessor used to get access to the request headers in GraphQL queries
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
+
 
             // Configure the passowrd hashing algorithm
             services.Configure<BCryptPasswordHasherOptions>(options =>
@@ -143,8 +185,21 @@ namespace TechDevs.Gibson.WebService
                 services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
             }
 
-            // Setup the API Audit DB
 
+            // Configure GraphQL
+            services.AddGraphQL(_ =>
+            {
+                _.EnableMetrics = true;
+                _.ExposeExceptions = true;
+            })
+            .AddUserContextBuilder(httpContext => new GraphQLUserContext
+            {
+                User = httpContext.User,
+                Headers = httpContext.Request.Headers
+            });
+
+
+            // Setup the API Audit DB
             Audit.Core.Configuration
                  .Setup()
                  .UseMongoDB(config => config
@@ -199,6 +254,15 @@ namespace TechDevs.Gibson.WebService
                                        .IncludeRequestBody()
                                        .IncludeResponseBody());
             }
+
+            // add http for Schema at default url
+            app.UseGraphQL<ISchema>("/graphql");
+
+            // use graphql-playground at default url /ui/playground
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
+            {
+                Path = "/ui/graphql"
+            });
 
             app.UseAuthentication();
             app.UseMvc();

@@ -1,8 +1,10 @@
-﻿using MongoDB.Bson.Serialization;
+﻿
+
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Gibson.Api
+namespace TechDevs.Gibson.GraphQLApi
 {
     public static class MongoDBConfig
     {
