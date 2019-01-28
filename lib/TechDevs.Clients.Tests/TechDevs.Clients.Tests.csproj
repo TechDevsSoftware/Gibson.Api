@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TechDevs.Clients\TechDevs.Clients.csproj" />
-    <ProjectReference Include="..\..\WebServices\TechDevs.Accounts.WebService\TechDevs.Gibson.Api.csproj" />
+    <ProjectReference Include="..\..\TechDevs.Gibson.Api\TechDevs.Gibson.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

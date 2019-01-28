@@ -27,7 +27,7 @@ namespace TechDevs.Clients.IntegrationTests
 
             var builder = new WebHostBuilder()
                 .UseEnvironment("IntegrationTesting")
-                .UseStartup<Gibson.Api.Startup>();
+                .UseStartup<TechDevs.Gibson.Api.Startup>();
 
             _testServer = new TestServer(builder);
             _client = _testServer.CreateClient();
