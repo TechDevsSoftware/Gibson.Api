@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
-        <AssemblyName>TechDevs.Users.WebService</AssemblyName>
+        <AssemblyName>TechDevs.Gibson.Api</AssemblyName>
         <RootNamespace>TechDevs.Users</RootNamespace>
         <UserSecretsId>b83ccb63-58c2-4508-aeda-9948809239e3</UserSecretsId>
     </PropertyGroup>
@@ -20,6 +20,7 @@
         <None Remove="Connected Services\Key Vault\**" />
         <None Remove="Interfaces\**" />
         <None Remove="wwwroot\**" />
+        <Compile Remove="GraphQL\Resolvers\ClientResolver.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Audit.NET.MongoDB" Version="14.0.2" />
@@ -44,19 +45,19 @@
         <Compile Remove="Validators\UserValidator.cs" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\lib\TechDevs.Clients\TechDevs.Clients.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Shared\TechDevs.Shared.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Mail\TechDevs.Mail.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.NotificationPreferences\TechDevs.NotificationPreferences.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.MarketingPreferences\TechDevs.MarketingPreferences.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Clients.Offers\TechDevs.Clients.Offers.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Products\TechDevs.Products.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Customers\TechDevs.Customers.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Clients.Theme\TechDevs.Clients.Theme.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Users\TechDevs.Users.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Clients.BookingRequests\TechDevs.Clients.BookingRequests.csproj" />
-        <ProjectReference Include="..\..\lib\TechDevs.Employees\TechDevs.Employees.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Clients\TechDevs.Clients.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Shared\TechDevs.Shared.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Mail\TechDevs.Mail.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.NotificationPreferences\TechDevs.NotificationPreferences.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.MarketingPreferences\TechDevs.MarketingPreferences.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Clients.Offers\TechDevs.Clients.Offers.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Products\TechDevs.Products.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Customers\TechDevs.Customers.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Clients.Theme\TechDevs.Clients.Theme.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Users\TechDevs.Users.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Clients.BookingRequests\TechDevs.Clients.BookingRequests.csproj" />
+        <ProjectReference Include="..\lib\TechDevs.Employees\TechDevs.Employees.csproj" />
     </ItemGroup>
     <ItemGroup>
         <WCFMetadata Include="Connected Services" />
@@ -65,6 +66,5 @@
         <Folder Include="Connected Services\" />
         <Folder Include="Controllers\Products\" />
         <Folder Include="GraphQL\" />
-        <Folder Include="GraphQL\Resolvers\" />
     </ItemGroup>
 </Project>

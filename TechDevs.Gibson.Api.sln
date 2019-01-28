@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Gibson.Api", "WebServices\TechDevs.Accounts.WebService\TechDevs.Gibson.Api.csproj", "{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Gibson.Api", "TechDevs.Gibson.Api\TechDevs.Gibson.Api.csproj", "{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Users", "lib\TechDevs.Users\TechDevs.Users.csproj", "{283D9A06-AAE1-44DE-A32C-D31F3AADA454}"
 EndProject

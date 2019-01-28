@@ -199,23 +199,23 @@ namespace TechDevs.Gibson.Api
             });
 
 
-            // Setup the API Audit DB
-            Audit.Core.Configuration
-                 .Setup()
-                 .UseMongoDB(config => config
-                             .ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
-                             .Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
-                             .Collection("APIAudit"));
+            //// Setup the API Audit DB
+            //Audit.Core.Configuration
+                 //.Setup()
+                 //.UseMongoDB(config => config
+                             //.ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
+                             //.Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
+                             //.Collection("APIAudit"));
 
             services.AddMvc(mvc =>
             {
-                mvc.AddAuditFilter(config => config
-                     .LogAllActions()
-                    .WithEventType("{verb}.{controller}.{action}")
-                    .IncludeHeaders(ctx => !ctx.ModelState.IsValid)
-                    .IncludeRequestBody()
-                    .IncludeModelState()
-                    .IncludeResponseBody());
+                //mvc.AddAuditFilter(config => config
+                    // .LogAllActions()
+                    //.WithEventType("{verb}.{controller}.{action}")
+                    //.IncludeHeaders(ctx => !ctx.ModelState.IsValid)
+                    //.IncludeRequestBody()
+                    //.IncludeModelState()
+                    //.IncludeResponseBody());
             });
 
 
@@ -236,24 +236,23 @@ namespace TechDevs.Gibson.Api
             app.UseCors("default");
 
             // Add Custom configuration for Audit API
-            if (!env.IsDevelopment())
-            {
-                SensitiveInformation.Custom();
+         
+                //SensitiveInformation.Custom();
 
-                app.Use(async (context, next) =>
-                {  // <----
-                    context.Request.EnableRewind();
-                    await next();
-                });
+                //app.Use(async (context, next) =>
+                //{  // <----
+                //    context.Request.EnableRewind();
+                //    await next();
+                //});
 
 
-                app.UseAuditMiddleware(_ => _
-                                       .WithEventType("{verb}:{url}")
-                                       .IncludeHeaders()
-                                       .IncludeResponseHeaders()
-                                       .IncludeRequestBody()
-                                       .IncludeResponseBody());
-            }
+                //app.UseAuditMiddleware(_ => _
+                                       //.WithEventType("{verb}:{url}")
+                                       //.IncludeHeaders()
+                                       //.IncludeResponseHeaders()
+                                       //.IncludeRequestBody()
+                                       //.IncludeResponseBody());
+            
 
             // add http for Schema at default url
             app.UseGraphQL<ISchema>("/graphql");
