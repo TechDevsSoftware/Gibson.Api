@@ -17,7 +17,7 @@ namespace TechDevs.Gibson.Api
         private readonly IAuthService<AuthUser> auth;
         private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken(), httpContext.GetClientKey());
 
-        public GibsonQuery(ClientResolver clients, IClientService clientService, IEmployeeService employees, ICustomerService customers, IHttpContextAccessor httpContext, IAuthService<AuthUser> auth)
+        public GibsonQuery(IClientService clientService, IEmployeeService employees, ICustomerService customers, IHttpContextAccessor httpContext, IAuthService<AuthUser> auth)
         {
             this.httpContext = httpContext;
             this.auth = auth;
@@ -26,7 +26,7 @@ namespace TechDevs.Gibson.Api
 
             Name = "Query";
 
-            Field<ListGraphType<ClientModel>>("clients", resolve: context => Authenticated() ? clients.FindAll() : throw new Exception("Not authenticated"));
+            Field<ListGraphType<ClientModel>>("clients", resolve: context => Authenticated() ? clientService.GetClients() : throw new Exception("Not authenticated"));
             Field<ListGraphType<EmployeeModel>>("employees", resolve: context => Authenticated() ? employees.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
             Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
 
@@ -38,7 +38,7 @@ namespace TechDevs.Gibson.Api
                      if (Authenticated())
                      {
                          var shortKey = context.GetArgument<string>("shortKey");
-                         return clients.FindOneByKey(shortKey);
+                         return clientService.GetClientByShortKey(shortKey);
                      }
                      return null;
                  });

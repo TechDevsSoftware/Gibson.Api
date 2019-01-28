@@ -107,9 +107,6 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<IBasicOffersService, BasicOffersService>();
             services.AddTransient<IBookingRequestService, BookingRequestService>();
 
-            // Resolvers
-            services.AddTransient<ClientResolver>();
-
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
@@ -138,8 +135,6 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<IDependencyResolver>(c => new FuncDependencyResolver(type => c.GetRequiredService(type)));
             // HttpAccessor used to get access to the request headers in GraphQL queries
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-
-
 
             // Configure the passowrd hashing algorithm
             services.Configure<BCryptPasswordHasherOptions>(options =>
