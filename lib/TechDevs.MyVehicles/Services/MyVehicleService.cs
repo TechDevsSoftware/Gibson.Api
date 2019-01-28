@@ -25,6 +25,9 @@ namespace TechDevs.MyVehicles
             var user = await _userRepo.FindById(userId, clientId);
             if (user == null) throw new Exception("User not found");
 
+            // Sanitize the registration
+            vehicle.Registration = vehicle.Registration.Replace(" ", "").ToUpper();
+
             if (user.CustomerData.MyVehicles.Any(v => v.Registration == vehicle.Registration)) throw new Exception("Vehicle already added. Cannot duplicate vehicle registrations.");
             
             user.CustomerData.MyVehicles.Add(vehicle);
@@ -38,6 +41,9 @@ namespace TechDevs.MyVehicles
             var user = await _userRepo.FindById(userId, clientId);
             if (user == null) throw new Exception("User not found");
 
+            // Sanitize the registration
+            registration = registration.Replace(" ", "").ToUpper();
+
             user.CustomerData.MyVehicles = user.CustomerData.MyVehicles.Where(x => x.Registration != registration).ToList();
 
             var result = await _userRepo.UpdateUser<CustomerVehicle>("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
@@ -48,6 +54,9 @@ namespace TechDevs.MyVehicles
         {
             var user = await _userRepo.FindById(userId, clientId);
             if (user == null) throw new Exception("User not found");
+
+            // Sanitize the registration
+            registration = registration.Replace(" ", "").ToUpper();
 
             var existingVehicle = user.CustomerData.MyVehicles.Find(x => x.Registration == registration);
 
@@ -63,6 +72,9 @@ namespace TechDevs.MyVehicles
 
         public async Task<CustomerVehicle> LookupVehicle(string registration)
         {
+            // Sanitize the registration
+            registration = registration.Replace(" ", "").ToUpper();
+
             HttpClient client = new HttpClient();
 
             var builder = new UriBuilder($"https://beta.check-mot.service.gov.uk/trade/vehicles/mot-tests");
