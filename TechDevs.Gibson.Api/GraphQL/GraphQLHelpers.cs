@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace TechDevs.Users.GraphQL.Resolvers
@@ -23,8 +25,16 @@ namespace TechDevs.Users.GraphQL.Resolvers
 
         public static string GetUserId(this IHttpContextAccessor httpContext)
         {
-            var val = httpContext?.HttpContext?.User?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
-            return val;
+            var token = GetAuthToken(httpContext);
+
+            if (token == null) throw new Exception("Token missing. Cannot authenticate user");
+
+            var handler = new JwtSecurityTokenHandler();
+            if (!handler.CanReadToken(token)) throw new Exception("Jwt token cannot be read");
+            var jwt = handler.ReadJwtToken(token);
+            var userId = jwt.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
+            return userId;
+
         }
     }
 }

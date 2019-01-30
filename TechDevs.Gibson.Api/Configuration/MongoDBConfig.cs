@@ -10,6 +10,7 @@ namespace TechDevs.Gibson.Api
         {
             // Create a convention that all models are set with the IgnotExtraElements flag by default
             var conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
+            var pack = new ConventionPack { new NamedIdMemberConvention("id") };
             ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
 
             BsonClassMap.RegisterClassMap<Customer>(c =>
@@ -24,6 +25,7 @@ namespace TechDevs.Gibson.Api
                 c.SetDiscriminator("Employee");
                 c.SetDiscriminatorIsRequired(true);
             });
+
         }
     }
 }

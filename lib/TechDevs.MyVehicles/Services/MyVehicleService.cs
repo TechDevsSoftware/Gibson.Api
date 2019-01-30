@@ -13,16 +13,30 @@ namespace TechDevs.MyVehicles
 {
     public class MyVehicleService : IMyVehicleService
     {
-        private readonly IAuthUserRepository<Customer> _userRepo;
+        private readonly IUserService<Customer> users;
+        private readonly IAuthUserRepository<Customer> customerRepo;
 
-        public MyVehicleService(IAuthUserRepository<Customer> userRepository)
+        public MyVehicleService(IUserService<Customer> users, IAuthUserRepository<Customer> customerRepo)
         {
-            _userRepo = userRepository;
+            this.users = users;
+            this.customerRepo = customerRepo;
+        }
+
+        public async Task<CustomerVehicle> GetCustomerVehicle(string registration, string userId, string clientKeyOrId)
+        {
+            var user = await users.GetById(userId, clientKeyOrId);
+            if (user == null) throw new Exception("User not found");
+
+            // Sanitize the registration
+            registration = registration.Replace(" ", "").ToUpper();
+
+            var existingVehicle = user.CustomerData.MyVehicles.Find(x => x.Registration == registration);
+            return existingVehicle;
         }
 
         public async Task<Customer> AddVehicle(CustomerVehicle vehicle, string userId, string clientId)
         {
-            var user = await _userRepo.FindById(userId, clientId);
+            var user = await users.GetById(userId, clientId);
             if (user == null) throw new Exception("User not found");
 
             // Sanitize the registration
@@ -32,13 +46,13 @@ namespace TechDevs.MyVehicles
             
             user.CustomerData.MyVehicles.Add(vehicle);
 
-            var result = await _userRepo.UpdateUser<CustomerVehicle>("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
+            var result = await customerRepo.UpdateUser("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
             return result;
         }
 
         public async Task<Customer> RemoveVehicle(string registration, string userId, string clientId)
         {
-            var user = await _userRepo.FindById(userId, clientId);
+            var user = await users.GetById(userId, clientId);
             if (user == null) throw new Exception("User not found");
 
             // Sanitize the registration
@@ -46,25 +60,24 @@ namespace TechDevs.MyVehicles
 
             user.CustomerData.MyVehicles = user.CustomerData.MyVehicles.Where(x => x.Registration != registration).ToList();
 
-            var result = await _userRepo.UpdateUser<CustomerVehicle>("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
+            var result = await customerRepo.UpdateUser("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
             return result;
         }
 
         public async Task<Customer> UpdateVehicleMOTData(string registration, string userId, string clientId)
         {
-            var user = await _userRepo.FindById(userId, clientId);
+            var user = await users.GetById(userId, clientId);
             if (user == null) throw new Exception("User not found");
 
             // Sanitize the registration
             registration = registration.Replace(" ", "").ToUpper();
 
             var existingVehicle = user.CustomerData.MyVehicles.Find(x => x.Registration == registration);
-
             var latestMOTData = await LookupVehicle(registration);
             if(existingVehicle != latestMOTData)
             {
                 user.CustomerData.MyVehicles[user.CustomerData.MyVehicles.FindIndex(x => x.Registration == registration)] = latestMOTData;
-                var result = await _userRepo.UpdateUser<CustomerVehicle>("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
+                var result = await customerRepo.UpdateUser("CustomerData.MyVehicles", user.CustomerData.MyVehicles, userId, clientId);
                 return result;
             }
             return user;

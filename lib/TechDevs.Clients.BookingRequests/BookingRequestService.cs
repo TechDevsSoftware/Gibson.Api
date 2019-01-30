@@ -1,77 +1,105 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using TechDevs.Customers;
 using TechDevs.Shared.Models;
 
 namespace TechDevs.Clients.BookingRequests
 {
     public interface IBookingRequestService
     {
-        Task<BookingRequest> CreateBookingRequest(BookingRequest request, string clientId);
-        Task<BookingRequest> UpdateBookingRequest(BookingRequest request, string clientId);
-        Task DeleteBookingRequest(Guid id, string clientId);
-        Task ConfirmBooking(Guid id, string clientId);
-        Task CancelBooking(Guid id, string clientId);
+        Task<List<BookingRequest>> GetBookings(string clientId);
+        Task<BookingRequest> GetBooking(string id, string clientId);
+        Task<BookingRequest> CreateBooking(BookingRequest_Create req, string userId, string clientId);
+        Task<BookingRequest> UpdateBooking(BookingRequest request, string clientId);
+        Task DeleteBooking(string id, string clientId);
+        Task ConfirmBooking(string id, string clientId);
+        Task CancelBooking(string id, string clientId);
     }
 
     public class BookingRequestService : IBookingRequestService
     {
-        private readonly IClientRepository _clientRepository;
+        private readonly BookingRequestsRepository bookings;
+        private readonly IClientService clients;
+        private readonly ICustomerService customers;
 
-        public BookingRequestService(IClientRepository clientRepository)
+        public BookingRequestService(BookingRequestsRepository bookings, IClientService clients, ICustomerService customers)
         {
-            _clientRepository = clientRepository;
+            this.bookings = bookings;
+            this.clients = clients;
+            this.customers = customers;
         }
 
-        public async Task CancelBooking(Guid id, string clientId)
+        public async Task<List<BookingRequest>> GetBookings(string clientId)
         {
-            var client = await _clientRepository.GetClient(clientId);
-            var existingIndex = client.ClientData.BookingRequests.FindIndex(x => x.Id == id);
-            if (existingIndex == -1) throw new Exception("Could not find existing booking request");
-            client.ClientData.BookingRequests[existingIndex].Cancelled = true;
-            // Send the email confirmation of cancellation
-            var result = await _clientRepository.UpdateClient("ClientData.BookingRequests", client.ClientData.BookingRequests, clientId);
-            return;
+            return await bookings.FindAll(clientId);
         }
 
-        public async Task ConfirmBooking(Guid id, string clientId)
+        public async Task<BookingRequest> GetBooking(string id, string clientId)
         {
-            var client = await _clientRepository.GetClient(clientId);
-            var existingIndex = client.ClientData.BookingRequests.FindIndex(x => x.Id == id);
-            if (existingIndex == -1) throw new Exception("Could not find existing booking request");
-            client.ClientData.BookingRequests[existingIndex].Confirmed = true;
-            client.ClientData.BookingRequests[existingIndex].ConfirmationEmailSent = true;
-            // Send the email confirmation
-            var result = await _clientRepository.UpdateClient("ClientData.BookingRequests", client.ClientData.BookingRequests, clientId);
-            return;
+            return await bookings.FindById(id, clientId);
         }
 
-        public async Task<BookingRequest> CreateBookingRequest(BookingRequest request, string clientId)
+        public async Task CancelBooking(string id, string clientId)
         {
-            // Get the clinet
-            var client = await _clientRepository.GetClient(clientId);
-            client.ClientData.BookingRequests.Add(request);
-            var result = await _clientRepository.UpdateClient("ClientData.BookingRequests", client.ClientData.BookingRequests, clientId);
-            return request;
+            var client = await clients.GetClient(clientId);
+            var booking = await bookings.FindById(id, client.Id);
+            var result = await bookings.Update(booking, client.Id);
         }
 
-        public async Task DeleteBookingRequest(Guid id, string clientId)
+        public async Task ConfirmBooking(string id, string clientId)
         {
-            var client = await _clientRepository.GetClient(clientId);
-            var existingIndex = client.ClientData.BookingRequests.FindIndex(x => x.Id == id);
-            if (existingIndex == -1) throw new Exception("Could not find existing booking request");
-            client.ClientData.BookingRequests.RemoveAt(existingIndex);
-            var result = await _clientRepository.UpdateClient("ClientData.BookingRequests", client.ClientData.BookingRequests, clientId);
-            return;
+            var client = await clients.GetClient(clientId);
+            var booking = await bookings.FindById(id, client.Id);
+            booking.Confirmed = true;
+            booking.ConfirmationEmailSent = true;
+            var result = await bookings.Update(booking,client.Id);
         }
 
-        public async Task<BookingRequest> UpdateBookingRequest(BookingRequest request, string clientId)
+        public async Task<BookingRequest> CreateBooking(BookingRequest_Create req, string userId, string clientId)
         {
-            var client = await _clientRepository.GetClient(clientId);
-            var existingIndex = client.ClientData.BookingRequests.FindIndex(x => x.Id == request.Id);
-            if (existingIndex == -1) throw new Exception("Could not find existing booking request");
-            client.ClientData.BookingRequests[existingIndex] = request;
-            var result = await _clientRepository.UpdateClient("ClientData.BookingRequests", client.ClientData.BookingRequests, clientId);
-            return request;
+            var client = await clients.GetClient(clientId);
+            var customer = await customers.GetById(userId, clientId);
+            var vehicle = customer?.CustomerData?.MyVehicles?.FirstOrDefault(x => x.Registration == req.Registration);
+
+            // Only keep the last 3 MOT
+            vehicle.MOTResults = vehicle?.MOTResults.Take(3).ToList();
+
+            var booking = new BookingRequest
+            {
+                Id = Guid.NewGuid().ToString(),
+                ClientId = clientId,
+                CustomerId = customer.Id,
+                Registration = req.Registration,
+                MOT = req.MotRequest,
+                Service = req.ServiceRequest,
+                PreferedDate = req.PreferedDate,
+                PreferedTime = req.PreferedTime,
+                Message = req.Message,
+                Confirmed = false,
+                Cancelled = false,
+                ConfirmationEmailSent = false,
+                Vehicle = vehicle,
+                Customer = new BookingCustomer(customer),
+                RequestDate = DateTime.UtcNow,
+            };
+
+            var result = await bookings.Create(booking, client.Id);
+            return result;
         }
+
+        public async Task DeleteBooking(string id, string clientId)
+        {
+            var client = await clients.GetClient(clientId);
+            await bookings.Delete(id, clientId);
+        }
+
+        public async Task<BookingRequest> UpdateBooking(BookingRequest request, string clientId)
+        {
+            var client = await clients.GetClient(clientId);
+            return await bookings.Update(request, clientId);
+        }
+
     }
 }

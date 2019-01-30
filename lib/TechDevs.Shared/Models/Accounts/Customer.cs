@@ -11,4 +11,6 @@ namespace TechDevs.Shared.Models
             CustomerData = new CustomerData();
         }
     }
+
+
 }

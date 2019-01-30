@@ -86,6 +86,7 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
             services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
             services.AddTransient<IAuthUserRepository<AuthUser>, UserRepository>();
+            services.AddTransient<BookingRequestsRepository>();
             // Services
             services.AddTransient<IUserService<AuthUser>, UserService>();
             services.AddTransient<IUserService<Customer>, CustomerService>();
@@ -113,6 +114,8 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<IEmailer, DotNetEmailer>();
 
             // GraphQL Models
+            services.AddTransient<BookingRequestModel>();
+            services.AddTransient<BookingCustomerModel>();
             services.AddTransient<MotCommentModel>();
             services.AddTransient<MotResultModel>();
             services.AddTransient<ClientThemeModel>();

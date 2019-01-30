@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TechDevs.Shared.Models;
-using static TechDevs.Shared.Models.Shared.Repository;
+using TechDevs.Shared.Models.Shared;
 
 namespace TechDevs.Users
 {

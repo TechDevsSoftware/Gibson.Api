@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,14 +22,29 @@ namespace TechDevs.Gibson.Api.Controllers
             this._clientService = clientService;
         }
 
+        [HttpGet]
+        [Produces(typeof(List<BookingRequest>))]
+        public async Task<IActionResult> GetBookingRequests()
+        {
+            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            return new OkObjectResult(await _bookingRequestService.GetBookings(client.Id));
+        }
+
+        [HttpGet("{bookingId}")]
+        [Produces(typeof(BookingRequest))]
+        public async Task<IActionResult> GetBookingRequest([FromRoute] string bookingId)
+        {
+            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            return new OkObjectResult(await _bookingRequestService.GetBooking(bookingId, client.Id));
+        }
+
         [HttpPost]
         [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> CreateBookingRequest([FromBody] BookingRequest bookingRequest)
+        public async Task<IActionResult> CreateBookingRequest([FromBody] BookingRequest_Create bookingRequest)
         {
             var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
             var userId = this.UserId();
-            bookingRequest.CustomerId = new DBRef { Id = userId };
-            return new OkObjectResult(await _bookingRequestService.CreateBookingRequest(bookingRequest, client.Id));
+            return new OkObjectResult(await _bookingRequestService.CreateBooking(bookingRequest, userId, client.Id));
         }
 
         [HttpPut]
@@ -36,35 +52,34 @@ namespace TechDevs.Gibson.Api.Controllers
         public async Task<IActionResult> UpdateBookingRequest([FromBody] BookingRequest bookingRequest)
         {
             var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            return new OkObjectResult(await _bookingRequestService.UpdateBookingRequest(bookingRequest, client.Id));
+            return new OkObjectResult(await _bookingRequestService.UpdateBooking(bookingRequest, client.Id));
         }
 
-        [HttpDelete]
+        [HttpDelete("{bookingId}")]
         [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> DeleteBookingRequest([FromBody] Guid bookingId)
+        public async Task<IActionResult> DeleteBookingRequest([FromRoute] string bookingId)
         {
             var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            await _bookingRequestService.DeleteBookingRequest(bookingId, client.Id);
+            await _bookingRequestService.DeleteBooking(bookingId, client.Id);
             return new OkResult();
         }
 
-        [HttpPost("confirm")]
+        [HttpPost("{bookingId}/confirm")]
         [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> ConfirmBooking(Guid bookingId)
-        {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            await _bookingRequestService.ConfirmBooking(bookingId, client.Id);
-            return new OkResult();
-        }
-
-        [HttpPost("cancel")]
-        [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> CancelBooking(Guid bookingId)
+        public async Task<IActionResult> ConfirmBooking([FromRoute] string bookingId)
         {
             var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
             await _bookingRequestService.ConfirmBooking(bookingId, client.Id);
             return new OkResult();
         }
 
+        [HttpPost("{bookingId}/cancel")]
+        [Produces(typeof(BookingRequest))]
+        public async Task<IActionResult> CancelBooking([FromRoute] string bookingId)
+        {
+            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            await _bookingRequestService.ConfirmBooking(bookingId, client.Id);
+            return new OkResult();
+        }
     }
 }

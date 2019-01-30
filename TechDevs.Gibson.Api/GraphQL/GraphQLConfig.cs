@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using TechDevs.Clients;
+using TechDevs.Clients.BookingRequests;
 using TechDevs.Customers;
 using TechDevs.Employees;
+using TechDevs.MyVehicles;
 using TechDevs.Shared.Models;
 using TechDevs.Users;
 using TechDevs.Users.GraphQL.Resolvers;
@@ -17,7 +20,7 @@ namespace TechDevs.Gibson.Api
         private readonly IAuthService<AuthUser> auth;
         private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken(), httpContext.GetClientKey());
 
-        public GibsonQuery(IClientService clientService, IEmployeeService employees, ICustomerService customers, IHttpContextAccessor httpContext, IAuthService<AuthUser> auth)
+        public GibsonQuery(IClientService clientService, IEmployeeService employees, ICustomerService customers, IBookingRequestService bookingRequests, IHttpContextAccessor httpContext, IAuthService<AuthUser> auth)
         {
             this.httpContext = httpContext;
             this.auth = auth;
@@ -29,6 +32,7 @@ namespace TechDevs.Gibson.Api
             Field<ListGraphType<ClientModel>>("clients", resolve: context => Authenticated() ? clientService.GetClients() : throw new Exception("Not authenticated"));
             Field<ListGraphType<EmployeeModel>>("employees", resolve: context => Authenticated() ? employees.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
             Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
+            Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => Authenticated() ? bookingRequests.GetBookings(clientKey) : throw new Exception("Not authenticated"));
 
             Field<ClientModel>(
                  "clientByKey",
@@ -85,11 +89,11 @@ namespace TechDevs.Gibson.Api
 
     public class BookingRequestModel : ObjectGraphType<BookingRequest>
     {
-        public BookingRequestModel(ICustomerService customers, IHttpContextAccessor httpContext)
+        public BookingRequestModel()
         {
-            //Field(f => f.Id);
-            Field(f => f.VehicleRegistration);
-            Field(f => f.MOT);
+            Field(f => f.Id);
+            Field(f => f.ClientId);
+            Field(f => f.MOT).Name("mot");
             Field(f => f.Service);
             Field(f => f.PreferedDate);
             Field(f => f.PreferedTime);
@@ -97,7 +101,21 @@ namespace TechDevs.Gibson.Api
             Field(f => f.Confirmed);
             Field(f => f.Cancelled);
             Field(f => f.ConfirmationEmailSent);
-            Field<CustomerModel>("customer", resolve: c => customers.GetById(c.Source.CustomerId.Id, httpContext.GetClientKey()));
+            Field<BookingCustomerModel>("customer", resolve: c => c.Source.Customer);
+            Field<CustomerVehicleModel>("vehicle", resolve: c => c.Source.Vehicle);
+        }
+    }
+
+    public class BookingCustomerModel : ObjectGraphType<BookingCustomer>
+    {
+        public BookingCustomerModel()
+        {
+            Field(f => f.Id);
+            Field(f => f.ClientId);
+            Field(x => x.FirstName);
+            Field(x => x.LastName);
+            Field(x => x.EmailAddress);
+            Field(x => x.ContactNumber, true);
         }
     }
 
@@ -125,7 +143,7 @@ namespace TechDevs.Gibson.Api
         public ClientDataModel()
         {
             Field<ListGraphType<BasicOfferModel>>("basicOffers", resolve: c => c.Source.BasicOffers);
-            Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => c.Source.BookingRequests);
+            //Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => c.Source.BookingRequests);
         }
     }
 

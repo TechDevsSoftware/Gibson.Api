@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using TechDevs.Shared.Models.Shared;
 
 namespace TechDevs.Shared.Models
 {
     public class ClientData
     {
         public List<BasicOffer> BasicOffers { get; set; }
-        public List<BookingRequest> BookingRequests { get; set; }
 
         public ClientData()
         {
             BasicOffers = new List<BasicOffer>();
-            BookingRequests = new List<BookingRequest>();
         }
     }
 
@@ -34,10 +33,10 @@ namespace TechDevs.Shared.Models
 
     public class BookingRequest
     {
-        public Guid Id { get; set; }
-        public DBRef CustomerId { get; set; }
-        public Customer Customer { get; set; }
-        public string VehicleRegistration { get; set; }
+        public string Id { get; set; }
+        public string ClientId { get; set; }
+        public string CustomerId { get; set; }
+        public string Registration { get; set; }
         public bool MOT { get; set; }
         public bool Service { get; set; }
         public DateTime PreferedDate { get; set; }
@@ -46,12 +45,50 @@ namespace TechDevs.Shared.Models
         public bool Confirmed { get; set; }
         public bool Cancelled { get; set; }
         public bool ConfirmationEmailSent { get; set; }
+        public DateTime RequestDate { get; set; }
+        public CustomerVehicle Vehicle { get; set; }
+        public BookingCustomer Customer { get; set; }
 
         public BookingRequest()
         {
-            Id = Guid.NewGuid();
-            PreferedDate = DateTime.Now.AddDays(1);
+            Id = Guid.NewGuid().ToString();
+            PreferedDate = DateTime.UtcNow.AddDays(1);
+            RequestDate = DateTime.UtcNow;
             Confirmed = false;
+        }
+    }
+
+    public class BookingRequest_Create
+    {
+        public string Registration { get; set; }
+        public bool MotRequest { get; set; }
+        public bool ServiceRequest { get; set; }
+        public DateTime PreferedDate { get; set; }
+        public string PreferedTime { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class BookingCustomer
+    {
+        public string Id { get; set; }
+        public string ClientId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+        public string ContactNumber { get; set; }
+
+        public BookingCustomer()
+        {
+        }
+
+        public BookingCustomer(Customer customer)
+        {
+            Id = customer.Id;
+            ClientId = customer.ClientId.Id;
+            FirstName = customer.FirstName;
+            LastName = customer.LastName;
+            EmailAddress = customer.EmailAddress;
+            ContactNumber = customer.ContactNumber;
         }
     }
 }
