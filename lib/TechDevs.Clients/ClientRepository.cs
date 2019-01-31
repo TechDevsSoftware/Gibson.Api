@@ -54,19 +54,9 @@ namespace TechDevs.Clients
             return result;
         }
 
-        public async Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers = false)
+        public async Task<Client> GetClient(string clientId)
         {
             var client = await _clients.Find(x => x.Id == clientId).FirstAsync();
-            if (includeRelatedAuthUsers)
-            {
-                var clientFilter = new BsonDocument { { "ClientId", new BsonDocument { { "_id", client.Id } } } };
-
-                var employees = await _users.OfType<Employee>().Find(clientFilter).ToListAsync();
-                var customers = await _users.OfType<Customer>().Find(clientFilter).ToListAsync();
-
-                client.Employees = employees.Select(e => new AuthUserProfile(e)).ToList();
-                client.Customers = customers.Select(e => new AuthUserProfile(e)).ToList();
-            }
             return client;
         }
 
@@ -102,7 +92,7 @@ namespace TechDevs.Clients
 
             var result = await _clients.ReplaceOneAsync(filter, client, updateOptions);
             if (!result.IsAcknowledged) throw new Exception("Client could not be updated");
-            return await GetClient(clientId, false);
+            return await GetClient(clientId);
         }
 
         public async Task<Client> GetClientByShortKey(string shortKey)

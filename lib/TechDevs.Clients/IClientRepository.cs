@@ -8,7 +8,7 @@ namespace TechDevs.Clients
     {
         Task<ClientIdentifier> GetClientIdentifier(string clientIdOrKey);
         Task<List<Client>> GetClients();
-        Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers = false);
+        Task<Client> GetClient(string clientId);
         Task<Client> CreateClient(Client client);
         Task<Client> UpdateClient<Type>(string propertyPath, Type data, string clientId);
         Task<Client> UpdateClient(string clientId, Client client);

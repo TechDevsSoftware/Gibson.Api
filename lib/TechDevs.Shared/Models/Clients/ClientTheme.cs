@@ -11,6 +11,6 @@ namespace TechDevs.Shared.Models
         public string DangerColour { get; set; }
         public string LogoPath { get; set; }
         public byte[] LogoData { get; set; }
-        public List<CSSParameter> Parameters { get; set; }
+        public List<CSSParameter> CssParameters { get; set; }
     }
 }

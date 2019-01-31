@@ -38,6 +38,10 @@ namespace TechDevs.Gibson.Api
             Field<ClientModel>("client", resolve: c => clientService.GetClientByShortKey(httpContext.GetClientKey()));
             Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
 
+            Field<CustomerModel>("customerById", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "customerId" }), resolve: c =>
+            {
+                return Authenticated() ? customers.GetById(c.GetArgument<string>("customerId"), clientKey) : null;
+            });
 
             Field<BookingRequestModel>("bookingRequest", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "bookingId" }), resolve: c =>
             {
@@ -126,7 +130,7 @@ namespace TechDevs.Gibson.Api
         {
             Field(x => x.Font, true);
             Field(x => x.LogoPath, true);
-            Field<ListGraphType<CSSParameterModel>>("cssParameters", resolve: c => c.Source.Parameters);
+            Field<ListGraphType<CSSParameterModel>>("cssParameters", resolve: c => c.Source.CssParameters);
         }
     }
 

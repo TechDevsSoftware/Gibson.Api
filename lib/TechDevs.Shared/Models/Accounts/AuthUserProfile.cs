@@ -10,6 +10,7 @@ namespace TechDevs.Shared.Models
         public bool ValidatedEmail { get; set; }
         public string ProviderName { get; set; }
         public string ContactNumber { get; set; }
+        public bool Disabled { get; set; }
 
         public AuthUserProfile() {}
 
@@ -22,6 +23,7 @@ namespace TechDevs.Shared.Models
             AgreedToTerms = c.AgreedToTerms;
             ProviderName = c.ProviderName;
             ContactNumber = c.ContactNumber;
+            Disabled = c.Disabled;
         }
     }
 }

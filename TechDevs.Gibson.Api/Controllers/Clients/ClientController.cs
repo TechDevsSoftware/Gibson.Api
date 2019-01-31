@@ -28,8 +28,8 @@ namespace TechDevs.Gibson.Api.Controllers
 
         [HttpGet("{clientId}")]
         [Produces(typeof(Client))]
-        public async Task<IActionResult> GetClientById([FromRoute] string clientId, [FromQuery] bool includeRelatedAuthUsers = false) =>
-            new OkObjectResult(await _clientService.GetClient(clientId, includeRelatedAuthUsers));
+        public async Task<IActionResult> GetClientById([FromRoute] string clientId) =>
+            new OkObjectResult(await _clientService.GetClient(clientId));
 
         [HttpGet("customer")]
         [Produces(typeof(List<PublicClient>))]

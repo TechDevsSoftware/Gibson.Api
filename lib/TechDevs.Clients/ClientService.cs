@@ -17,7 +17,7 @@ namespace TechDevs.Clients
 
         public async Task<ClientIdentifier> GetClientIdentifier(string clientIdOrKey) => await _clientRepo.GetClientIdentifier(clientIdOrKey);
         public async Task<List<Client>> GetClients() => await _clientRepo.GetClients();
-        public async Task<Client> GetClient(string clientId, bool includeRelatedAuthUsers) => await _clientRepo.GetClient(clientId, includeRelatedAuthUsers);
+        public async Task<Client> GetClient(string clientId) => await _clientRepo.GetClient(clientId);
         public async Task<Client> GetClientByShortKey(string key) => await _clientRepo.GetClientByShortKey(key);
         public async Task<Client> CreateClient(ClientRegistration reg)
         {
@@ -39,7 +39,7 @@ namespace TechDevs.Clients
         public async Task<Client> UpdateClient(string clientId, Client client)
         {
             // Check to see if the short key has changed
-            var existingClient = await _clientRepo.GetClient(clientId, false);
+            var existingClient = await _clientRepo.GetClient(clientId);
             if (existingClient == null) throw new Exception("Existing client not found");
             if (existingClient.ShortKey != client.ShortKey)
             {

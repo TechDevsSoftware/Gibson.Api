@@ -22,7 +22,7 @@ namespace TechDevs.Clients.Theme
             if (client == null) throw new Exception("Client could not be found");
 
             // Add the new parameter
-            client.ClientTheme.Parameters.Add(new CSSParameter { Key = key, Value = value });
+            client.ClientTheme.CssParameters.Add(new CSSParameter { Key = key, Value = value });
 
             // Update the DB
             var result = await _clientRepo.UpdateClient(clientId, client);
@@ -39,13 +39,13 @@ namespace TechDevs.Clients.Theme
                 client.ClientTheme = new ClientTheme();
             }
 
-            if (client.ClientTheme.Parameters == null)
+            if (client.ClientTheme.CssParameters == null)
             {
-                client.ClientTheme.Parameters = new System.Collections.Generic.List<CSSParameter>();
+                client.ClientTheme.CssParameters = new System.Collections.Generic.List<CSSParameter>();
             }
 
             // Remove any parameters already there
-            client.ClientTheme.Parameters.RemoveAll(x => x.Key == key);
+            client.ClientTheme.CssParameters.RemoveAll(x => x.Key == key);
 
             var result = await _clientRepo.UpdateClient(clientId, client);
             return result;

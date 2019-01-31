@@ -95,7 +95,7 @@ namespace TechDevs.Clients.UnitTests
             var existingClient2 = new Client { Id = Guid.NewGuid().ToString(), Name = "ExistingKey2", ShortKey = "KEY2" };
             var updatingClient = new Client { Id = existingClient.Id, Name = "ModifiedName", ShortKey = existingClient2.ShortKey };
             var mockRepo = new Mock<IClientRepository>();
-            mockRepo.Setup(x => x.GetClient(updatingClient.Id, false)).ReturnsAsync(existingClient);
+            mockRepo.Setup(x => x.GetClient(updatingClient.Id)).ReturnsAsync(existingClient);
             mockRepo.Setup(x => x.GetClientByShortKey(updatingClient.ShortKey)).ReturnsAsync(existingClient);
             var sut = new ClientService(mockRepo.Object);
             // Act & Assert
@@ -111,7 +111,7 @@ namespace TechDevs.Clients.UnitTests
             var mockRepo = new Mock<IClientRepository>();
             mockRepo.Setup(x => x.GetClientByShortKey(It.IsAny<string>())).ReturnsAsync((Client)null);
             mockRepo.Setup(x => x.UpdateClient(updatingClient.Id, updatingClient)).ReturnsAsync(updatingClient);
-            mockRepo.Setup(x => x.GetClient(updatingClient.Id, false)).ReturnsAsync(updatingClient);
+            mockRepo.Setup(x => x.GetClient(updatingClient.Id)).ReturnsAsync(updatingClient);
             var sut = new ClientService(mockRepo.Object);
             // Act
             var result = await sut.UpdateClient(updatingClient.Id, updatingClient);
