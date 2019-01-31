@@ -101,7 +101,7 @@ namespace TechDevs.Gibson.Api
             Field(f => f.Confirmed);
             Field(f => f.Cancelled);
             Field(f => f.ConfirmationEmailSent);
-            Field(f => f.RequestDate);
+            Field<DateTimeGraphType>("RequestDate");
             Field<BookingCustomerModel>("customer", resolve: c => c.Source.Customer);
             Field<CustomerVehicleModel>("vehicle", resolve: c => c.Source.Vehicle);
         }
