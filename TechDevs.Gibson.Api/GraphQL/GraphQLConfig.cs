@@ -25,7 +25,7 @@ namespace TechDevs.Gibson.Api
             this.httpContext = httpContext;
             this.auth = auth;
 
-            var clientKey = httpContext.GetClientKey(); 
+            var clientKey = httpContext.GetClientKey();
 
             Name = "Query";
 
@@ -34,21 +34,21 @@ namespace TechDevs.Gibson.Api
             Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
             Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => Authenticated() ? bookingRequests.GetBookings(clientKey) : throw new Exception("Not authenticated"));
 
-            Field<ClientModel>(
-                 "clientByKey",
-                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "shortKey" }),
-                 resolve: context =>
-                 {
-                     if (Authenticated())
-                     {
-                         var shortKey = context.GetArgument<string>("shortKey");
-                         return clientService.GetClientByShortKey(shortKey);
-                     }
-                     return null;
-                 });
 
             Field<ClientModel>("client", resolve: c => clientService.GetClientByShortKey(httpContext.GetClientKey()));
             Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
+
+
+            Field<BookingRequestModel>("bookingRequest", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "bookingId" }), resolve: c =>
+            {
+                return Authenticated() ? bookingRequests.GetBooking(c.GetArgument<string>("bookingId"), clientKey) : null;
+            });
+
+            Field<ClientModel>("clientByKey", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "shortKey" }), resolve: c =>
+            {
+                return Authenticated() ? clientService.GetClientByShortKey(c.GetArgument<string>("shortKey")) : null;
+            });
+
         }
     }
 
@@ -101,6 +101,7 @@ namespace TechDevs.Gibson.Api
             Field(f => f.Confirmed);
             Field(f => f.Cancelled);
             Field(f => f.ConfirmationEmailSent);
+            Field(f => f.RequestDate);
             Field<BookingCustomerModel>("customer", resolve: c => c.Source.Customer);
             Field<CustomerVehicleModel>("vehicle", resolve: c => c.Source.Vehicle);
         }

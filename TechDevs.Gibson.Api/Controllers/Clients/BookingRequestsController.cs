@@ -78,7 +78,7 @@ namespace TechDevs.Gibson.Api.Controllers
         public async Task<IActionResult> CancelBooking([FromRoute] string bookingId)
         {
             var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            await _bookingRequestService.ConfirmBooking(bookingId, client.Id);
+            await _bookingRequestService.CancelBooking(bookingId, client.Id);
             return new OkResult();
         }
     }

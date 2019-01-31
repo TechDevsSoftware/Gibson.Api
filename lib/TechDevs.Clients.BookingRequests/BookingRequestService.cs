@@ -45,6 +45,8 @@ namespace TechDevs.Clients.BookingRequests
         {
             var client = await clients.GetClient(clientId);
             var booking = await bookings.FindById(id, client.Id);
+            booking.Cancelled = true;
+            booking.Confirmed = false;
             var result = await bookings.Update(booking, client.Id);
         }
 
