@@ -36,7 +36,10 @@ namespace TechDevs.Gibson.Api
 
 
             Field<ClientModel>("client", resolve: c => clientService.GetClientByShortKey(httpContext.GetClientKey()));
+
             Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
+            Field<CustomerModel>("myCustomerProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
+            Field<EmployeeModel>("myEmployeeProfile", resolve: c => Authenticated() ? employees.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
 
             Field<CustomerModel>("customerById", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "customerId" }), resolve: c =>
             {
