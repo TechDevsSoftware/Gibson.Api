@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TechDevs.Shared.Models.Shared;
 
 namespace TechDevs.Shared.Models
 {

@@ -31,6 +31,7 @@ using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Http;
 using TechDevs.Employees;
 using TechDevs.Users.GraphQL.Resolvers;
+using Gibson.CustomerVehicles;
 
 namespace TechDevs.Gibson.Api
 {
@@ -82,6 +83,9 @@ namespace TechDevs.Gibson.Api
             });
 
             // Repositories
+
+            services.AddTransient<ICustomerVehicleRepositoy, CustomerVehicleRespository>();
+
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
             services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();

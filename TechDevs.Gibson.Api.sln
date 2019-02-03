@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Employees", "Employees", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Employees", "lib\TechDevs.Employees\TechDevs.Employees.csproj", "{2C817ECE-9ECF-4558-861A-CE9032E654F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.CustomerVehicles", "lib\Gibson.CustomerVehicles\Gibson.CustomerVehicles.csproj", "{EF359531-EA5F-405E-8DEB-54EA1011A27C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{2C817ECE-9ECF-4558-861A-CE9032E654F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C817ECE-9ECF-4558-861A-CE9032E654F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C817ECE-9ECF-4558-861A-CE9032E654F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF359531-EA5F-405E-8DEB-54EA1011A27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF359531-EA5F-405E-8DEB-54EA1011A27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF359531-EA5F-405E-8DEB-54EA1011A27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF359531-EA5F-405E-8DEB-54EA1011A27C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +152,7 @@ Global
 		{41598996-9F33-451A-B13B-D6A8CCDB90A8} = {3D980640-9137-4FCD-B60B-7E56F72DF444}
 		{7DC2A006-FF0F-4084-AD36-B692691B6D97} = {F9AFF111-A225-4BE4-AEE1-9C9C6555E66E}
 		{2C817ECE-9ECF-4558-861A-CE9032E654F6} = {7DC2A006-FF0F-4084-AD36-B692691B6D97}
+		{EF359531-EA5F-405E-8DEB-54EA1011A27C} = {69DA83F5-A959-453B-AE62-98FAE8719723}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B6649377-4FA8-4BC3-8D58-B6863080EDE7}

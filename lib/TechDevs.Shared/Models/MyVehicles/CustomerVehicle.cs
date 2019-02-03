@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechDevs.Shared.Models
 {
-    public class CustomerVehicle
+    public class CustomerVehicle : CustomerEntity
     {
         public string Make { get; set; }
         public string Model { get; set; }
