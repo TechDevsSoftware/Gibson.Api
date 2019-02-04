@@ -65,9 +65,6 @@ namespace TechDevs.Clients.BookingRequests
             var customer = await customers.GetById(userId, clientId);
             var vehicle = customer?.CustomerData?.MyVehicles?.FirstOrDefault(x => x.Registration == req.Registration);
 
-            // Only keep the last 3 MOT
-            vehicle.MOTResults = vehicle?.MOTResults.Take(3).ToList();
-
             var booking = new BookingRequest
             {
                 Id = Guid.NewGuid().ToString(),

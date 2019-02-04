@@ -226,8 +226,8 @@ namespace TechDevs.Gibson.Api
             Field(b => b.FuelType);
             Field(b => b.Colour);
             Field(b => b.Year);
-            Field(b => b.MOTExpiryDate, true).Name("motExpiryDate");
-            Field<ListGraphType<MotResultModel>>("results", resolve: x => x.Source.MOTResults);
+            //Field(b => b.MOTExpiryDate, true).Name("motExpiryDate");
+            //Field<ListGraphType<MotResultModel>>("results", resolve: x => x.Source.MOTResults);
         }
     }
 

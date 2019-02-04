@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Gibson.CustomerVehicles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
@@ -9,35 +8,6 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
 {
-    [Route("api/v1/account/customervehicles")]
-    public class TestController : Controller
-    {
-        private readonly ICustomerVehicleRepositoy repo;
-        private readonly IClientService clientService;
-
-        public TestController(ICustomerVehicleRepositoy repo, IClientService clientService)
-        {
-            this.repo = repo;
-            this.clientService = clientService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetCustomerVehicles()
-        {
-            var client = await clientService.GetClientByShortKey(Request.GetClientKey());
-            var result = await repo.FindAll(Guid.Parse(client.Id));
-            return new OkObjectResult(result);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateCustomerVehicle([FromBody] CustomerVehicle vehicle)
-        {
-            var client = await clientService.GetClientByShortKey(Request.GetClientKey());
-            var result = await repo.Create(vehicle, Guid.Parse(client.Id));
-            return new OkObjectResult(result);
-        }
-    }
-
     [Route("api/v1/account/myvehicles")]
     [Authorize]
     public class MyVehiclesController : Controller

@@ -21,6 +21,11 @@ namespace TechDevs.Shared.Models
         [BsonId]
         public Guid Id { get; set; }
         public Guid ClientId { get; set; }
+
+        public Entity()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 
     public abstract class CustomerEntity : Entity, ICustomerEntity  

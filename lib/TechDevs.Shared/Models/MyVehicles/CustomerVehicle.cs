@@ -11,8 +11,13 @@ namespace TechDevs.Shared.Models
         public string Colour { get; set; }
         public string FuelType { get; set; }
         public int Year { get; set; }
+        public MotData MotData { get; set; }
+        public DateTime? LastUpdated { get; set; }
+    }
+
+    public class MotData
+    {
         public DateTime? MOTExpiryDate { get; set; }
         public List<MotResult> MOTResults { get; set; }
-        public DateTime? LastUpdated { get; set; }
     }
 }
