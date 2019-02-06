@@ -42,7 +42,7 @@ namespace TechDevs.Shared.Models
         Task Delete(Guid id, Guid clientId);
     }
 
-    public interface ICustomerDataRepository<T> where T : Entity
+    public interface ICustomerDataRepository<T> where T : ICustomerEntity
     {
         Task<List<T>> FindAll(Guid customerId, Guid clientId);
         Task<T> FindById(Guid id, Guid customerId, Guid clientId);

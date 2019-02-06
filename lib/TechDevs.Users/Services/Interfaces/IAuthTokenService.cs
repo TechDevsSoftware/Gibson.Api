@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TechDevs.Shared.Models;
 
 namespace TechDevs.Users
 {
     public interface IAuthTokenService<TAuthUser> where TAuthUser : AuthUser, new()
     {
-        string CreateToken(string userId, string clientKey);
-        string UserIdFromToken(string token, string clientIdorKey);
+        string CreateToken(string userId, string clientKey, Guid clientId);
     }
 }

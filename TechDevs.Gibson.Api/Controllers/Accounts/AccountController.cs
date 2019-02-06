@@ -28,11 +28,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(CustomerProfile))]
         public override async Task<IActionResult> GetProfile()
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
-
-            var user = await _customerService.GetById(userId, client.Id);
+            var user = await _customerService.GetById(this.UserId().ToString(), this.ClientId().ToString());
             if (user == null) return new NotFoundResult();
 
             return new OkObjectResult(new CustomerProfile(user));
@@ -57,11 +53,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(EmployeeProfile))]
         public override async Task<IActionResult> GetProfile()
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
-
-            var user = await _employeeService.GetById(userId, client.Id);
+            var user = await _employeeService.GetById(this.UserId().ToString(), this.ClientId().ToString());
             if (user == null) return new NotFoundResult();
 
             return new OkObjectResult(new EmployeeProfile(user));
@@ -85,11 +77,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(AuthUserProfile))]
         public virtual async Task<IActionResult> GetProfile()
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
-
-            var user = await _userService.GetById(userId, client.Id);
+            var user = await _userService.GetById(this.UserId().ToString(), this.ClientId().ToString());
             if (user == null) return new NotFoundResult();
 
             return new OkObjectResult(new AuthUserProfile(user));
@@ -99,15 +87,10 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(void))]
         public async Task<IActionResult> DeleteAccount()
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
-
-            var user = await _userService.GetById(userId, client.Id);
+            var user = await _userService.GetById(this.UserId().ToString(), this.ClientId().ToString());
             if (user == null) return new NotFoundResult();
 
-            var result = await _userService.Delete(user.EmailAddress, client.Id);
+            var result = await _userService.Delete(user.EmailAddress, this.ClientId().ToString());
             if (result == false) return new BadRequestResult();
             return new OkResult();
         }
@@ -119,7 +102,7 @@ namespace TechDevs.Gibson.Api.Controllers
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+                var client = await _clientService.GetClientByShortKey(Request.ClientKey());
                 if (invite == null) return new BadRequestObjectResult("Invalid invitation");
                 var result = await _userService.SubmitInvitation(invite, client.Id);
                 return new OkObjectResult(new AuthUserProfile(result));
@@ -135,7 +118,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Route("invite/profile/{inviteKey}")]
         public async Task<IActionResult> GetUserProfileFromInviteKey(string inviteKey)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             var user = await _userService.GetUserByInviteKey(inviteKey, client.Id);
             if (user == null) return new BadRequestObjectResult("User not found");
             return new OkObjectResult(new AuthUserProfile(user));
@@ -148,7 +131,7 @@ namespace TechDevs.Gibson.Api.Controllers
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+                var client = await _clientService.GetClientByShortKey(Request.ClientKey());
                 var result = await _userService.AcceptInvitation(request, client.Id);
                 return new OkObjectResult(new AuthUserProfile(result));
             }
@@ -163,7 +146,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Route("invite/resend/{userId}")]
         public async Task<IActionResult> ResendInvitation(string email)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             await _userService.SendEmailInvitation(email, client.Id);
             return new OkResult();
         }
@@ -172,14 +155,10 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(AuthUserProfile))]
         public async Task<IActionResult> UpdateAccountName([FromQuery] string firstName, [FromQuery] string lastName)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
-
-            var user = await _userService.GetById(userId, client.Id);
+            var user = await _userService.GetById(this.UserId().ToString(), this.ClientId().ToString());
             if (user == null) return new NotFoundResult();
 
-            var result = await _userService.UpdateName(user.EmailAddress, firstName, lastName, client.Id);
+            var result = await _userService.UpdateName(user.EmailAddress, firstName, lastName, this.ClientId().ToString());
 
             return new OkObjectResult(new AuthUserProfile(result));
         }
@@ -188,14 +167,10 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(AuthUserProfile))]
         public async Task<IActionResult> UpdateAccountContactDetails([FromQuery]string contactNumber)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            var userId = this.UserId();
-            if (userId == null) return new UnauthorizedResult();
-
-            var user = await _userService.GetById(userId, client.Id);
+            var user = await _userService.GetById(this.UserId().ToString(), this.ClientId().ToString());
             if (user == null) return new NotFoundResult();
 
-            var result = await _userService.UpdateContactNuber(user.EmailAddress, contactNumber, client.Id);
+            var result = await _userService.UpdateContactNuber(user.EmailAddress, contactNumber, this.ClientId().ToString());
 
             return new OkObjectResult(new AuthUserProfile(result));
         }
@@ -207,7 +182,7 @@ namespace TechDevs.Gibson.Api.Controllers
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+                var client = await _clientService.GetClientByShortKey(Request.ClientKey());
                 if (registration == null) return new BadRequestObjectResult("Invalid Registration");
                 var result = await _userService.RegisterUser(registration, client.Id);
                 return new OkObjectResult(new AuthUserProfile(result));

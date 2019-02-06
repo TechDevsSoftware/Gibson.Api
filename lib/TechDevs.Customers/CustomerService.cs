@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using TechDevs.Clients;
-using TechDevs.Mail;
 using TechDevs.Shared.Models;
 using TechDevs.Users;
 
@@ -13,11 +12,10 @@ namespace TechDevs.Customers
         public CustomerService(
             IAuthUserRepository<Customer> userRepo, 
             IPasswordHasher passwordHasher, 
-            IEmailer emailer,
             IOptions<AppSettings> appSettings,
             IClientService clientService,
             IAuthTokenService<Customer> tokenService)
-            : base(userRepo, passwordHasher, emailer, appSettings, clientService, tokenService)
+            : base(userRepo, passwordHasher, appSettings, clientService, tokenService)
         {
         }
 

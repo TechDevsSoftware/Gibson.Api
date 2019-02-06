@@ -34,8 +34,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(Customer))]
         public async Task<IActionResult> GetCustomerData()
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            return new OkObjectResult(await _customerService.GetById(this.UserId(), client.Id));
+            return new OkObjectResult(await _customerService.GetById(this.UserId().ToString(), this.ClientId().ToString()));
         }
 
         [HttpPost("preferences/marketing")]
@@ -44,11 +43,7 @@ namespace TechDevs.Gibson.Api.Controllers
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-                var userId = this.UserId();
-                if (userId == null) return new UnauthorizedResult();
-
-                var result = await _marketingService.UpdateMarketingPreferences(marketingPreferences, userId, client.Id);
+                var result = await _marketingService.UpdateMarketingPreferences(marketingPreferences, this.UserId().ToString(), this.ClientId().ToString());
                 return new OkObjectResult(result);
             }
             catch (Exception)
@@ -63,11 +58,7 @@ namespace TechDevs.Gibson.Api.Controllers
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-                var userId = this.UserId();
-                if (userId == null) return new UnauthorizedResult();
-
-                var result = await _notificationPreferences.UpdateNotificationPreferences(notificationPreferences, userId, client.Id);
+                var result = await _notificationPreferences.UpdateNotificationPreferences(notificationPreferences, this.UserId().ToString(), this.ClientId().ToString());
                 return new OkObjectResult(result);
             }
             catch (Exception)

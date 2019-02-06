@@ -8,7 +8,7 @@ namespace Gibson.CustomerVehicles
 {
     public class MockCustomerVehicleRepo : ICustomerVehicleRepository
     {
-        private readonly List<CustomerVehicle> vehicles = new List<CustomerVehicle>();
+        private List<CustomerVehicle> vehicles = new List<CustomerVehicle>();
 
         public MockCustomerVehicleRepo()
         {
@@ -47,6 +47,16 @@ namespace Gibson.CustomerVehicles
             var index = vehicles.FindIndex(x => x.Id == id);
             vehicles.RemoveAt(index);
             return Task.CompletedTask;
+        }
+
+        public void Reset()
+        {
+            vehicles = new List<CustomerVehicle>();
+        }
+
+        public int RowCount()
+        {
+            return vehicles.Count;
         }
     }
 }

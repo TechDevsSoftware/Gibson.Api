@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TechDevs.Clients;
-using TechDevs.Mail;
 using TechDevs.Shared.Models;
+using TechDevs.Shared.Utils;
 
 namespace TechDevs.Users
 {
@@ -16,11 +16,10 @@ namespace TechDevs.Users
         public UserService(
             IAuthUserRepository<AuthUser> userRepo,
             IPasswordHasher passwordHasher,
-            IEmailer emailer,
             IOptions<AppSettings> appSettings,
             IClientService clientService,
             IAuthTokenService<AuthUser> tokenService)
-            : base(userRepo, passwordHasher, emailer, appSettings, clientService, tokenService)
+            : base(userRepo, passwordHasher, appSettings, clientService, tokenService)
         {
         }
 
@@ -34,7 +33,6 @@ namespace TechDevs.Users
     {
         public readonly IAuthUserRepository<TAuthUser> _userRepo;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IEmailer _emailer;
         private readonly IClientService _clientService;
         private readonly IAuthTokenService<TAuthUser> tokenService;
         private readonly AppSettings _appSettings;
@@ -42,14 +40,12 @@ namespace TechDevs.Users
         public UserService(
             IAuthUserRepository<TAuthUser> userRepo,
             IPasswordHasher passwordHasher,
-            IEmailer emailer,
-            IOptions<AppSettings> appSettings,
+             IOptions<AppSettings> appSettings,
             IClientService clientService,
             IAuthTokenService<TAuthUser> tokenService)
         {
             _userRepo = userRepo;
             _passwordHasher = passwordHasher;
-            _emailer = emailer;
             _clientService = clientService;
             this.tokenService = tokenService;
             _appSettings = appSettings.Value;
@@ -326,16 +322,15 @@ namespace TechDevs.Users
                 throw new Exception("Invalid invite status for sending email");
 
             // Send the email
-            await _emailer.SendSecurityEmail(user.EmailAddress, user.Invitation.InvitationSubject, user.Invitation.InvitationBody, false);
+            //await _emailer.SendSecurityEmail(user.EmailAddress, user.Invitation.InvitationSubject, user.Invitation.InvitationBody, false);
         }
 
-        public async Task<TAuthUser> GetByJwtToken(string token, string clientIdOrKey)
+        public async Task<TAuthUser> GetByJwtToken(string token)
         {
-            var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             // Extract the user id from the jwt token
-            var userId = tokenService.UserIdFromToken(token, clientIdOrKey);
-            if (string.IsNullOrEmpty(userId)) throw new Exception("Jwt Token did not contain a valid userId");
-            return await GetById(userId, clientIdOrKey);
+            var userId = token.GetUserId();
+            if (string.IsNullOrEmpty(userId.ToString())) throw new Exception("Jwt Token did not contain a valid userId");
+            return await GetById(userId.ToString(), token.GetClientId().ToString());
         }
 
         #endregion

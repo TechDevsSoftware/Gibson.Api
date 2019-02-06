@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TechDevs.Customers;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Clients.BookingRequests
+namespace Gibson.BookingRequests
 {
     public interface IBookingRequestService
     {
@@ -20,11 +20,11 @@ namespace TechDevs.Clients.BookingRequests
 
     public class BookingRequestService : IBookingRequestService
     {
-        private readonly BookingRequestsRepository bookings;
+        private readonly IBookingRequestsRepository bookings;
         private readonly IClientService clients;
         private readonly ICustomerService customers;
 
-        public BookingRequestService(BookingRequestsRepository bookings, IClientService clients, ICustomerService customers)
+        public BookingRequestService(IBookingRequestsRepository bookings, IClientService clients, ICustomerService customers)
         {
             this.bookings = bookings;
             this.clients = clients;

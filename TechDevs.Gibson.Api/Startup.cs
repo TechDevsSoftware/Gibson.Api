@@ -11,16 +11,12 @@ using System.Linq;
 using System.Text;
 using TechDevs.Clients;
 using TechDevs.Clients.Theme;
-using TechDevs.Mail;
-using TechDevs.MyVehicles;
 using TechDevs.NotificationPreferences;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
 using TechDevs.MarketingPreferences;
 using TechDevs.Clients.Offers;
 using Audit.WebApi;
-using Audit.Core;
-using Microsoft.AspNetCore.Http.Internal;
 using TechDevs.Customers;
 using TechDevs.Users;
 using TechDevs.Clients.BookingRequests;
@@ -30,7 +26,6 @@ using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Http;
 using TechDevs.Employees;
-using TechDevs.Users.GraphQL.Resolvers;
 using Gibson.CustomerVehicles;
 
 namespace TechDevs.Gibson.Api
@@ -84,13 +79,14 @@ namespace TechDevs.Gibson.Api
 
             // Repositories
 
-            //services.AddTransient<ICustomerVehicleRepositoy, CustomerVehicleRespository>();
+            //services.AddTransient(typeof(ICustomerDataRepository<>), typeof(CustomerDataRepository<>));
 
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
             services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
             services.AddTransient<IAuthUserRepository<AuthUser>, UserRepository>();
-            services.AddTransient<BookingRequestsRepository>();
+            services.AddTransient<ICustomerVehicleRepository, CustomerVehicleRespository>();
+            services.AddTransient<IBookingRequestsRepository, BookingRequestsRepository>();
             // Services
             services.AddTransient<IUserService<AuthUser>, UserService>();
             services.AddTransient<IUserService<Customer>, CustomerService>();
@@ -106,6 +102,10 @@ namespace TechDevs.Gibson.Api
             //services.AddTransient<IMyVehicleService, MyVehicleService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
+            services.AddTransient<IVehicleDataService, VehicleDataService>();
+            services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
+
 
             services.AddTransient<INotificationPreferencesService, NotificationPreferencesService>();
             services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
@@ -115,12 +115,13 @@ namespace TechDevs.Gibson.Api
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
-            services.AddTransient<IEmailer, DotNetEmailer>();
+
 
             // GraphQL Models
             services.AddTransient<BookingRequestModel>();
             services.AddTransient<BookingCustomerModel>();
             services.AddTransient<MotCommentModel>();
+            services.AddTransient<MotDataModel>();
             services.AddTransient<MotResultModel>();
             services.AddTransient<ClientThemeModel>();
             services.AddTransient<CSSParameterModel>();
@@ -154,13 +155,13 @@ namespace TechDevs.Gibson.Api
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
-                .AddUserSecrets<SMTPSettings>()
+                //.AddUserSecrets<SMTPSettings>()
                 .AddUserSecrets<MongoDbSettings>()
                 .AddUserSecrets<AppSettings>()
                 .AddEnvironmentVariables();
 
             // Configure
-            services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
+            //services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
 
             if (_env.IsEnvironment("IntegrationTesting"))
             {
@@ -203,21 +204,21 @@ namespace TechDevs.Gibson.Api
 
             //// Setup the API Audit DB
             //Audit.Core.Configuration
-                 //.Setup()
-                 //.UseMongoDB(config => config
-                             //.ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
-                             //.Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
-                             //.Collection("APIAudit"));
+            //.Setup()
+            //.UseMongoDB(config => config
+            //.ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
+            //.Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
+            //.Collection("APIAudit"));
 
             services.AddMvc(mvc =>
             {
                 //mvc.AddAuditFilter(config => config
-                    // .LogAllActions()
-                    //.WithEventType("{verb}.{controller}.{action}")
-                    //.IncludeHeaders(ctx => !ctx.ModelState.IsValid)
-                    //.IncludeRequestBody()
-                    //.IncludeModelState()
-                    //.IncludeResponseBody());
+                // .LogAllActions()
+                //.WithEventType("{verb}.{controller}.{action}")
+                //.IncludeHeaders(ctx => !ctx.ModelState.IsValid)
+                //.IncludeRequestBody()
+                //.IncludeModelState()
+                //.IncludeResponseBody());
             });
 
 
@@ -228,7 +229,7 @@ namespace TechDevs.Gibson.Api
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                     { "Bearer", Enumerable.Empty<string>() },
                 });
-                c.OperationFilter<TechDevsClientKeyHeaderFilter>();
+                //c.OperationFilter<TechDevsClientKeyHeaderFilter>();
             });
         }
 
@@ -238,23 +239,23 @@ namespace TechDevs.Gibson.Api
             app.UseCors("default");
 
             // Add Custom configuration for Audit API
-         
-                //SensitiveInformation.Custom();
 
-                //app.Use(async (context, next) =>
-                //{  // <----
-                //    context.Request.EnableRewind();
-                //    await next();
-                //});
+            //SensitiveInformation.Custom();
+
+            //app.Use(async (context, next) =>
+            //{  // <----
+            //    context.Request.EnableRewind();
+            //    await next();
+            //});
 
 
-                //app.UseAuditMiddleware(_ => _
-                                       //.WithEventType("{verb}:{url}")
-                                       //.IncludeHeaders()
-                                       //.IncludeResponseHeaders()
-                                       //.IncludeRequestBody()
-                                       //.IncludeResponseBody());
-            
+            //app.UseAuditMiddleware(_ => _
+            //.WithEventType("{verb}:{url}")
+            //.IncludeHeaders()
+            //.IncludeResponseHeaders()
+            //.IncludeRequestBody()
+            //.IncludeResponseBody());
+
 
             // add http for Schema at default url
             app.UseGraphQL<ISchema>("/graphql");

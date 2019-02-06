@@ -26,7 +26,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(List<BookingRequest>))]
         public async Task<IActionResult> GetBookingRequests()
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             return new OkObjectResult(await _bookingRequestService.GetBookings(client.Id));
         }
 
@@ -34,7 +34,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> GetBookingRequest([FromRoute] string bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             return new OkObjectResult(await _bookingRequestService.GetBooking(bookingId, client.Id));
         }
 
@@ -42,16 +42,14 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> CreateBookingRequest([FromBody] BookingRequest_Create bookingRequest)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-            var userId = this.UserId();
-            return new OkObjectResult(await _bookingRequestService.CreateBooking(bookingRequest, userId, client.Id));
+            return new OkObjectResult(await _bookingRequestService.CreateBooking(bookingRequest, this.UserId().ToString(), this.ClientId().ToString()));
         }
 
         [HttpPut]
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> UpdateBookingRequest([FromBody] BookingRequest bookingRequest)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             return new OkObjectResult(await _bookingRequestService.UpdateBooking(bookingRequest, client.Id));
         }
 
@@ -59,7 +57,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> DeleteBookingRequest([FromRoute] string bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             await _bookingRequestService.DeleteBooking(bookingId, client.Id);
             return new OkResult();
         }
@@ -68,7 +66,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> ConfirmBooking([FromRoute] string bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             await _bookingRequestService.ConfirmBooking(bookingId, client.Id);
             return new OkResult();
         }
@@ -77,7 +75,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> CancelBooking([FromRoute] string bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             await _bookingRequestService.CancelBooking(bookingId, client.Id);
             return new OkResult();
         }

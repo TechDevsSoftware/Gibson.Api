@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using Gibson.CustomerVehicles;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
@@ -7,8 +7,8 @@ using TechDevs.Clients;
 using TechDevs.Clients.BookingRequests;
 using TechDevs.Customers;
 using TechDevs.Employees;
-using TechDevs.MyVehicles;
 using TechDevs.Shared.Models;
+using TechDevs.Shared.Utils;
 using TechDevs.Users;
 using TechDevs.Users.GraphQL.Resolvers;
 
@@ -18,14 +18,25 @@ namespace TechDevs.Gibson.Api
     {
         private readonly IHttpContextAccessor httpContext;
         private readonly IAuthService<AuthUser> auth;
-        private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken(), httpContext.GetClientKey());
+        private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken());
 
-        public GibsonQuery(IClientService clientService, IEmployeeService employees, ICustomerService customers, IBookingRequestService bookingRequests, IHttpContextAccessor httpContext, IAuthService<AuthUser> auth)
+        public GibsonQuery(
+            IClientService clientService,
+            IEmployeeService employees,
+            ICustomerService customers,
+            IBookingRequestService bookingRequests,
+            IHttpContextAccessor ctx,
+            IAuthService<AuthUser> auth,
+            ICustomerVehicleService vehicles
+            )
         {
-            this.httpContext = httpContext;
+            this.httpContext = ctx;
             this.auth = auth;
 
-            var clientKey = httpContext.GetClientKey();
+            var token = ctx.GetAuthToken();
+            var clientKey = token.GetClientKey();
+            var userId = token.GetUserId();
+            var clientId = token.GetClientId();
 
             Name = "Query";
 
@@ -34,12 +45,13 @@ namespace TechDevs.Gibson.Api
             Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
             Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => Authenticated() ? bookingRequests.GetBookings(clientKey) : throw new Exception("Not authenticated"));
 
+            Field<ListGraphType<CustomerVehicleModel>>("myVehicles", resolve: context => Authenticated() ? vehicles.GetCustomerVehicles(userId, clientId) : throw new Exception("Not authenticated"));
 
-            Field<ClientModel>("client", resolve: c => clientService.GetClientByShortKey(httpContext.GetClientKey()));
+            Field<ClientModel>("client", resolve: c => clientService.GetClientByShortKey(ctx.GetClientKey()));
 
-            Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
-            Field<CustomerModel>("myCustomerProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
-            Field<EmployeeModel>("myEmployeeProfile", resolve: c => Authenticated() ? employees.GetByJwtToken(httpContext.GetAuthToken(), httpContext.GetClientKey()) : throw new Exception("Not authenticated"));
+            Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(ctx.GetAuthToken()) : throw new Exception("Not authenticated"));
+            Field<CustomerModel>("myCustomerProfile", resolve: c => Authenticated() ? customers.GetByJwtToken(ctx.GetAuthToken()) : throw new Exception("Not authenticated"));
+            Field<EmployeeModel>("myEmployeeProfile", resolve: c => Authenticated() ? employees.GetByJwtToken(ctx.GetAuthToken()) : throw new Exception("Not authenticated"));
 
             Field<CustomerModel>("customerById", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "customerId" }), resolve: c =>
             {
@@ -64,7 +76,7 @@ namespace TechDevs.Gibson.Api
         private readonly IAuthService<AuthUser> auth;
         private readonly IHttpContextAccessor httpContext;
 
-        private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken(), httpContext.GetClientKey());
+        private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken());
 
         public ClientModel(IEmployeeService employees, ICustomerService customers, IAuthService<AuthUser> auth, IHttpContextAccessor httpContext)
         {
@@ -208,11 +220,14 @@ namespace TechDevs.Gibson.Api
 
     public class CustomerDataModel : ObjectGraphType<CustomerData>
     {
-        public CustomerDataModel()
+        public CustomerDataModel(ICustomerVehicleService vehicles, IHttpContextAccessor ctx)
         {
-            Field<ListGraphType<CustomerVehicleModel>>("myVehicles", resolve: c => c.Source.MyVehicles);
-            Field<MarketingNotificationPreferencesModel>("marketingPreferences", resolve: c => c.Source.MarketingPreferences);
-            Field<CustomerNotificationPreferencesModel>("notificationPreferences", resolve: c => c.Source.NotificationPreferences);
+            Field<ListGraphType<CustomerVehicleModel>>("myVehicles",
+                resolve: c => vehicles.GetCustomerVehicles(ctx.GetAuthToken().GetUserId(), ctx.GetAuthToken().GetClientId()));
+            Field<MarketingNotificationPreferencesModel>("marketingPreferences",
+                resolve: c => c.Source.MarketingPreferences);
+            Field<CustomerNotificationPreferencesModel>("notificationPreferences",
+                resolve: c => c.Source.NotificationPreferences);
         }
     }
 
@@ -226,8 +241,16 @@ namespace TechDevs.Gibson.Api
             Field(b => b.FuelType);
             Field(b => b.Colour);
             Field(b => b.Year);
-            //Field(b => b.MOTExpiryDate, true).Name("motExpiryDate");
-            //Field<ListGraphType<MotResultModel>>("results", resolve: x => x.Source.MOTResults);
+            Field<MotDataModel>("motData", resolve: c => c.Source.MotData);
+        }
+    }
+
+    public class MotDataModel : ObjectGraphType<MotData>
+    {
+        public MotDataModel()
+        {
+            Field(x => x.MOTExpiryDate, true);
+            Field<ListGraphType<MotResultModel>>("motResults", resolve: c => c.Source.MOTResults);
         }
     }
 
@@ -276,7 +299,6 @@ namespace TechDevs.Gibson.Api
             Field(b => b.ServiceEmail);
         }
     }
-
 
     public class GibsonSchema : Schema
     {

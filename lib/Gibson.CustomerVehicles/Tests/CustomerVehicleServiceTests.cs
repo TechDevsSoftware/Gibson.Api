@@ -9,6 +9,8 @@ namespace Gibson.CustomerVehicles
 {
     public class CustomerVehicleServiceTests
     {
+        // TODO: LastUpdated field not updated on update MotData
+        // TODO: No test coverage for actually updating the cehicle record for MotData update
 
         [Fact]
         public async Task AddVehicleToCustomer_Should_ReturnAVehicle()
@@ -19,6 +21,21 @@ namespace Gibson.CustomerVehicles
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
             Assert.IsType<CustomerVehicle>(result);
+        }
+
+        [Fact]
+        public async Task AddVehicleToCustomer_Should_HaveOneVehicle()
+        {
+            // Arrange
+            var repo = new MockCustomerVehicleRepo();
+            repo.Reset();
+            var clientId = Guid.NewGuid();
+            var customerId = Guid.NewGuid();
+            var sut = new CustomerVehicleService(repo, new VehicleDataService());
+            // Act
+            var addResult = await sut.AddVehicleToCustomer("EF02VCC", customerId, clientId);
+            // Assert
+            Assert.True(repo.RowCount() == 1);
         }
 
         [Fact]

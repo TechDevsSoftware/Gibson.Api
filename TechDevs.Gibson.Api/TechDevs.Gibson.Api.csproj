@@ -4,7 +4,7 @@
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
         <AssemblyName>TechDevs.Gibson.Api</AssemblyName>
-        <RootNamespace>TechDevs.Users</RootNamespace>
+        <RootNamespace>TechDevs.Gibson.Api</RootNamespace>
         <UserSecretsId>b83ccb63-58c2-4508-aeda-9948809239e3</UserSecretsId>
     </PropertyGroup>
     <ItemGroup>
@@ -23,19 +23,19 @@
         <Compile Remove="GraphQL\Resolvers\ClientResolver.cs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Audit.NET.MongoDB" Version="14.0.2" />
-        <PackageReference Include="Audit.WebApi.Core" Version="14.0.2" />
+        <PackageReference Include="Audit.NET.MongoDB" Version="14.0.4" />
+        <PackageReference Include="Audit.WebApi.Core" Version="14.0.4" />
         <PackageReference Include="GraphQL" Version="2.4.0" />
         <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.4.0" />
         <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.4.0" />
         <PackageReference Include="GraphQL.Authorization" Version="2.1.29" />
-        <PackageReference Include="Google.Apis.Auth" Version="1.37.0" />
+        <PackageReference Include="Google.Apis.Auth" Version="1.38.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.All" />
-        <PackageReference Include="Sentry" Version="1.1.1" />
-        <PackageReference Include="Sentry.AspNetCore" Version="1.1.1" />
+        <PackageReference Include="Sentry" Version="1.1.2" />
+        <PackageReference Include="Sentry.AspNetCore" Version="1.1.2" />
     </ItemGroup>
     <ItemGroup>
         <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
@@ -47,7 +47,6 @@
     <ItemGroup>
         <ProjectReference Include="..\lib\TechDevs.Clients\TechDevs.Clients.csproj" />
         <ProjectReference Include="..\lib\TechDevs.Shared\TechDevs.Shared.csproj" />
-        <ProjectReference Include="..\lib\TechDevs.Mail\TechDevs.Mail.csproj" />
         <ProjectReference Include="..\lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj" />
         <ProjectReference Include="..\lib\TechDevs.NotificationPreferences\TechDevs.NotificationPreferences.csproj" />
         <ProjectReference Include="..\lib\TechDevs.MarketingPreferences\TechDevs.MarketingPreferences.csproj" />

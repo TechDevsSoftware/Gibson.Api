@@ -10,7 +10,7 @@ namespace TechDevs.Users
         Task<List<TAuthUser>> GetAllUsers(string clientId);
         Task<TAuthUser> GetByEmail(string email, string clientIdOrKey);
         Task<TAuthUser> GetById(string id, string clientIdOrKey);
-        Task<TAuthUser> GetByJwtToken(string token, string clientIdOrKey);
+        Task<TAuthUser> GetByJwtToken(string token);
         Task<TAuthUser> GetByProvider(string provider, string providerId, string clientIdOrKey);
         Task<TAuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientIdOrKey);
         Task RequestResetPassword(string email);

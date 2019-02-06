@@ -5,9 +5,9 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Clients.BookingRequests
+namespace Gibson.BookingRequests
 {
-    public class BookingRequestsRepository
+    public class BookingRequestsRepository : IBookingRequestsRepository
     {
         readonly IMongoDatabase database;
         readonly IMongoCollection<BookingRequest> collection;

@@ -32,7 +32,7 @@ namespace TechDevs.Gibson.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             // Get the clientId from the clientKey
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             switch (request.Provider)
             {
                 case "TechDevs":
@@ -49,7 +49,7 @@ namespace TechDevs.Gibson.Api.Controllers
             var valid = await auth.ValidatePassword(email, password, client.Id);
             if (!valid) return new UnauthorizedResult();
             var user = await _accountService.GetByEmail(email, client.Id);
-            var token = _tokenService.CreateToken(user.Id, client.ShortKey);
+            var token = _tokenService.CreateToken(user.Id, client.ShortKey, Guid.Parse(client.Id));
             return new OkObjectResult(token);
         }
 
@@ -78,7 +78,7 @@ namespace TechDevs.Gibson.Api.Controllers
                     user = regResult;
                 }
 
-                var token = _tokenService.CreateToken(user.Id, client.ShortKey);
+                var token = _tokenService.CreateToken(user.Id, client.ShortKey, Guid.Parse(client.Id));
                 return new OkObjectResult(token);
             }
             catch (InvalidJwtException)

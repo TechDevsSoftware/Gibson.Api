@@ -25,7 +25,8 @@ namespace Gibson.CustomerVehicles
 
             var lookup = await vehicleData.GetVehicleData(registration);
             var vehicle = MapLookupToCustomerVehicle(lookup);
-            return vehicle;
+            var result = await repo.Create(vehicle, customerId, clientId);
+            return result;
         }
 
         public async Task DeleteCustomerVehicle(Guid vehicleId, Guid customerId, Guid clientId)
@@ -42,6 +43,12 @@ namespace Gibson.CustomerVehicles
             return result;
         }
 
+        public async Task<List<CustomerVehicle>> GetCustomerVehicles(Guid customerId, Guid clientId)
+        {
+            var vehicles = await repo.FindAll(customerId, clientId);
+            return vehicles;
+        }
+
         public async Task<CustomerVehicle> UpdateCustomerVehicle(CustomerVehicle vehicle, Guid customerId, Guid clientId)
         {
             var result = await repo.Update(vehicle, customerId, clientId);
@@ -54,7 +61,8 @@ namespace Gibson.CustomerVehicles
             var lookup = await vehicleData.GetVehicleData(vehicle.Registration);
             var motData = MapLookupToCustomerVehicle(lookup)?.MotData;
             vehicle.MotData = motData;
-            return vehicle;
+            var result = await repo.Update(vehicle, customerId, clientId);
+            return result;
         }
 
         private DateTime? CalculateMOTExpiry(VehicleData v)

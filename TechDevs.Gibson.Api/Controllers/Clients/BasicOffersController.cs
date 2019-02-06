@@ -23,7 +23,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(Client))]
         public async Task<IActionResult> UpdateBasicOffer([FromBody] BasicOffer offer)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             return new OkObjectResult(await _basicOffersService.UpdateBasicOffer(offer, client.Id));
         }
 
@@ -31,7 +31,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(Client))]
         public async Task<IActionResult> DeleteBasicOffer([FromRoute] string offerId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
+            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
             return new OkObjectResult(await _basicOffersService.DeleteBasicOffer(offerId, client.Id));
         }
     }

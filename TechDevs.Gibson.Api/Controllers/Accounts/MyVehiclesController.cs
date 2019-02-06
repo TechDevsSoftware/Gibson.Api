@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Gibson.CustomerVehicles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
-using TechDevs.MyVehicles;
-using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
 {
@@ -12,26 +11,24 @@ namespace TechDevs.Gibson.Api.Controllers
     [Authorize]
     public class MyVehiclesController : Controller
     {
-        private readonly IMyVehicleService _myVehicleService;
+
+        private readonly ICustomerVehicleService vehicleService;
+        private readonly IVehicleDataService vehicleData;
         private readonly IClientService _clientService;
 
-        public MyVehiclesController(IMyVehicleService myVehicleService, IClientService clientService)
+        public MyVehiclesController(ICustomerVehicleService vehicleService, IVehicleDataService vehicleData, IClientService clientService)
         {
-            _myVehicleService = myVehicleService;
+            this.vehicleService = vehicleService;
+            this.vehicleData = vehicleData;
             _clientService = clientService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddVehicle([FromBody] CustomerVehicle vehicle)
+        public async Task<IActionResult> AddVehicle([FromQuery] string registration)
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-
-                var userId = this.UserId();
-                if (userId == null) return new UnauthorizedResult();
-
-                var result = await _myVehicleService.AddVehicle(vehicle, userId, client.Id);
+                var result = await vehicleService.AddVehicleToCustomer(registration, this.UserId(), this.ClientId());
                 return new OkObjectResult(result);
             }
             catch (Exception)
@@ -40,17 +37,13 @@ namespace TechDevs.Gibson.Api.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> RemoveVehicle(string registration)
+        [HttpDelete("{vehicleId}")]
+        public async Task<IActionResult> RemoveVehicle([FromRoute] Guid vehicleId)
         {
             try
             {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-                var userId = this.UserId();
-                if (userId == null) return new UnauthorizedResult();
-
-                var result = await _myVehicleService.RemoveVehicle(registration, userId, client.Id);
-                return new OkObjectResult(result);
+                await vehicleService.DeleteCustomerVehicle(vehicleId, this.UserId(), this.ClientId());
+                return new OkResult();
             }
             catch (Exception)
             {
@@ -63,25 +56,21 @@ namespace TechDevs.Gibson.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LookupVehicle(string registration)
         {
-            var result = await _myVehicleService.LookupVehicle(registration);
+            var result = await vehicleData.GetVehicleData(registration);
             return new OkObjectResult(result);
         }
 
-        [HttpPost("refreshmot")]
-        public async Task<IActionResult> UpdateVehicleMOTData(string registration)
+        [HttpPost("{vehicleId}/refreshmot")]
+        public async Task<IActionResult> UpdateVehicleMOTData([FromRoute] Guid vehicleId)
         {
             try
-            {
-                var client = await _clientService.GetClientByShortKey(Request.GetClientKey());
-                var userId = this.UserId();
-                if (userId == null) return new UnauthorizedResult();
-
-                var result = await _myVehicleService.UpdateVehicleMOTData(registration, userId, client.Id);
+            { 
+                var result = await vehicleService.UpdateMotData(vehicleId, this.UserId(), this.ClientId());
                 return new OkObjectResult(result);
             }
             catch (System.Exception)
             {
-                
+
                 throw;
             }
         }

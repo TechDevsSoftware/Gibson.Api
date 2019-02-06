@@ -22,18 +22,17 @@ namespace TechDevs.Users
             this.tokenService = tokenService;
         }
 
-        public async Task<string> Login(string email, string password, string clientId)
+        public async Task<string> Login(string email, string password, Guid clientId, string clientKey)
         {
-            var user = await userService.GetByEmail(email, clientId);
-            var genuine = await ValidatePassword(user.EmailAddress, password, clientId);
-            if (genuine) return tokenService.CreateToken(user.Id, clientId);
+            var user = await userService.GetByEmail(email, clientKey);
+            var genuine = await ValidatePassword(user.EmailAddress, password, clientKey);
+            if (genuine) return tokenService.CreateToken(user.Id, clientKey, clientId);
             return null;
         }
 
-        public bool ValidateToken(string token, string clientKey)
+        public bool ValidateToken(string token)
         {
             if (token == null) throw new Exception("Token missing. Cannot authenticate user");
-            if (clientKey == null) throw new Exception("ClientKey missing. Cannot autenticate user");
 
             var handler = new JwtSecurityTokenHandler();
 
@@ -49,18 +48,15 @@ namespace TechDevs.Users
             {
                 var result = handler.ValidateToken(token, validationParams, out var jwtToken);
                 var tokenClientKey = result.Claims.FirstOrDefault(c => c.Type == "Gibson-ClientKey")?.Value;
-                bool isValidClientKey = (tokenClientKey == clientKey);
                 bool isExpired = (jwtToken.ValidTo < DateTime.UtcNow);
                 if (isExpired) throw new Exception("Token has expired");
-                return (isValidClientKey && !isExpired);
+                return (!isExpired);
             }
             catch (Exception)
             {
                 return false;
             }
         }
-
-      
 
         public async Task<bool> ValidatePassword(string email, string password, string clientId)
         {

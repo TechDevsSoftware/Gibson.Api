@@ -6,14 +6,28 @@ namespace TechDevs.Gibson.Api
 {
     public static class ExtMethods
     {
-        public static string UserId(this Controller controller)
+        public static Guid UserId(this Controller controller)
         {
             var user = controller.User;
             var val = user.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+            return Guid.Parse(val);
+        }
+
+        public static Guid ClientId(this Controller controller)
+        {
+            var user = controller.User;
+            var val = user.FindFirst("Gibson-ClientId")?.Value;
+            return Guid.Parse(val);
+        }
+
+        public static string GetClientKey(this Controller controller)
+        {
+            var user = controller.User;
+            var val = user.FindFirst("Gibson-ClientKey")?.Value;
             return val;
         }
 
-        public static string GetClientKey(this HttpRequest request)
+        public static string ClientKey(this HttpRequest request)
         {
             request.Headers.TryGetValue("TechDevs-ClientKey", out var clientKey);
             if (string.IsNullOrEmpty(clientKey))  throw new Exception("Client Key not found"); 

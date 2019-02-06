@@ -8,8 +8,7 @@ using TechDevs.Shared.Models;
 
 namespace Gibson.CustomerVehicles
 {
-
-    public abstract class ClientDataRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
+    public abstract class ClientDataRepository<TEntity> : ICustomerDataRepository<TEntity> where TEntity : CustomerEntity
     {
         readonly IMongoDatabase database;
         readonly IMongoCollection<TEntity> collection;
@@ -21,36 +20,37 @@ namespace Gibson.CustomerVehicles
             if (database != null) collection = database.GetCollection<TEntity>(collectionName);
         }
 
-        public virtual async Task<TEntity> Create(TEntity entity, Guid clientId)
+        public virtual async Task<TEntity> Create(TEntity entity, Guid clientId, Guid customerId)
         {
             entity.Id = Guid.NewGuid();
             entity.ClientId = clientId;
+            entity.CustomerId = customerId;
             await collection.InsertOneAsync(entity);
-            return await FindById(entity.Id, clientId);
+            return await FindById(entity.Id, customerId, clientId);
         }
 
-        public virtual async Task Delete(Guid id, Guid clientId)
+        public async Task Delete(Guid id, Guid customerId, Guid clientId)
         {
-            await collection.FindOneAndDeleteAsync(x => x.Id == id && x.ClientId == clientId);
+            await collection.FindOneAndDeleteAsync(x => x.Id == id && x.ClientId == clientId && x.CustomerId == customerId);
         }
 
-        public virtual async Task<List<TEntity>> FindAll(Guid clientId)
+        public async Task<List<TEntity>> FindAll(Guid customerId, Guid clientId)
         {
-            var results = await collection.FindAsync(x => x.ClientId == clientId);
+            var results = await collection.FindAsync(x => x.ClientId == clientId && x.CustomerId == customerId);
             return await results.ToListAsync();
         }
 
-        public virtual async Task<TEntity> FindById(Guid id, Guid clientId)
+        public async Task<TEntity> FindById(Guid id, Guid customerId, Guid clientId)
         {
-            var result = await collection.FindAsync(x => x.Id == id && x.ClientId == clientId);
+            var result = await collection.FindAsync(x => x.Id == id && x.ClientId == clientId && x.CustomerId == customerId);
             return result.FirstOrDefault();
         }
 
-        public virtual async Task<TEntity> Update(TEntity entity, Guid clientId)
+        public async Task<TEntity> Update(TEntity entity, Guid customerId, Guid clientId)
         {
-            var filter = new BsonDocument { { "_id", entity.Id }, { "ClientId", clientId } };
+            var filter = new BsonDocument { { "_id", entity.Id }, { "ClientId", clientId }, { "CustomerId", customerId } };
             var result = await collection.ReplaceOneAsync(x => x.Id == entity.Id && x.ClientId == clientId, entity, new UpdateOptions { IsUpsert = false });
-            return await FindById(entity.Id, clientId);
+            return await FindById(entity.Id, customerId, clientId);
         }
     }
 }
