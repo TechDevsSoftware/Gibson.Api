@@ -1,10 +1,10 @@
 ﻿using System;
+using Gibson.BookingRequests;
 using Gibson.CustomerVehicles;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using TechDevs.Clients;
-using TechDevs.Clients.BookingRequests;
 using TechDevs.Customers;
 using TechDevs.Employees;
 using TechDevs.Shared.Models;

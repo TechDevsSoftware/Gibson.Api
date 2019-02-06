@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using TechDevs.Clients;
 using TechDevs.Shared.Models;
 
 namespace Gibson.BookingRequests

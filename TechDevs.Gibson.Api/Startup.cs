@@ -19,7 +19,6 @@ using TechDevs.Clients.Offers;
 using Audit.WebApi;
 using TechDevs.Customers;
 using TechDevs.Users;
-using TechDevs.Clients.BookingRequests;
 using GraphQL.Types;
 using GraphQL;
 using GraphQL.Server;
@@ -27,6 +26,7 @@ using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Http;
 using TechDevs.Employees;
 using Gibson.CustomerVehicles;
+using Gibson.BookingRequests;
 
 namespace TechDevs.Gibson.Api
 {

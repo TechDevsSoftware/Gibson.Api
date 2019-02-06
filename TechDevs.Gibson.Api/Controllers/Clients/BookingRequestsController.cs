@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gibson.BookingRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
-using TechDevs.Clients.BookingRequests;
 using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
