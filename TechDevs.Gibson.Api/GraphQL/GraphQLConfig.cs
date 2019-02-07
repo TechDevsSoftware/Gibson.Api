@@ -110,8 +110,8 @@ namespace TechDevs.Gibson.Api
     {
         public BookingRequestModel()
         {
-            Field(f => f.Id);
-            Field(f => f.ClientId);
+            Field(f => f.Id, type: typeof(IdGraphType));
+            Field(f => f.ClientId, type: typeof(IdGraphType));
             Field(f => f.MOT).Name("mot");
             Field(f => f.Service);
             Field(f => f.PreferedDate);
@@ -130,8 +130,8 @@ namespace TechDevs.Gibson.Api
     {
         public BookingCustomerModel()
         {
-            Field(f => f.Id);
-            Field(f => f.ClientId);
+            Field(f => f.Id, type: typeof(IdGraphType));
+            Field(f => f.ClientId, type: typeof(IdGraphType));
             Field(x => x.FirstName);
             Field(x => x.LastName);
             Field(x => x.EmailAddress);
@@ -235,6 +235,9 @@ namespace TechDevs.Gibson.Api
     {
         public CustomerVehicleModel()
         {
+            Field(b => b.Id, type: typeof(IdGraphType));
+            Field(b => b.ClientId, type: typeof(IdGraphType));
+            Field(b => b.CustomerId, type: typeof(IdGraphType));
             Field(b => b.Registration);
             Field(b => b.Make);
             Field(b => b.Model);

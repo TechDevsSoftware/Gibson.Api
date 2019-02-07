@@ -11,10 +11,10 @@ namespace Gibson.BookingRequests
 
     public class BookingRequestService : IBookingRequestService
     {
-        private readonly ICustomerDataRepository<BookingRequest> bookings;
+        private readonly IBookingRequestRepository bookings;
         private readonly ICustomerService customers;
 
-        public BookingRequestService(ICustomerDataRepository<BookingRequest> bookings, ICustomerService customers)
+        public BookingRequestService(IBookingRequestRepository bookings, ICustomerService customers)
         {
             this.bookings = bookings;
             this.customers = customers;

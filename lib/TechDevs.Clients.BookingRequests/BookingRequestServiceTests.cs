@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Gibson.Shared.Repositories;
 using Gibson.Shared.Repositories.Tests;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -14,13 +13,13 @@ namespace Gibson.BookingRequests
 {
     public class BookingRequestServiceTests : IClassFixture<DatabaseTestFixture>
     {
-        private readonly ICustomerDataRepository<BookingRequest> repo;
+        private readonly IBookingRequestRepository repo;
         private readonly ICustomerService customerService;
 
         public BookingRequestServiceTests(DatabaseTestFixture fixture)
         {
             var dbSettings = new MongoDbSettings { ConnectionString = fixture.Db.ConnectionString, Database = "Testing" };
-            repo = new CustomerDataRepository<BookingRequest>("TestBookingRequests", Options.Create(dbSettings));
+            repo = new BookingRequestsRepository(Options.Create(dbSettings));
             var mockCustService = new Mock<ICustomerService>();
             var cust = new Customer
             {

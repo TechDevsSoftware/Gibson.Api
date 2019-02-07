@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Http;
 using TechDevs.Employees;
 using Gibson.CustomerVehicles;
 using Gibson.BookingRequests;
+using Gibson.Shared.Repositories;
 
 namespace TechDevs.Gibson.Api
 {
@@ -99,13 +100,11 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<IAuthTokenService<Employee>, AuthTokenService<Employee>>();
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IClientThemeService, ClientThemeService>();
-            //services.AddTransient<IMyVehicleService, MyVehicleService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
             services.AddTransient<IVehicleDataService, VehicleDataService>();
             services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
-
 
             services.AddTransient<INotificationPreferencesService, NotificationPreferencesService>();
             services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
