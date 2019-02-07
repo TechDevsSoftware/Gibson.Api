@@ -5,13 +5,13 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TechDevs.Shared.Models;
 
-namespace Gibson.CustomerVehicles
+namespace Gibson.Shared.Repositories
 {
-    public abstract class CustomerDataRepository<TEntity> : ICustomerDataRepository<TEntity> where TEntity : CustomerEntity
+    public class CustomerDataRepository<TEntity> : ICustomerDataRepository<TEntity> where TEntity : CustomerEntity
     {
         readonly IMongoCollection<TEntity> collection;
 
-        protected CustomerDataRepository(string collectionName, IOptions<MongoDbSettings> dbSettings)
+        public CustomerDataRepository(string collectionName, IOptions<MongoDbSettings> dbSettings)
         {
             var client = new MongoClient(dbSettings.Value.ConnectionString);
             var database = client.GetDatabase(dbSettings.Value.Database);
@@ -41,6 +41,12 @@ namespace Gibson.CustomerVehicles
             ValidateCall(customerId, clientId);
 
             var results = await collection.FindAsync(x => x.ClientId == clientId && x.CustomerId == customerId);
+            return await results.ToListAsync();
+        }
+
+        public virtual async Task<List<TEntity>> FindAllAnyCustomer(Guid clientId)
+        {
+            var results = await collection.FindAsync(x => x.ClientId == clientId);
             return await results.ToListAsync();
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TechDevs.Shared.Models;
 
@@ -6,12 +7,13 @@ namespace Gibson.BookingRequests
 {
     public interface IBookingRequestService
     {
-        Task<List<BookingRequest>> GetBookings(string clientId);
-        Task<BookingRequest> GetBooking(string id, string clientId);
-        Task<BookingRequest> CreateBooking(BookingRequest_Create req, string userId, string clientId);
-        Task<BookingRequest> UpdateBooking(BookingRequest request, string clientId);
-        Task DeleteBooking(string id, string clientId);
-        Task ConfirmBooking(string id, string clientId);
-        Task CancelBooking(string id, string clientId);
+        Task<List<BookingRequest>> GetBookingsByCustomer(Guid customerId, Guid clientId);
+        Task<List<BookingRequest>> GetBookings(Guid clientId);
+        Task<BookingRequest> GetBooking(Guid id, Guid customerId, Guid clientId);
+        Task<BookingRequest> CreateBooking(BookingRequest_Create req, Guid customerId, Guid clientId);
+        Task<BookingRequest> UpdateBooking(BookingRequest request, Guid customerId, Guid clientId);
+        Task DeleteBooking(Guid id, Guid customerId, Guid clientId);
+        Task ConfirmBooking(Guid id, Guid customerId, Guid clientId);
+        Task CancelBooking(Guid id, Guid customerId, Guid clientId);
     }
 }

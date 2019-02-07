@@ -45,6 +45,7 @@ namespace TechDevs.Shared.Models
     public interface ICustomerDataRepository<T> where T : ICustomerEntity
     {
         Task<List<T>> FindAll(Guid customerId, Guid clientId);
+        Task<List<T>> FindAllAnyCustomer(Guid clientId);
         Task<T> FindById(Guid id, Guid customerId, Guid clientId);
         Task<T> Create(T entity, Guid customerId, Guid clientId);
         Task<T> Update(T entity, Guid customerId, Guid clientId);

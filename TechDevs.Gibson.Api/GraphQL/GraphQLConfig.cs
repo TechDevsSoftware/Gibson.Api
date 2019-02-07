@@ -43,7 +43,7 @@ namespace TechDevs.Gibson.Api
             Field<ListGraphType<ClientModel>>("clients", resolve: context => Authenticated() ? clientService.GetClients() : throw new Exception("Not authenticated"));
             Field<ListGraphType<EmployeeModel>>("employees", resolve: context => Authenticated() ? employees.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
             Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
-            Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => Authenticated() ? bookingRequests.GetBookings(clientKey) : throw new Exception("Not authenticated"));
+            Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => Authenticated() ? bookingRequests.GetBookings(Guid.Parse(clientKey)) : throw new Exception("Not authenticated"));
 
             Field<ListGraphType<CustomerVehicleModel>>("myVehicles", resolve: context => Authenticated() ? vehicles.GetCustomerVehicles(userId, clientId) : throw new Exception("Not authenticated"));
 
@@ -60,7 +60,7 @@ namespace TechDevs.Gibson.Api
 
             Field<BookingRequestModel>("bookingRequest", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "bookingId" }), resolve: c =>
             {
-                return Authenticated() ? bookingRequests.GetBooking(c.GetArgument<string>("bookingId"), clientKey) : null;
+                return Authenticated() ? bookingRequests.GetBooking(Guid.Parse(c.GetArgument<string>("bookingId")), userId, clientId) : null;
             });
 
             Field<ClientModel>("clientByKey", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "shortKey" }), resolve: c =>

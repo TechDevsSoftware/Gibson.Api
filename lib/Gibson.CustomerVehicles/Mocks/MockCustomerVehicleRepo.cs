@@ -22,6 +22,11 @@ namespace Gibson.CustomerVehicles
             return Task.FromResult(entity);
         }
 
+        public Task<List<CustomerVehicle>> FindAllAnyCustomer(Guid clientId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<CustomerVehicle>> FindAll(Guid customerId, Guid clientId)
         {
             var results = vehicles;

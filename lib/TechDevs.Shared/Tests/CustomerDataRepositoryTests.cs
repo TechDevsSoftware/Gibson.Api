@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using TechDevs.Shared.Models;
 using Xunit;
 
-namespace Gibson.CustomerVehicles
+namespace Gibson.Shared.Repositories.Tests
 {
     public class CustomerDataRepositoryTests : IClassFixture<DatabaseTestFixture>
     {
@@ -21,7 +21,7 @@ namespace Gibson.CustomerVehicles
         public async Task Create_Should_IncreaseCollecitonCount_ByOne()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var beforeCollection = await repo.FindAll(clientId, customerId);
@@ -36,7 +36,7 @@ namespace Gibson.CustomerVehicles
         public async Task Create_Should_SetCustomerId()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
@@ -49,7 +49,7 @@ namespace Gibson.CustomerVehicles
         public async Task Create_Should_SetClientId()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
@@ -62,7 +62,7 @@ namespace Gibson.CustomerVehicles
         public async Task Create_Should_SetId()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
@@ -75,7 +75,7 @@ namespace Gibson.CustomerVehicles
         public async Task Create_Should_ReuturnCustomerEntity()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
@@ -88,7 +88,7 @@ namespace Gibson.CustomerVehicles
         public async Task Create_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -99,7 +99,7 @@ namespace Gibson.CustomerVehicles
         public async Task Create_Should_ThrowException_WhenCustomerId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.Empty;
             // Act & Assert 
@@ -110,7 +110,7 @@ namespace Gibson.CustomerVehicles
         public async Task Delete_Should_DecreaseCollecitonCount_ByOne()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var result = await repo.Create(new MockCustomerEntity(), customerId, clientId);
@@ -126,7 +126,7 @@ namespace Gibson.CustomerVehicles
         public async Task Delete_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -137,7 +137,7 @@ namespace Gibson.CustomerVehicles
         public async Task Delete_Should_ThrowException_WhenCustomerId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.Empty;
             // Act & Assert 
@@ -148,7 +148,7 @@ namespace Gibson.CustomerVehicles
         public async Task Update_Should_PersistModifiedProperty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var obj = new MockCustomerEntity { TestField = "BeforeValue" };
@@ -165,7 +165,7 @@ namespace Gibson.CustomerVehicles
         public async Task Update_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -176,7 +176,7 @@ namespace Gibson.CustomerVehicles
         public async Task Update_Should_ThrowException_WhenCustomerId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.Empty;
             // Act & Assert 
@@ -187,7 +187,7 @@ namespace Gibson.CustomerVehicles
         public async Task FindAll_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -198,7 +198,7 @@ namespace Gibson.CustomerVehicles
         public async Task FindAll_Should_ThrowException_WhenCustomerId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.Empty;
             // Act & Assert 
@@ -209,7 +209,7 @@ namespace Gibson.CustomerVehicles
         public async Task FindById_Should_ReturnNull_When_ClientId_NotMatching_Result()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var entity = await repo.Create(new MockCustomerEntity(), customerId, clientId);
@@ -224,7 +224,7 @@ namespace Gibson.CustomerVehicles
         public async Task FindById_Should_ReturnNull_When_CustomerId_NotMatching_Result()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var entity = await repo.Create(new MockCustomerEntity(), customerId, clientId);
@@ -239,7 +239,7 @@ namespace Gibson.CustomerVehicles
         public async Task FindById_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -250,7 +250,7 @@ namespace Gibson.CustomerVehicles
         public async Task FindById_Should_ThrowException_WhenCustomerId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo(_settings);
+            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.Empty;
             // Act & Assert 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gibson.BookingRequests;
 using Microsoft.AspNetCore.Authorization;
@@ -25,57 +26,51 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(List<BookingRequest>))]
         public async Task<IActionResult> GetBookingRequests()
         {
-            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
-            return new OkObjectResult(await _bookingRequestService.GetBookings(client.Id));
+            return new OkObjectResult(await _bookingRequestService.GetBookings(this.ClientId()));
         }
 
         [HttpGet("{bookingId}")]
         [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> GetBookingRequest([FromRoute] string bookingId)
+        public async Task<IActionResult> GetBookingRequest([FromRoute] Guid bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
-            return new OkObjectResult(await _bookingRequestService.GetBooking(bookingId, client.Id));
+            return new OkObjectResult(await _bookingRequestService.GetBooking(bookingId, this.UserId(), this.ClientId()));
         }
 
         [HttpPost]
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> CreateBookingRequest([FromBody] BookingRequest_Create bookingRequest)
         {
-            return new OkObjectResult(await _bookingRequestService.CreateBooking(bookingRequest, this.UserId().ToString(), this.ClientId().ToString()));
+            return new OkObjectResult(await _bookingRequestService.CreateBooking(bookingRequest, this.UserId(), this.ClientId()));
         }
 
         [HttpPut]
         [Produces(typeof(BookingRequest))]
         public async Task<IActionResult> UpdateBookingRequest([FromBody] BookingRequest bookingRequest)
         {
-            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
-            return new OkObjectResult(await _bookingRequestService.UpdateBooking(bookingRequest, client.Id));
+            return new OkObjectResult(await _bookingRequestService.UpdateBooking(bookingRequest, this.UserId(), this.ClientId()));
         }
 
         [HttpDelete("{bookingId}")]
         [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> DeleteBookingRequest([FromRoute] string bookingId)
+        public async Task<IActionResult> DeleteBookingRequest([FromRoute] Guid bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
-            await _bookingRequestService.DeleteBooking(bookingId, client.Id);
+            await _bookingRequestService.DeleteBooking(bookingId, this.UserId(), this.ClientId());
             return new OkResult();
         }
 
         [HttpPost("{bookingId}/confirm")]
         [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> ConfirmBooking([FromRoute] string bookingId)
+        public async Task<IActionResult> ConfirmBooking([FromRoute] Guid bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
-            await _bookingRequestService.ConfirmBooking(bookingId, client.Id);
+            await _bookingRequestService.ConfirmBooking(bookingId, this.UserId(), this.ClientId());
             return new OkResult();
         }
 
         [HttpPost("{bookingId}/cancel")]
         [Produces(typeof(BookingRequest))]
-        public async Task<IActionResult> CancelBooking([FromRoute] string bookingId)
+        public async Task<IActionResult> CancelBooking([FromRoute] Guid bookingId)
         {
-            var client = await _clientService.GetClientByShortKey(Request.ClientKey());
-            await _bookingRequestService.CancelBooking(bookingId, client.Id);
+            await _bookingRequestService.CancelBooking(bookingId,this.UserId(), this.ClientId());
             return new OkResult();
         }
     }

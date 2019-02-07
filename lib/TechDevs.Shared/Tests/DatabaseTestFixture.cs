@@ -2,7 +2,7 @@
 using Mongo2Go;
 using MongoDB.Driver;
 
-namespace Gibson.CustomerVehicles
+namespace Gibson.Shared.Repositories.Tests
 {
     public class DatabaseTestFixture : IDisposable
     {

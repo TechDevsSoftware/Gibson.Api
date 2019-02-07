@@ -86,7 +86,7 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
             services.AddTransient<IAuthUserRepository<AuthUser>, UserRepository>();
             services.AddTransient<ICustomerVehicleRepository, CustomerVehicleRespository>();
-            services.AddTransient<IBookingRequestsRepository, BookingRequestsRepository>();
+            services.AddTransient<IBookingRequestRepository, BookingRequestsRepository>();
             // Services
             services.AddTransient<IUserService<AuthUser>, UserService>();
             services.AddTransient<IUserService<Customer>, CustomerService>();
