@@ -24,11 +24,11 @@ namespace Gibson.Shared.Repositories.Tests
             var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
-            var beforeCollection = await repo.FindAll(clientId, customerId);
+            var beforeCollection = await repo.FindAllByCustomer(clientId, customerId);
             // Act
             var result = await repo.Create(new MockCustomerEntity(), customerId, clientId);
             // Assert 
-            var afterCollection = await repo.FindAll(customerId, clientId);
+            var afterCollection = await repo.FindAllByCustomer(customerId, clientId);
             Assert.True(afterCollection.Count == beforeCollection.Count + 1);
         }
 
@@ -96,17 +96,6 @@ namespace Gibson.Shared.Repositories.Tests
         }
 
         [Fact]
-        public async Task Create_Should_ThrowException_WhenCustomerId_IsEmpty()
-        {
-            // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
-            var clientId = Guid.NewGuid();
-            var customerId = Guid.Empty;
-            // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.Create(new MockCustomerEntity(), customerId, clientId));
-        }
-
-        [Fact]
         public async Task Delete_Should_DecreaseCollecitonCount_ByOne()
         {
             // Arrange
@@ -114,11 +103,11 @@ namespace Gibson.Shared.Repositories.Tests
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var result = await repo.Create(new MockCustomerEntity(), customerId, clientId);
-            var beforeCollection = await repo.FindAll(customerId, clientId);
+            var beforeCollection = await repo.FindAllByCustomer(customerId, clientId);
             // Act
-            await repo.Delete(result.Id, customerId, clientId);
+            await repo.Delete(result.Id, clientId);
             // Assert 
-            var afterCollection = await repo.FindAll(customerId, clientId);
+            var afterCollection = await repo.FindAllByCustomer(customerId, clientId);
             Assert.True(afterCollection.Count == beforeCollection.Count - 1);
         }
 
@@ -130,18 +119,7 @@ namespace Gibson.Shared.Repositories.Tests
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.Delete(Guid.NewGuid(), customerId, clientId));
-        }
-
-        [Fact]
-        public async Task Delete_Should_ThrowException_WhenCustomerId_IsEmpty()
-        {
-            // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
-            var clientId = Guid.NewGuid();
-            var customerId = Guid.Empty;
-            // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.Delete(Guid.NewGuid(), customerId, clientId));
+            await Assert.ThrowsAsync<Exception>(async () => await repo.Delete(Guid.NewGuid(), clientId));
         }
 
         [Fact]
@@ -155,8 +133,8 @@ namespace Gibson.Shared.Repositories.Tests
             var entity = await repo.Create(obj, customerId, clientId);
             entity.TestField = "NewValue";
             // Act
-            var result = await repo.Update(entity, customerId, clientId);
-            var after = await repo.FindById(entity.Id, customerId, clientId);
+            var result = await repo.Update(entity, clientId);
+            var after = await repo.FindById(entity.Id, clientId);
             // Assert
             Assert.Equal("NewValue", after.TestField);
         }
@@ -169,18 +147,7 @@ namespace Gibson.Shared.Repositories.Tests
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.Update(new MockCustomerEntity(), customerId, clientId));
-        }
-
-        [Fact]
-        public async Task Update_Should_ThrowException_WhenCustomerId_IsEmpty()
-        {
-            // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
-            var clientId = Guid.NewGuid();
-            var customerId = Guid.Empty;
-            // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.Update(new MockCustomerEntity(), customerId, clientId));
+            await Assert.ThrowsAsync<Exception>(async () => await repo.Update(new MockCustomerEntity(), clientId));
         }
 
         [Fact]
@@ -191,18 +158,7 @@ namespace Gibson.Shared.Repositories.Tests
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.FindAll(customerId, clientId));
-        }
-
-        [Fact]
-        public async Task FindAll_Should_ThrowException_WhenCustomerId_IsEmpty()
-        {
-            // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
-            var clientId = Guid.NewGuid();
-            var customerId = Guid.Empty;
-            // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.FindAll(customerId, clientId));
+            await Assert.ThrowsAsync<Exception>(async () => await repo.FindAllByCustomer(customerId, clientId));
         }
 
         [Fact]
@@ -215,22 +171,7 @@ namespace Gibson.Shared.Repositories.Tests
             var entity = await repo.Create(new MockCustomerEntity(), customerId, clientId);
             var wrongClientId = Guid.NewGuid();
             // Act
-            var result = await repo.FindById(entity.Id, customerId, wrongClientId);
-            // Assert
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public async Task FindById_Should_ReturnNull_When_CustomerId_NotMatching_Result()
-        {
-            // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
-            var clientId = Guid.NewGuid();
-            var customerId = Guid.NewGuid();
-            var entity = await repo.Create(new MockCustomerEntity(), customerId, clientId);
-            var wrongCustomerId = Guid.NewGuid();
-            // Act
-            var result = await repo.FindById(entity.Id, wrongCustomerId, clientId);
+            var result = await repo.FindById(entity.Id, wrongClientId);
             // Assert
             Assert.Null(result);
         }
@@ -243,18 +184,7 @@ namespace Gibson.Shared.Repositories.Tests
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.FindById(Guid.NewGuid(), customerId, clientId));
-        }
-
-        [Fact]
-        public async Task FindById_Should_ThrowException_WhenCustomerId_IsEmpty()
-        {
-            // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
-            var clientId = Guid.NewGuid();
-            var customerId = Guid.Empty;
-            // Act & Assert 
-            await Assert.ThrowsAsync<Exception>(async () => await repo.FindById(Guid.NewGuid(), customerId, clientId));
+            await Assert.ThrowsAsync<Exception>(async () => await repo.FindById(Guid.NewGuid(), clientId));
         }
     }
 }

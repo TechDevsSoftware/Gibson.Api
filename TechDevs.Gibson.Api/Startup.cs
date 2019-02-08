@@ -130,7 +130,6 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<ClientDataModel>();
             services.AddTransient<BasicOfferModel>();
             services.AddTransient<CustomerModel>();
-            services.AddTransient<CustomerDataModel>();
             services.AddTransient<CustomerVehicleModel>();
             services.AddTransient<MarketingNotificationPreferencesModel>();
             services.AddTransient<CustomerNotificationPreferencesModel>();

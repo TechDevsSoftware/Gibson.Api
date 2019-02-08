@@ -9,7 +9,7 @@ namespace TechDevs.Users.GraphQL.Resolvers
     {
         public static string GetClientKey(this IHttpContextAccessor httpContext)
         {
-            httpContext.HttpContext.Request.Headers.TryGetValue("TechDevs-ClientKey", out var keys);
+            httpContext.HttpContext.Request.Headers.TryGetValue("Gibson-ClientKey", out var keys);
             var clientKey = keys.FirstOrDefault();
             if (string.IsNullOrEmpty(clientKey)) return null;
             return clientKey;

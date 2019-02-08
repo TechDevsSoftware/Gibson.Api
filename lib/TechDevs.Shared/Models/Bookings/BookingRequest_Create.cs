@@ -4,6 +4,7 @@ namespace TechDevs.Shared.Models
 {
     public class BookingRequest_Create
     {
+        public Guid CustomerId { get; set; }
         public string Registration { get; set; }
         public bool MotRequest { get; set; }
         public bool ServiceRequest { get; set; }

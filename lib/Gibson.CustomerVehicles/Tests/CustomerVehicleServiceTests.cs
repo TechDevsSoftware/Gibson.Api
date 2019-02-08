@@ -4,11 +4,21 @@ using System.Collections.Generic;
 using Xunit;
 using System.Linq;
 using System;
+using Gibson.Shared.Repositories.Tests;
+using Microsoft.Extensions.Options;
 
 namespace Gibson.CustomerVehicles
 {
-    public class CustomerVehicleServiceTests
+    public class CustomerVehicleServiceTests : IClassFixture<DatabaseTestFixture>
     {
+        private readonly ICustomerVehicleRepository repo;
+
+        public CustomerVehicleServiceTests(DatabaseTestFixture fixture)
+        {
+            var dbSettings = new MongoDbSettings { ConnectionString = fixture.Db.ConnectionString, Database = "Testing" };
+            repo = new CustomerVehicleRespository(Options.Create(dbSettings));
+        }
+
         // TODO: LastUpdated field not updated on update MotData
         // TODO: No test coverage for actually updating the cehicle record for MotData update
 
@@ -16,7 +26,7 @@ namespace Gibson.CustomerVehicles
         public async Task AddVehicleToCustomer_Should_ReturnAVehicle()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act 
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -27,31 +37,34 @@ namespace Gibson.CustomerVehicles
         public async Task AddVehicleToCustomer_Should_HaveOneVehicle()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
-            repo.Reset();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var sut = new CustomerVehicleService(repo, new VehicleDataService());
             // Act
             var addResult = await sut.AddVehicleToCustomer("EF02VCC", customerId, clientId);
             // Assert
-            Assert.True(repo.RowCount() == 1);
+            var result = await repo.FindAll(clientId);
+            Assert.True(result.Count == 1);
         }
 
         [Fact]
         public async Task AddVehicleToCustomer_Should_ThrowException_OnDuplicateRegistration()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
+            var req = "LD66OFZ";
+            var custId = Guid.NewGuid();
+            var clientId = Guid.NewGuid();
+            await sut.AddVehicleToCustomer(req, custId, clientId);
             // Act & Assert
-            await Assert.ThrowsAsync<Exception>(async () => await sut.AddVehicleToCustomer("LD66OFZ", Guid.NewGuid(), Guid.NewGuid()));
+            await Assert.ThrowsAsync<Exception>(async () => await sut.AddVehicleToCustomer(req, custId, clientId));
         }
 
         [Fact]
         public async Task AddVehicleToCustomer_Should_HaveBasicVehicleInfo()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -66,7 +79,7 @@ namespace Gibson.CustomerVehicles
         public async Task AddVehicleToCustomer_Should_HaveLastUpdated()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -78,7 +91,7 @@ namespace Gibson.CustomerVehicles
         public async Task AddVehicleToCustomer_Should_HaveInitializedMotData()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -90,7 +103,7 @@ namespace Gibson.CustomerVehicles
         public async Task AddVehicleToCustomer_Should_HaveInitializedMotResults()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -103,7 +116,7 @@ namespace Gibson.CustomerVehicles
         public async Task AddVehileToCustomer_Should_HaveAtleastOneMotHistory()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -114,7 +127,7 @@ namespace Gibson.CustomerVehicles
         public async Task AddVehileToCustomer_Should_HaveAtleastOneMotComment()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -125,7 +138,7 @@ namespace Gibson.CustomerVehicles
         public async Task DeleteCustomerVehicle_Should_ThrowError_WhenVehicleDoesNotExists()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act & Assert
             await Assert.ThrowsAsync<Exception>(async () => await sut.DeleteCustomerVehicle(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()));
         }
@@ -134,8 +147,7 @@ namespace Gibson.CustomerVehicles
         public async Task DeleteCustomerVehicle_Should_ReturnWithoutError()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
-            var v1 = new CustomerVehicle();
+            var v1 = new CustomerVehicle { CustomerId = Guid.NewGuid(), ClientId = Guid.NewGuid() };
             await repo.Create(v1, v1.CustomerId, v1.ClientId);
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
@@ -148,13 +160,12 @@ namespace Gibson.CustomerVehicles
         public async Task DeleteCustomerVehicle_Should_NotFindVehicleAfterDelete()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var v1 = new CustomerVehicle { Registration = "EF02VCC" };
             await repo.Create(v1, Guid.NewGuid(), Guid.NewGuid());
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             await sut.DeleteCustomerVehicle(v1.Id, v1.CustomerId, v1.ClientId);
-            var result = (await repo.FindAll(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == "EF02VCC");
+            var result = (await repo.FindAllByCustomer(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == "EF02VCC");
             // Assert
             Assert.Null(result);
         }
@@ -163,7 +174,6 @@ namespace Gibson.CustomerVehicles
         public async Task GetCustomerVehicle_Should_ReturnAsSinlgeVehicle()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var v1 = new CustomerVehicle { Registration = "EF02VCC" };
             await repo.Create(v1, Guid.NewGuid(), Guid.NewGuid());
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
@@ -177,7 +187,7 @@ namespace Gibson.CustomerVehicles
         public async Task GetCustomerVehicle_Should_ReturnNull_WhenDoesNotExist()
         {
             // Arrange
-            var sut = new CustomerVehicleService(new MockCustomerVehicleRepo(), new MockVehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var result = await sut.GetCustomerVehicle("SHOULDNOTEXIST", Guid.NewGuid(), Guid.NewGuid());
             // Assert
@@ -188,7 +198,6 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateCustomerVehicle_Should_ReturnVehicle()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var v1 = new CustomerVehicle { Registration = "EF02VCC" };
             await repo.Create(v1, Guid.NewGuid(), Guid.NewGuid());
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
@@ -202,22 +211,23 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateCustomerVehicle_Should_ReturnVehicle_WithUpdatedData()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
+            var clientId = Guid.NewGuid();
+            var customerId = Guid.NewGuid();
             var v1 = new CustomerVehicle { Registration = "EF02VCC" };
-            await repo.Create(v1, Guid.NewGuid(), Guid.NewGuid());
+            await repo.Create(v1, customerId, clientId);
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
-            v1.LastUpdated = DateTime.UtcNow;
+            var newValue = DateTime.UtcNow;
+            v1.Colour = "SomeNewColour";
             // Act
-            var result = await sut.UpdateCustomerVehicle(v1, v1.CustomerId, v1.ClientId);
+            var result = await sut.UpdateCustomerVehicle(v1, customerId, clientId);
             // Assert
-            Assert.Equal(result.LastUpdated, v1.LastUpdated);
+            Assert.Equal("SomeNewColour", result.Colour);
         }
 
         [Fact]
         public async Task UpdateCustomerVehicle_Should_ThrowException_WhenDoesNotExist()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             var updatedVehicle = new CustomerVehicle { Registration = "SHOULDNOTEXIST", LastUpdated = DateTime.UtcNow };
             // Act & Assert
@@ -228,23 +238,21 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateCustomerVehicle_Should_ReturnVehicle_WithUpdatedDataFromGet()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var v1 = new CustomerVehicle { Registration = "EF02VCC" };
             await repo.Create(v1, Guid.NewGuid(), Guid.NewGuid());
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
-            v1.LastUpdated = DateTime.UtcNow;
+            v1.Colour = "SomeNewColour";
             // Act
             await sut.UpdateCustomerVehicle(v1, v1.CustomerId, v1.ClientId);
-            var result = (await repo.FindAll(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == v1.Registration);
+            var result = (await repo.FindAllByCustomer(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == v1.Registration);
             // Assert
-            Assert.Equal(result.LastUpdated, v1.LastUpdated);
+            Assert.Equal("SomeNewColour", v1.Colour);
         }
 
         [Fact]
         public async Task UpdateCustomerVehicle_Should_HaveMatchingRegistration()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var v1 = new CustomerVehicle
             {
                 Registration = "EF02VCC",
@@ -257,7 +265,7 @@ namespace Gibson.CustomerVehicles
             v1.LastUpdated = DateTime.UtcNow;
             // Act
             await sut.UpdateCustomerVehicle(v1, v1.CustomerId, v1.ClientId);
-            var result = (await repo.FindAll(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == v1.Registration);
+            var result = (await repo.FindAllByCustomer(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == v1.Registration);
             // Assert
             Assert.Equal(result.Registration, v1.Registration);
         }
@@ -266,9 +274,10 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateVehicleMotData_Should_ReturnCustomerVehicle()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var dummyVehicle = new CustomerVehicle
             {
+                CustomerId = Guid.NewGuid(),
+                ClientId = Guid.NewGuid(),
                 Registration = "LD66OFZ",
                 MotData = new MotData { MOTExpiryDate = DateTime.Parse("2019-01-01") }
             };
@@ -284,9 +293,10 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateVehicleMotData_Should_ReturnModifiedMotData()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var dummyVehicle = new CustomerVehicle
             {
+                CustomerId = Guid.NewGuid(),
+                ClientId = Guid.NewGuid(),
                 Registration = "LD66OFZ",
                 MotData = new MotData { MOTExpiryDate = DateTime.Parse("2019-01-01") }
             };
@@ -302,10 +312,11 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateVehicleMotData_Should_ReturnUpdatedAfterFetch()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var currentExpiryDate = DateTime.Parse("2019-01-01");
             var dummyVehicle = new CustomerVehicle
             {
+                CustomerId = Guid.NewGuid(),
+                ClientId = Guid.NewGuid(),
                 Registration = "LD66OFZ",
                 MotData = new MotData { MOTExpiryDate = currentExpiryDate }
             };
@@ -313,7 +324,7 @@ namespace Gibson.CustomerVehicles
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.CustomerId, dummyVehicle.ClientId);
             // Act
-            var result = await repo.FindById(dummyVehicle.Id, dummyVehicle.CustomerId, dummyVehicle.ClientId);
+            var result = await repo.FindById(dummyVehicle.Id, dummyVehicle.ClientId);
             // Assert
             Assert.True(result.MotData.MOTExpiryDate > currentExpiryDate);
         }
@@ -322,10 +333,11 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateVehicleData_Should_ReturnExpiryDateLaterThanBeforeUpdate()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var currentExpiryDate = DateTime.Parse("2019-01-01");
             var dummyVehicle = new CustomerVehicle
             {
+                CustomerId = Guid.NewGuid(),
+                ClientId = Guid.NewGuid(),
                 Registration = "LD66OFZ",
                 MotData = new MotData { MOTExpiryDate = currentExpiryDate }
             };
@@ -341,9 +353,10 @@ namespace Gibson.CustomerVehicles
         public async Task UpdateVehicleData_Should_ReturnWithSameHeaderData()
         {
             // Arrange
-            var repo = new MockCustomerVehicleRepo();
             var dummyVehicle = new CustomerVehicle
             {
+                CustomerId = Guid.NewGuid(),
+                ClientId = Guid.NewGuid(),
                 Registration = "LD66OFZ",
                 Make = "KIA",
                 Model = "CEED",

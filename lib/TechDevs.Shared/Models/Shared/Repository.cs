@@ -44,11 +44,11 @@ namespace TechDevs.Shared.Models
 
     public interface ICustomerDataRepository<T> where T : ICustomerEntity
     {
-        Task<List<T>> FindAll(Guid customerId, Guid clientId);
-        Task<List<T>> FindAllAnyCustomer(Guid clientId);
-        Task<T> FindById(Guid id, Guid customerId, Guid clientId);
+        Task<List<T>> FindAllByCustomer(Guid customerId, Guid clientId);
+        Task<List<T>> FindAll(Guid clientId);
+        Task<T> FindById(Guid id, Guid clientId);
         Task<T> Create(T entity, Guid customerId, Guid clientId);
-        Task<T> Update(T entity, Guid customerId, Guid clientId);
-        Task Delete(Guid id, Guid customerId, Guid clientId);
+        Task<T> Update(T entity, Guid clientId);
+        Task Delete(Guid id, Guid clientId);
     }
 }

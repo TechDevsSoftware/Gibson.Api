@@ -22,38 +22,39 @@ namespace Gibson.BookingRequests
 
         public async Task<List<BookingRequest>> GetBookings(Guid clientId)
         {
-            return await bookings.FindAllAnyCustomer(clientId);
+            return await bookings.FindAll(clientId);
         }
 
         public async Task<List<BookingRequest>> GetBookingsByCustomer(Guid customerId, Guid clientId)
         {
-            return await bookings.FindAll(customerId, clientId);
+            return await bookings.FindAllByCustomer(customerId, clientId);
         }
 
-        public async Task<BookingRequest> GetBooking(Guid id, Guid customerId, Guid clientId)
+        public async Task<BookingRequest> GetBooking(Guid id, Guid clientId)
         {
-            return await bookings.FindById(id, customerId, clientId);
+            return await bookings.FindById(id, clientId);
         }
 
-        public async Task CancelBooking(Guid id, Guid customerId, Guid clientId)
+        public async Task CancelBooking(Guid id, Guid clientId)
         {
-            var booking = await bookings.FindById(id, customerId, clientId);
+            var booking = await bookings.FindById(id, clientId);
             booking.Cancelled = true;
             booking.Confirmed = false;
-            var result = await bookings.Update(booking, customerId, clientId);
+            var result = await bookings.Update(booking, clientId);
         }
 
-        public async Task ConfirmBooking(Guid id, Guid customerId, Guid clientId)
+        public async Task ConfirmBooking(Guid id, Guid clientId)
         {
-            var booking = await bookings.FindById(id, customerId, clientId);
+            var booking = await bookings.FindById(id, clientId);
             booking.Confirmed = true;
             booking.ConfirmationEmailSent = true;
-            var result = await bookings.Update(booking, customerId, clientId);
+            var result = await bookings.Update(booking, clientId);
         }
 
-        public async Task<BookingRequest> CreateBooking(BookingRequest_Create req, Guid customerId, Guid clientId)
+        public async Task<BookingRequest> CreateBooking(BookingRequest_Create req, Guid clientId)
         {
-            var customer = await customers.GetById(customerId.ToString(), clientId.ToString());
+            if (req.CustomerId == Guid.Empty) throw new Exception("CustomerId was not set");
+            var customer = await customers.GetById(req.CustomerId.ToString(), clientId.ToString());
             var vehicle = customer?.CustomerData?.MyVehicles?.FirstOrDefault(x => x.Registration == req.Registration);
             try
             {
@@ -80,7 +81,7 @@ namespace Gibson.BookingRequests
                     },
                     RequestDate = DateTime.UtcNow,
                 };
-                return await bookings.Create(booking, customerId, clientId);
+                return await bookings.Create(booking, req.CustomerId, clientId);
             }
             catch (Exception ex)
             {
@@ -89,14 +90,14 @@ namespace Gibson.BookingRequests
             }
         }
 
-        public async Task DeleteBooking(Guid id, Guid customerId, Guid clientId)
+        public async Task DeleteBooking(Guid id, Guid clientId)
         {
-            await bookings.Delete(id, customerId, clientId);
+            await bookings.Delete(id, clientId);
         }
 
-        public async Task<BookingRequest> UpdateBooking(BookingRequest request, Guid customerId, Guid clientId)
+        public async Task<BookingRequest> UpdateBooking(BookingRequest request, Guid clientId)
         {
-            return await bookings.Update(request, customerId, clientId);
+            return await bookings.Update(request, clientId);
         }
 
     }

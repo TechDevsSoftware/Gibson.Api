@@ -328,9 +328,12 @@ namespace TechDevs.Users
         public async Task<TAuthUser> GetByJwtToken(string token)
         {
             // Extract the user id from the jwt token
-            var userId = token.GetUserId();
-            if (string.IsNullOrEmpty(userId.ToString())) throw new Exception("Jwt Token did not contain a valid userId");
-            return await GetById(userId.ToString(), token.GetClientId().ToString());
+            var userId = token.GetUserId().ToString();
+            var clientId = token.GetClientId().ToString();
+            if (string.IsNullOrEmpty(userId)) throw new Exception("Jwt Token did not contain a valid userId");
+
+            var user = await GetById(userId, clientId);
+            return user;
         }
 
         #endregion

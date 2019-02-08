@@ -19,7 +19,7 @@ namespace Gibson.CustomerVehicles
 
         public async Task<CustomerVehicle> AddVehicleToCustomer(string registration, Guid customerId, Guid clientId)
         {
-            var vehicles = await repo.FindAll(customerId, clientId);
+            var vehicles = await repo.FindAllByCustomer(customerId, clientId);
             var existing = vehicles.FirstOrDefault(x => x.Registration == registration);
             if (existing != null) throw new Exception("Vehicle with this registration already exists");
 
@@ -31,37 +31,39 @@ namespace Gibson.CustomerVehicles
 
         public async Task DeleteCustomerVehicle(Guid vehicleId, Guid customerId, Guid clientId)
         {
-            var vehicle = await repo.FindById(vehicleId, customerId, clientId);
+            var vehicle = await repo.FindById(vehicleId, clientId);
             if (vehicle == null) throw new Exception("Cannot delete as vehicle cannot be found");
-            await repo.Delete(vehicleId, customerId, clientId);
+            await repo.Delete(vehicleId, clientId);
         }
 
         public async Task<CustomerVehicle> GetCustomerVehicle(string registration, Guid customerId, Guid clientId)
         {
-            var vehicles = await repo.FindAll(customerId, clientId);
+            var vehicles = await repo.FindAllByCustomer(customerId, clientId);
             var result = vehicles.FirstOrDefault(x => x.Registration == registration);
             return result;
         }
 
         public async Task<List<CustomerVehicle>> GetCustomerVehicles(Guid customerId, Guid clientId)
         {
-            var vehicles = await repo.FindAll(customerId, clientId);
+            var vehicles = await repo.FindAllByCustomer(customerId, clientId);
             return vehicles;
         }
 
         public async Task<CustomerVehicle> UpdateCustomerVehicle(CustomerVehicle vehicle, Guid customerId, Guid clientId)
         {
-            var result = await repo.Update(vehicle, customerId, clientId);
+            var existing = await repo.FindById(vehicle.Id, clientId);
+            if (existing == null) throw new Exception("Vehicle cannot be found");
+            var result = await repo.Update(vehicle, clientId);
             return result;
         }
 
         public async Task<CustomerVehicle> UpdateMotData(Guid vehicleId, Guid customerId, Guid clientId)
         {
-            var vehicle = await repo.FindById(vehicleId, customerId, clientId);
+            var vehicle = await repo.FindById(vehicleId, clientId);
             var lookup = await vehicleData.GetVehicleData(vehicle.Registration);
             var motData = MapLookupToCustomerVehicle(lookup)?.MotData;
             vehicle.MotData = motData;
-            var result = await repo.Update(vehicle, customerId, clientId);
+            var result = await repo.Update(vehicle, clientId);
             return result;
         }
 

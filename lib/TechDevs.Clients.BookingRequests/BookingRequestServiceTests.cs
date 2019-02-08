@@ -96,9 +96,9 @@ namespace Gibson.BookingRequests
             var entity = await repo.Create(new BookingRequest { Confirmed = true }, customerId, clientId);
             var sut = new BookingRequestService(repo, null);
             // Act
-            await sut.CancelBooking(entity.Id, customerId, clientId);
+            await sut.CancelBooking(entity.Id, clientId);
             // Assert 
-            var result = await repo.FindById(entity.Id, customerId, clientId);
+            var result = await repo.FindById(entity.Id, clientId);
             Assert.True(result.Cancelled);
         }
 
@@ -111,9 +111,9 @@ namespace Gibson.BookingRequests
             var entity = await repo.Create(new BookingRequest { Confirmed = true }, customerId, clientId);
             var sut = new BookingRequestService(repo, null);
             // Act
-            await sut.CancelBooking(entity.Id, customerId, clientId);
+            await sut.CancelBooking(entity.Id, clientId);
             // Assert 
-            var result = await repo.FindById(entity.Id, customerId, clientId);
+            var result = await repo.FindById(entity.Id, clientId);
             Assert.False(result.Confirmed);
         }
 
@@ -126,9 +126,9 @@ namespace Gibson.BookingRequests
             var entity = await repo.Create(new BookingRequest(), customerId, clientId);
             var sut = new BookingRequestService(repo, null);
             // Act
-            await sut.ConfirmBooking(entity.Id, customerId, clientId);
+            await sut.ConfirmBooking(entity.Id, clientId);
             // Assert 
-            var result = await repo.FindById(entity.Id, customerId, clientId);
+            var result = await repo.FindById(entity.Id, clientId);
             Assert.True(result.Confirmed);
         }
 
@@ -141,9 +141,9 @@ namespace Gibson.BookingRequests
             var entity = await repo.Create(new BookingRequest(), customerId, clientId);
             var sut = new BookingRequestService(repo, null);
             // Act
-            await sut.ConfirmBooking(entity.Id, customerId, clientId);
+            await sut.ConfirmBooking(entity.Id, clientId);
             // Assert 
-            var result = await repo.FindById(entity.Id, customerId, clientId);
+            var result = await repo.FindById(entity.Id, clientId);
             Assert.False(result.Cancelled);
         }
 
@@ -153,13 +153,13 @@ namespace Gibson.BookingRequests
             // Arrange
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
-            var beforeCount = (await repo.FindAll(customerId, clientId)).Count();
+            var beforeCount = (await repo.FindAllByCustomer(customerId, clientId)).Count();
             var sut = new BookingRequestService(repo, customerService);
-            var newBooking = new BookingRequest_Create { Registration = "EF02VCC" };
+            var newBooking = new BookingRequest_Create { Registration = "EF02VCC", CustomerId = customerId };
             // Act
-            await sut.CreateBooking(newBooking, customerId, clientId);
+            await sut.CreateBooking(newBooking, clientId);
             // Assert 
-            var afterCount = (await repo.FindAll(customerId, clientId)).Count();
+            var afterCount = (await repo.FindAllByCustomer(customerId, clientId)).Count();
             Assert.Equal(beforeCount + 1, afterCount);
         }
 
@@ -170,14 +170,26 @@ namespace Gibson.BookingRequests
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var sut = new BookingRequestService(repo, customerService);
-            var newBooking = new BookingRequest_Create { Registration = "EF02VCC" };
-            var created = await sut.CreateBooking(newBooking, customerId, clientId);
-            var beforeCount = (await repo.FindAll(customerId, clientId)).Count();
+            var newBooking = new BookingRequest_Create { Registration = "EF02VCC", CustomerId = customerId };
+            var created = await sut.CreateBooking(newBooking, clientId);
+            var beforeCount = (await repo.FindAllByCustomer(customerId, clientId)).Count();
             // Act
-            await sut.DeleteBooking(created.Id, customerId, clientId);
+            await sut.DeleteBooking(created.Id, clientId);
             // Assert 
-            var afterCount = (await repo.FindAll(customerId, clientId)).Count();
+            var afterCount = (await repo.FindAllByCustomer(customerId, clientId)).Count();
             Assert.Equal(beforeCount - 1, afterCount);
+        }
+
+        [Fact]
+        public async Task CreateBooking_Should_ThrowException_WhenCustomerIdIsNull()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var customerId = Guid.NewGuid();
+            var sut = new BookingRequestService(repo, customerService);
+            var newBooking = new BookingRequest_Create { Registration = "EF02VCC" };
+            // Act & Assert 
+            await Assert.ThrowsAsync<Exception>(async () => await sut.CreateBooking(newBooking, clientId));
         }
 
     }

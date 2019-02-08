@@ -11,7 +11,6 @@ namespace TechDevs.Gibson.Api.Controllers
     [Authorize]
     public class MyVehiclesController : Controller
     {
-
         private readonly ICustomerVehicleService vehicleService;
         private readonly IVehicleDataService vehicleData;
         private readonly IClientService _clientService;
