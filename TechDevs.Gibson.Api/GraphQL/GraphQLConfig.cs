@@ -288,10 +288,9 @@ namespace TechDevs.Gibson.Api
     {
         public CustomerNotificationPreferencesModel()
         {
-            Field(b => b.MotPush);
-            Field(b => b.MotEmail);
-            Field(b => b.ServicePush);
-            Field(b => b.ServiceEmail);
+            Field(b => b.Email);
+            Field(b => b.SMS);
+            Field(b => b.PushNotifications);
         }
     }
 

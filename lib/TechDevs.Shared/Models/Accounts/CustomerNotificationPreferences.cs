@@ -4,21 +4,16 @@ namespace TechDevs.Shared.Models
 {
     public class CustomerNotificationPreferences
     {
-        public bool MotEmail { get; set; }
-        public bool MotPush { get; set; }
-        public bool ServiceEmail { get; set; }
-        public bool ServicePush { get; set; }
-        public bool OffersEmail { get; set; }
-        public bool OffersPush { get; set; }
+        public bool Email { get; set; }
+        public bool SMS { get; set; }
+        public bool PushNotifications { get; set; }
+
 
         public CustomerNotificationPreferences()
         {
-            MotEmail = true;
-            MotPush = true;
-            ServiceEmail = true;
-            ServicePush = true;
-            OffersEmail = true;
-            OffersPush = true;
+            Email = true;
+            SMS = true;
+            PushNotifications = true;
         }
     }
 }
