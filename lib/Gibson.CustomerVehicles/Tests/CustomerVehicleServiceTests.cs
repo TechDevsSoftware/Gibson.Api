@@ -39,7 +39,7 @@ namespace Gibson.CustomerVehicles
             // Arrange
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
-            var sut = new CustomerVehicleService(repo, new VehicleDataService());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
             var addResult = await sut.AddVehicleToCustomer("EF02VCC", customerId, clientId);
             // Assert
@@ -135,6 +135,17 @@ namespace Gibson.CustomerVehicles
         }
 
         [Fact]
+        public async Task AddVehicleToCustomer_Should_HaveEmptyServiceData()
+        {
+            // Arrange
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
+            // Act
+            var result = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
+            // Assert
+            Assert.NotNull(result.ServiceData);
+        }
+
+        [Fact]
         public async Task DeleteCustomerVehicle_Should_ThrowError_WhenVehicleDoesNotExists()
         {
             // Arrange
@@ -171,7 +182,7 @@ namespace Gibson.CustomerVehicles
         }
 
         [Fact]
-        public async Task GetCustomerVehicle_Should_ReturnAsSinlgeVehicle()
+        public async Task GetCustomerVehicle_Should_ReturnSinlgeVehicle()
         {
             // Arrange
             var v1 = new CustomerVehicle { Registration = "EF02VCC" };
@@ -194,6 +205,32 @@ namespace Gibson.CustomerVehicles
             Assert.Null(result);
         }
 
+
+        [Fact]
+        public async Task GetCustomerVehicleById_Should_ReturnSinlgeVehicle()
+        {
+            // Arrange
+            var v1 = new CustomerVehicle { Registration = "EF02VCC" };
+            await repo.Create(v1, Guid.NewGuid(), Guid.NewGuid());
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
+            // Act
+            var result = await sut.GetCustomerVehicle(v1.Id, v1.ClientId);
+            // Assert
+            Assert.IsType<CustomerVehicle>(result);
+        }
+
+        [Fact]
+        public async Task GetCustomerVehicleById_Should_ReturnNull_WhenDoesNotExist()
+        {
+            // Arrange
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
+            // Act
+            var result = await sut.GetCustomerVehicle(Guid.NewGuid(), Guid.NewGuid());
+            // Assert
+            Assert.Null(result);
+        }
+
+
         [Fact]
         public async Task UpdateCustomerVehicle_Should_ReturnVehicle()
         {
@@ -202,7 +239,7 @@ namespace Gibson.CustomerVehicles
             await repo.Create(v1, Guid.NewGuid(), Guid.NewGuid());
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
-            var result = await sut.UpdateCustomerVehicle(v1, v1.CustomerId, v1.ClientId);
+            var result = await sut.UpdateCustomerVehicle(v1, v1.ClientId);
             // Assert
             Assert.IsType<CustomerVehicle>(result);
         }
@@ -219,7 +256,7 @@ namespace Gibson.CustomerVehicles
             var newValue = DateTime.UtcNow;
             v1.Colour = "SomeNewColour";
             // Act
-            var result = await sut.UpdateCustomerVehicle(v1, customerId, clientId);
+            var result = await sut.UpdateCustomerVehicle(v1, clientId);
             // Assert
             Assert.Equal("SomeNewColour", result.Colour);
         }
@@ -231,7 +268,7 @@ namespace Gibson.CustomerVehicles
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             var updatedVehicle = new CustomerVehicle { Registration = "SHOULDNOTEXIST", LastUpdated = DateTime.UtcNow };
             // Act & Assert
-            await Assert.ThrowsAsync<Exception>(async () => await sut.UpdateCustomerVehicle(updatedVehicle, Guid.NewGuid(), Guid.NewGuid()));
+            await Assert.ThrowsAsync<Exception>(async () => await sut.UpdateCustomerVehicle(updatedVehicle, Guid.NewGuid()));
         }
 
         [Fact]
@@ -243,7 +280,7 @@ namespace Gibson.CustomerVehicles
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             v1.Colour = "SomeNewColour";
             // Act
-            await sut.UpdateCustomerVehicle(v1, v1.CustomerId, v1.ClientId);
+            await sut.UpdateCustomerVehicle(v1, v1.ClientId);
             var result = (await repo.FindAllByCustomer(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == v1.Registration);
             // Assert
             Assert.Equal("SomeNewColour", v1.Colour);
@@ -264,7 +301,7 @@ namespace Gibson.CustomerVehicles
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             v1.LastUpdated = DateTime.UtcNow;
             // Act
-            await sut.UpdateCustomerVehicle(v1, v1.CustomerId, v1.ClientId);
+            await sut.UpdateCustomerVehicle(v1, v1.ClientId);
             var result = (await repo.FindAllByCustomer(v1.CustomerId, v1.ClientId)).FirstOrDefault(x => x.Registration == v1.Registration);
             // Assert
             Assert.Equal(result.Registration, v1.Registration);
@@ -284,7 +321,7 @@ namespace Gibson.CustomerVehicles
             await repo.Create(dummyVehicle, dummyVehicle.CustomerId, dummyVehicle.ClientId);
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
-            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.CustomerId, dummyVehicle.ClientId);
+            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.ClientId);
             // Assert
             Assert.IsType<CustomerVehicle>(result);
         }
@@ -303,7 +340,7 @@ namespace Gibson.CustomerVehicles
             await repo.Create(dummyVehicle, dummyVehicle.CustomerId, dummyVehicle.ClientId);
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
-            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.CustomerId, dummyVehicle.ClientId);
+            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.ClientId);
             // Assert
             Assert.NotNull(result.MotData);
         }
@@ -322,7 +359,7 @@ namespace Gibson.CustomerVehicles
             };
             await repo.Create(dummyVehicle, dummyVehicle.CustomerId, dummyVehicle.ClientId);
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
-            await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.CustomerId, dummyVehicle.ClientId);
+            await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.ClientId);
             // Act
             var result = await repo.FindById(dummyVehicle.Id, dummyVehicle.ClientId);
             // Assert
@@ -344,7 +381,7 @@ namespace Gibson.CustomerVehicles
             await repo.Create(dummyVehicle, dummyVehicle.CustomerId, dummyVehicle.ClientId);
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
-            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.CustomerId, dummyVehicle.ClientId);
+            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.ClientId);
             // Assert
             Assert.True(result.MotData.MOTExpiryDate > currentExpiryDate);
         }
@@ -366,12 +403,63 @@ namespace Gibson.CustomerVehicles
             await repo.Create(dummyVehicle, dummyVehicle.CustomerId, dummyVehicle.ClientId);
             var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
             // Act
-            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.CustomerId, dummyVehicle.ClientId);
+            var result = await sut.UpdateMotData(dummyVehicle.Id, dummyVehicle.ClientId);
             // Assert
             Assert.Equal(dummyVehicle.Model.ToUpper(), result.Model.ToUpper());
             Assert.Equal(dummyVehicle.Make.ToUpper(), result.Make.ToUpper());
             Assert.Equal(dummyVehicle.Registration.ToUpper(), result.Registration.ToUpper());
             Assert.Equal(dummyVehicle.Colour.ToUpper(), result.Colour.ToUpper());
+        }
+
+        [Fact]
+        public async Task UpdateServiceData_Should_ReturnCustomerVehicle()
+        {
+            // Arrange
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
+            var vehicle = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
+            var serviceData = new ServiceData
+            {
+                EstAnualMileage = 8000,
+                MaxMileage = 6000,
+                MaxMonths = 12,
+                ServiceDataConfiguredBy = "Customer"
+            };
+            // Act
+            var result = await sut.UpdateServiceData(serviceData, vehicle.Id, vehicle.ClientId);
+            // Assert
+            Assert.IsType<CustomerVehicle>(result);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task UpdateServiceData_Should_ThrowException_WhenVehicleDoesNotExist()
+        {
+            // Arrange
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(async () => await sut.UpdateServiceData(new ServiceData(), Guid.NewGuid(), Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task UpdateServiceData_Should_ReturnWithMatchingServiceData()
+        {
+            // Arrange
+            var sut = new CustomerVehicleService(repo, new MockVehicleDataService());
+            var vehicle = await sut.AddVehicleToCustomer("EF02VCC", Guid.NewGuid(), Guid.NewGuid());
+            var serviceData = new ServiceData
+            {
+                EstAnualMileage = 8000,
+                MaxMileage = 6000,
+                MaxMonths = 12,
+                ServiceDataConfiguredBy = "Customer"
+            };
+            // Act
+            var result = await sut.UpdateServiceData(serviceData, vehicle.Id, vehicle.ClientId);
+            // Assert
+            Assert.Equal(serviceData.EstAnualMileage, result.ServiceData.EstAnualMileage);
+            Assert.Equal(serviceData.MaxMonths, result.ServiceData.MaxMonths);
+            Assert.Equal(serviceData.MaxMileage, result.ServiceData.MaxMileage);
+            Assert.Equal(serviceData.ServiceDataConfiguredBy, result.ServiceData.ServiceDataConfiguredBy);
         }
     }
 }

@@ -2,6 +2,7 @@
 using TechDevs.Shared.Models;
 using TechDevs.Users;
 using TechDevs.Clients;
+using Gibson.AuthTokens;
 
 namespace TechDevs.Employees
 {
@@ -12,10 +13,9 @@ namespace TechDevs.Employees
             IPasswordHasher passwordHasher, 
             IOptions<AppSettings> appSettings,
             IClientService clientService,
-            IAuthTokenService<Employee> tokenService)
+            IAuthTokenService tokenService)
             : base(userRepo, passwordHasher, appSettings, clientService, tokenService)
         {
-
         }
     }
 

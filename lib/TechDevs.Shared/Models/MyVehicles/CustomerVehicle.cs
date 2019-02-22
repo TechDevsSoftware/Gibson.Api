@@ -12,6 +12,7 @@ namespace TechDevs.Shared.Models
         public string FuelType { get; set; }
         public int Year { get; set; }
         public MotData MotData { get; set; }
+        public ServiceData ServiceData { get; set; }
         public DateTime? LastUpdated { get; set; }
     }
 
@@ -19,5 +20,15 @@ namespace TechDevs.Shared.Models
     {
         public DateTime? MOTExpiryDate { get; set; }
         public List<MotResult> MOTResults { get; set; }
+    }
+
+    public class ServiceData
+    {
+        public DateTime? CalculatedServiceDue { get; set; }
+        public int MaxMonths { get; set; }
+        public int MaxMileage { get; set; }
+        public int EstAnualMileage { get; set; }
+        public int CalculatedAnualMileage { get; set; }
+        public string ServiceDataConfiguredBy { get; set; }
     }
 }

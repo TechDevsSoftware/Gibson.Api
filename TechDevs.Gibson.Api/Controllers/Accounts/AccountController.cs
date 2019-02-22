@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Gibson.AuthTokens;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
@@ -16,7 +17,7 @@ namespace TechDevs.Gibson.Api.Controllers
         private readonly ICustomerService _customerService;
         private readonly IClientService _clientService;
 
-        public CustomerController(IAuthTokenService<Customer> tokenService, ICustomerService customerService, IClientService clientService, IAuthService<Customer> auth)
+        public CustomerController(IAuthTokenService tokenService, ICustomerService customerService, IClientService clientService, IAuthService<Customer> auth)
             : base(tokenService, customerService, clientService, auth)
         {
             _customerService = customerService;
@@ -41,7 +42,7 @@ namespace TechDevs.Gibson.Api.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly IClientService _clientService;
 
-        public EmployeeController(IAuthTokenService<Employee> tokenService,IEmployeeService employeeService, IClientService clientService, IAuthService<Employee> auth)
+        public EmployeeController(IAuthTokenService tokenService,IEmployeeService employeeService, IClientService clientService, IAuthService<Employee> auth)
             : base(tokenService, employeeService, clientService, auth)
         {
             _employeeService = employeeService;
@@ -66,7 +67,7 @@ namespace TechDevs.Gibson.Api.Controllers
         private readonly IUserService<TAuthUser> _userService;
         private readonly IClientService _clientService;
 
-        protected AccountController(IAuthTokenService<TAuthUser> tokenService, IUserService<TAuthUser> accountService, IClientService clientService, IAuthService<TAuthUser> auth)
+        protected AccountController(IAuthTokenService tokenService, IUserService<TAuthUser> accountService, IClientService clientService, IAuthService<TAuthUser> auth)
             : base(tokenService, accountService, clientService, auth)
         {
             _userService = accountService;

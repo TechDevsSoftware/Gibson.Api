@@ -7,5 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TechDevs.Users\TechDevs.Users.csproj" />
     <ProjectReference Include="..\TechDevs.Clients\TechDevs.Clients.csproj" />
+    <ProjectReference Include="..\Gibson.AuthTokens\Gibson.AuthTokens.csproj" />
   </ItemGroup>
 </Project>

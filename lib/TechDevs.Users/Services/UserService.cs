@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Gibson.AuthTokens;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -9,8 +10,6 @@ using TechDevs.Shared.Utils;
 
 namespace TechDevs.Users
 {
-
-
     public class UserService : UserService<AuthUser>
     {
         public UserService(
@@ -18,7 +17,7 @@ namespace TechDevs.Users
             IPasswordHasher passwordHasher,
             IOptions<AppSettings> appSettings,
             IClientService clientService,
-            IAuthTokenService<AuthUser> tokenService)
+            IAuthTokenService tokenService)
             : base(userRepo, passwordHasher, appSettings, clientService, tokenService)
         {
         }
@@ -34,15 +33,15 @@ namespace TechDevs.Users
         public readonly IAuthUserRepository<TAuthUser> _userRepo;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IClientService _clientService;
-        private readonly IAuthTokenService<TAuthUser> tokenService;
+        private readonly IAuthTokenService tokenService;
         private readonly AppSettings _appSettings;
 
         public UserService(
             IAuthUserRepository<TAuthUser> userRepo,
             IPasswordHasher passwordHasher,
-             IOptions<AppSettings> appSettings,
+            IOptions<AppSettings> appSettings,
             IClientService clientService,
-            IAuthTokenService<TAuthUser> tokenService)
+            IAuthTokenService tokenService)
         {
             _userRepo = userRepo;
             _passwordHasher = passwordHasher;

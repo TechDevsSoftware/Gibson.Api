@@ -27,7 +27,7 @@ using Microsoft.AspNetCore.Http;
 using TechDevs.Employees;
 using Gibson.CustomerVehicles;
 using Gibson.BookingRequests;
-using Gibson.Shared.Repositories;
+using Gibson.AuthTokens;
 
 namespace TechDevs.Gibson.Api
 {
@@ -95,9 +95,7 @@ namespace TechDevs.Gibson.Api
             services.AddTransient<IAuthService<Customer>, AuthService<Customer>>();
             services.AddTransient<IAuthService<AuthUser>, AuthService<AuthUser>>();
             services.AddTransient<IAuthService<Employee>, AuthService<Employee>>();
-            services.AddTransient<IAuthTokenService<AuthUser>, AuthTokenService<AuthUser>>();
-            services.AddTransient<IAuthTokenService<Customer>, AuthTokenService<Customer>>();
-            services.AddTransient<IAuthTokenService<Employee>, AuthTokenService<Employee>>();
+            services.AddTransient<IAuthTokenService, AuthTokenService>();
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IClientThemeService, ClientThemeService>();
             services.AddTransient<ICustomerService, CustomerService>();
@@ -117,6 +115,7 @@ namespace TechDevs.Gibson.Api
 
 
             // GraphQL Models
+            services.AddTransient<ServiceDataModel>();
             services.AddTransient<BookingRequestModel>();
             services.AddTransient<BookingCustomerModel>();
             services.AddTransient<MotCommentModel>();

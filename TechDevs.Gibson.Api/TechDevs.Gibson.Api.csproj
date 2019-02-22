@@ -57,7 +57,8 @@
         <ProjectReference Include="..\lib\TechDevs.Users\TechDevs.Users.csproj" />
         <ProjectReference Include="..\lib\TechDevs.Employees\TechDevs.Employees.csproj" />
         <ProjectReference Include="..\lib\Gibson.CustomerVehicles\Gibson.CustomerVehicles.csproj" />
-        <ProjectReference Include="..\lib\TechDevs.Clients.BookingRequests\Gibson.BookingRequests.csproj" />
+        <ProjectReference Include="..\lib\Gibson.AuthTokens\Gibson.AuthTokens.csproj" />
+        <ProjectReference Include="..\lib\Gibson.BookingRequests\Gibson.BookingRequests.csproj" />
     </ItemGroup>
     <ItemGroup>
         <WCFMetadata Include="Connected Services" />

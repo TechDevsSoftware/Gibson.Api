@@ -47,6 +47,7 @@ namespace TechDevs.Gibson.Api
 
             Field<ListGraphType<CustomerVehicleModel>>("myVehicles", resolve: context => Authenticated() ? vehicles.GetCustomerVehicles(userId, clientId) : throw new Exception("Not authenticated"));
 
+
             Field<ClientModel>("client", resolve: c => {
                 return Authenticated() ? clientService.GetClient(clientId.ToString()) : throw new Exception("Not authenticated");
             });
@@ -54,6 +55,11 @@ namespace TechDevs.Gibson.Api
             Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetById(userId.ToString(), clientId.ToString()) : throw new Exception("Not authenticated"));
             Field<CustomerModel>("myCustomerProfile", resolve: c => Authenticated() ? customers.GetById(userId.ToString(), clientId.ToString()) : throw new Exception("Not authenticated"));
             Field<EmployeeModel>("myEmployeeProfile", resolve: c => Authenticated() ? employees.GetByJwtToken(ctx.GetAuthToken()) : throw new Exception("Not authenticated"));
+
+            Field<CustomerVehicleModel>("vehicle", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "vehicleId" }), resolve: c =>
+            {
+                return Authenticated() ? vehicles.GetCustomerVehicle(Guid.Parse(c.GetArgument<string>("vehicleId")), clientId) : throw new Exception("Not authenticated");
+            });
 
             Field<CustomerModel>("customer", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "customerId" }), resolve: c =>
             {
@@ -237,6 +243,20 @@ namespace TechDevs.Gibson.Api
             Field(b => b.Colour);
             Field(b => b.Year);
             Field<MotDataModel>("motData", resolve: c => c.Source.MotData);
+            Field<ServiceDataModel>("serviceData", resolve: c => c.Source.ServiceData);
+        }
+    }
+
+    public class ServiceDataModel : ObjectGraphType<ServiceData>
+    {
+        public ServiceDataModel()
+        {
+            Field(x => x.EstAnualMileage, true);
+            Field(x => x.MaxMonths, true);
+            Field(x => x.MaxMileage, true);
+            Field(x => x.ServiceDataConfiguredBy, true);
+            Field(x => x.CalculatedServiceDue, true);
+            Field(x => x.CalculatedAnualMileage, true);
         }
     }
 

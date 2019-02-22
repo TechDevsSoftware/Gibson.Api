@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Gibson.AuthTokens;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 using TechDevs.Clients;
@@ -10,11 +11,11 @@ namespace TechDevs.Customers
     public class CustomerService : UserService<Customer>, ICustomerService
     {
         public CustomerService(
-            IAuthUserRepository<Customer> userRepo, 
-            IPasswordHasher passwordHasher, 
+            IAuthUserRepository<Customer> userRepo,
+            IPasswordHasher passwordHasher,
             IOptions<AppSettings> appSettings,
             IClientService clientService,
-            IAuthTokenService<Customer> tokenService)
+            IAuthTokenService tokenService)
             : base(userRepo, passwordHasher, appSettings, clientService, tokenService)
         {
         }
@@ -27,5 +28,4 @@ namespace TechDevs.Customers
             return result;
         }
     }
-
 }

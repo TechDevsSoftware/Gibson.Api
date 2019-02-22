@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TechDevs.Shared.Models;
+using Gibson.AuthTokens;
 
 namespace TechDevs.Users
 {
@@ -13,9 +14,9 @@ namespace TechDevs.Users
     {
         private readonly IUserService<T> userService;
         private readonly IPasswordHasher passwordHasher;
-        private readonly IAuthTokenService<T> tokenService;
+        private readonly IAuthTokenService tokenService;
 
-        public AuthService(IUserService<T> userService, IPasswordHasher passwordHasher, IAuthTokenService<T> tokenService)
+        public AuthService(IUserService<T> userService, IPasswordHasher passwordHasher, IAuthTokenService tokenService)
         {
             this.userService = userService;
             this.passwordHasher = passwordHasher;
@@ -26,7 +27,7 @@ namespace TechDevs.Users
         {
             var user = await userService.GetByEmail(email, clientKey);
             var genuine = await ValidatePassword(user.EmailAddress, password, clientKey);
-            if (genuine) return tokenService.CreateToken(user.Id, clientKey, clientId);
+            if (genuine) return tokenService.CreateToken(Guid.Parse(user.Id), clientKey, clientId);
             return null;
         }
 
@@ -73,7 +74,5 @@ namespace TechDevs.Users
                 return false;
             }
         }
-
     }
-
 }

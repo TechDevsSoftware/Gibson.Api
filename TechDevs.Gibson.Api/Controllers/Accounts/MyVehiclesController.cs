@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Gibson.CustomerVehicles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
+using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
 {
@@ -63,13 +65,28 @@ namespace TechDevs.Gibson.Api.Controllers
         public async Task<IActionResult> UpdateVehicleMOTData([FromRoute] Guid vehicleId)
         {
             try
-            { 
-                var result = await vehicleService.UpdateMotData(vehicleId, this.UserId(), this.ClientId());
+            {
+                var result = await vehicleService.UpdateMotData(vehicleId, this.ClientId());
                 return new OkObjectResult(result);
             }
             catch (System.Exception)
             {
 
+                throw;
+            }
+        }
+
+        [HttpPost("{vehicleId}/servicedata")]
+        public async Task<ActionResult<CustomerVehicle>> UpdateServiceData([FromRoute] Guid vehicleId, [FromBody] ServiceData serviceData)
+        {
+            try
+            {
+                var result = await vehicleService.UpdateServiceData(serviceData, vehicleId, this.ClientId());
+                return new OkObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
                 throw;
             }
         }

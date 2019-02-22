@@ -43,13 +43,19 @@ namespace Gibson.CustomerVehicles
             return result;
         }
 
+        public async Task<CustomerVehicle> GetCustomerVehicle(Guid vehicleId, Guid clientId)
+        {
+            var result = await repo.FindById(vehicleId, clientId);
+            return result;
+        }
+
         public async Task<List<CustomerVehicle>> GetCustomerVehicles(Guid customerId, Guid clientId)
         {
             var vehicles = await repo.FindAllByCustomer(customerId, clientId);
             return vehicles;
         }
 
-        public async Task<CustomerVehicle> UpdateCustomerVehicle(CustomerVehicle vehicle, Guid customerId, Guid clientId)
+        public async Task<CustomerVehicle> UpdateCustomerVehicle(CustomerVehicle vehicle, Guid clientId)
         {
             var existing = await repo.FindById(vehicle.Id, clientId);
             if (existing == null) throw new Exception("Vehicle cannot be found");
@@ -57,13 +63,22 @@ namespace Gibson.CustomerVehicles
             return result;
         }
 
-        public async Task<CustomerVehicle> UpdateMotData(Guid vehicleId, Guid customerId, Guid clientId)
+        public async Task<CustomerVehicle> UpdateMotData(Guid vehicleId, Guid clientId)
         {
             var vehicle = await repo.FindById(vehicleId, clientId);
             var lookup = await vehicleData.GetVehicleData(vehicle.Registration);
             var motData = MapLookupToCustomerVehicle(lookup)?.MotData;
             vehicle.MotData = motData;
             var result = await repo.Update(vehicle, clientId);
+            return result;
+        }
+
+        public async Task<CustomerVehicle> UpdateServiceData(ServiceData serviceData, Guid vehicleId, Guid clientId)
+        {
+            var vehicle = await repo.FindById(vehicleId, clientId);
+            if (vehicle == null) throw new Exception("Vehicle could not be found");
+            vehicle.ServiceData = serviceData;
+            var result = await UpdateCustomerVehicle(vehicle, clientId);
             return result;
         }
 
@@ -104,7 +119,8 @@ namespace Gibson.CustomerVehicles
                             Type = c.type
                         }).ToList()
                     }).ToList()
-                }
+                },
+                ServiceData = new ServiceData { }
             };
         }
     }

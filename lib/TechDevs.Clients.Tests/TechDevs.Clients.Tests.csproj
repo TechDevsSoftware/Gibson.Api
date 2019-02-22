@@ -25,7 +25,6 @@
   <ItemGroup>
     <None Remove="Client_SeedData.json" />
     <None Remove="appSettings %28copy%29.json" />
-    <None Remove="Clients.BookingRequests.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client_SeedData.json">
