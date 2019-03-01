@@ -3,53 +3,6 @@ using Moq;
 using TechDevs.Shared.Models;
 using System.Threading.Tasks;
 using System;
-using Mongo2Go;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using System.Net.Http;
-using System.IO;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-
-namespace TechDevs.Clients.IntegrationTests
-{
-    public class ClientServiceIntegrationTests
-    {
-        private MongoDbRunner _runner;
-        private TestServer _testServer;
-        private HttpClient _client;
-
-        public ClientServiceIntegrationTests()
-        {
-            _runner = MongoDbRunner.StartForDebugging();
-            _runner.Import("accounts", "Clients", Path.Combine(Directory.GetCurrentDirectory(), @"Client_SeedData.json"), true);
-            var connString = _runner.ConnectionString;
-
-            var builder = new WebHostBuilder()
-                .UseEnvironment("IntegrationTesting")
-                .UseStartup<TechDevs.Gibson.Api.Startup>();
-
-            _testServer = new TestServer(builder);
-            _client = _testServer.CreateClient();
-        }
-
-        [Theory]
-        [InlineData("api/v1/clients/")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
-        {
-            // Arrange
-            // Act
-            var response = await _client.GetAsync(url);
-
-            // Assert
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
-            var result = await response.Content.ReadAsStringAsync();
-
-            var clients = JsonConvert.DeserializeObject<List<Client>>(result);
-            Assert.IsType<List<Client>>(clients);
-        }
-    }
-}
 
 namespace TechDevs.Clients.UnitTests
 {

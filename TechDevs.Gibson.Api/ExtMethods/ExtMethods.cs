@@ -29,9 +29,27 @@ namespace TechDevs.Gibson.Api
 
         public static string ClientKey(this HttpRequest request)
         {
-            request.Headers.TryGetValue("TechDevs-ClientKey", out var clientKey);
-            if (string.IsNullOrEmpty(clientKey))  throw new Exception("Client Key not found"); 
+            request.Headers.TryGetValue("Gibson-ClientKey", out var clientKey);
             return clientKey;
+        }
+
+        public static string GetClientKeyFromUri(this Uri uri)
+        {
+            if (string.IsNullOrEmpty(uri?.LocalPath) || uri?.LocalPath == "/") return null;
+
+            var parts = uri.LocalPath.Split("/");
+            var clientKey = parts[1];
+            return clientKey;
+        }
+
+        public static string GetTokenFromRequest(this HttpRequest request)
+        {
+            var result = request.Headers["Authorization"].ToString();
+            if(result.ToUpperInvariant().StartsWith("BEARER "))
+            {
+                result = result.Substring(7, result.Length - 7);
+            }
+            return result;
         }
     }
 }

@@ -235,24 +235,7 @@ namespace TechDevs.Gibson.Api
         {
             app.UseCors("default");
 
-            // Add Custom configuration for Audit API
-
-            //SensitiveInformation.Custom();
-
-            //app.Use(async (context, next) =>
-            //{  // <----
-            //    context.Request.EnableRewind();
-            //    await next();
-            //});
-
-
-            //app.UseAuditMiddleware(_ => _
-            //.WithEventType("{verb}:{url}")
-            //.IncludeHeaders()
-            //.IncludeResponseHeaders()
-            //.IncludeRequestBody()
-            //.IncludeResponseBody());
-
+            app.UseMiddleware<ClientValidationMiddleware>();
 
             // add http for Schema at default url
             app.UseGraphQL<ISchema>("/graphql");
@@ -262,6 +245,7 @@ namespace TechDevs.Gibson.Api
             {
                 Path = "/ui/graphql"
             });
+
 
             app.UseAuthentication();
             app.UseMvc();

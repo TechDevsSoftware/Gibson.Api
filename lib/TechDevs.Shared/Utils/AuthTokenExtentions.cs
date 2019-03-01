@@ -10,6 +10,7 @@ namespace TechDevs.Shared.Utils
         public static Guid GetUserId(this string token)
         {
             var jwt = token.ToJwtToken();
+            if (jwt == null) return Guid.Empty;
             var userId = jwt.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
             return Guid.Parse(userId);
         }
@@ -17,6 +18,7 @@ namespace TechDevs.Shared.Utils
         public static string GetClientKey(this string token)
         {
             var jwt = token.ToJwtToken();
+            if (jwt == null) return null;
             var clientKey = jwt.Claims.FirstOrDefault(c => c.Type == "Gibson-ClientKey")?.Value;
             return clientKey;
         }
@@ -24,6 +26,7 @@ namespace TechDevs.Shared.Utils
         public static Guid GetClientId(this string token)
         {
             var jwt = token.ToJwtToken();
+            if (jwt == null) return Guid.Empty;
             var clientId = jwt.Claims.FirstOrDefault(c => c.Type == "Gibson-ClientId")?.Value;
             return Guid.Parse(clientId);
         }
@@ -31,7 +34,7 @@ namespace TechDevs.Shared.Utils
         private static JwtSecurityToken ToJwtToken(this string token)
         {
             var handler = new JwtSecurityTokenHandler();
-            if (!handler.CanReadToken(token)) throw new ArgumentException("Cannot read token");
+            if (!handler.CanReadToken(token)) return null;
             var jwt = handler.ReadJwtToken(token);
             return jwt;
         }
@@ -44,12 +47,14 @@ namespace TechDevs.Shared.Utils
         private readonly string testTokenInvalidGuidUserId = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImNhcnNob3AiLCJHaWJzb24tQ2xpZW50S2V5IjoiY2Fyc2hvcCIsIkdpYnNvbi1DbGllbnRJZCI6ImNhcnNob3AiLCJuYmYiOjE1NDk0MDExOTUsImV4cCI6MTU0OTQwNDc5NSwiaWF0IjoxNTQ5NDAxMTk1fQ.N2JTQoaQHdGRzW8uxJxJ551gGkE_0ZqLIN8Qx4WvQlI";
 
         [Fact] 
-        void GetUserId_Should_ThrowException_TokenIsInvalid()
+        void GetUserId_Should_EqualEmptyGUID_TokenIsInvalid()
         {
             // Arrange
             string token = "THIS IS NOT A REAL JWT TOKEN";
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => token.GetUserId());
+            // Act 
+            var result = token.GetUserId();
+            // Assert
+            Assert.Equal(Guid.Empty, result);
         }
 
         [Fact]
@@ -88,8 +93,11 @@ namespace TechDevs.Shared.Utils
         {
             // Arrange
             string token = "THIS IS NOT A REAL JWT TOKEN";
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => token.GetClientId());
+            // Act
+            var result = token.GetClientId();
+            // Assert
+            Assert.Equal(Guid.Empty, result);
+
         }
 
         [Fact]
@@ -124,12 +132,15 @@ namespace TechDevs.Shared.Utils
         }
 
         [Fact]
-        void GetClientKey_Should_ThrowException_TokenIsInvalid()
+        void GetClientKey_Should_ReturnNull_TokenIsInvalid()
         {
             // Arrange
             string token = "THIS IS NOT A REAL JWT TOKEN";
-            // Act & Assert
-            Assert.Throws<ArgumentException>(() => token.GetClientKey());
+            // Act 
+            var result = token.GetClientKey();
+            // Assert
+            Assert.Null(result);
+
         }
 
 

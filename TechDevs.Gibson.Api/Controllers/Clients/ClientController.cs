@@ -23,8 +23,13 @@ namespace TechDevs.Gibson.Api.Controllers
 
         [HttpGet("current")]
         [Produces(typeof(Client))]
-        public async Task<IActionResult> GetCurrentClient() =>
-            new OkObjectResult(await _clientService.GetClientByShortKey(Request.ClientKey()));
+        public async Task<IActionResult> GetCurrentClient()
+        {
+            var clientKey = Request.ClientKey();
+            var res = await _clientService.GetClientByShortKey(clientKey);
+            if (res == null) return new NotFoundResult();
+            return new OkObjectResult(res);
+        }
 
         [HttpGet("{clientId}")]
         [Produces(typeof(Client))]
