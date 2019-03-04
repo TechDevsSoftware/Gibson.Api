@@ -29,7 +29,7 @@ namespace TechDevs.Gibson.Api
                 });
 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
 
             }

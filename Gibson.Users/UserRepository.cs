@@ -18,5 +18,11 @@ namespace Gibson.Users
             var results = await collection.FindAsync(x => x.Username == username && x.ClientId == clientId && x.UserType == userType);
             return await results.FirstOrDefaultAsync();
         }
+        
+        public async Task<User> GetUserByProviderId(string providerId, GibsonUserType userType, Guid clientId)
+        {
+            var results = await collection.FindAsync(x => x.AuthProfile.ProviderId == providerId && x.ClientId == clientId && x.UserType == userType);
+            return await results.FirstOrDefaultAsync();
+        }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TechDevs.Shared.Models;
 
-namespace TechDevs.Users
+namespace Gibson.Users
 {
     public class UserRegistrationException : Exception
     {

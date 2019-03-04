@@ -7,7 +7,7 @@ using TechDevs.Users;
 
 namespace Gibson.Users
 {
-    public class UserRegistrationService
+    public class UserRegistrationService : IUserRegistrationService
     {
         private readonly IUserRepository repo;
         private readonly IPasswordHasher _hasher;

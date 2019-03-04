@@ -10,5 +10,6 @@ namespace TechDevs.Shared.Models
         public string ProviderIdToken { get; set; }
         public string ClientKey { get; set; }
         public Guid ClientId { get; set; }
+        public GibsonUserType UserType { get; set; }
     }
 }

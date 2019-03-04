@@ -237,5 +237,91 @@ namespace Gibson.Users
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.DeleteUser(Guid.Empty, clientId));
         }
+        
+        
+        
+         
+        [Fact]
+        public async Task FindByProviderId_Should_ThrowException_OnMissingUsername()
+        {
+            // Arrange
+            var repo = GetMockRepo();
+            var sut = new UserService(repo);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.FindByProviderId(null, GibsonUserType.Customer, Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task FindByProviderId_Should_ThrowException_OnEmptyClientId()
+        {
+            // Arrange
+            var repo = GetMockRepo();
+            var sut = new UserService(repo);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.FindByProviderId("FakeUsername",GibsonUserType.Customer, Guid.Empty));
+        }
+
+        [Fact]
+        public async Task FindByProviderId_Should_ReturnUserWithSameUsername()
+        {
+            // Arrange
+            const string username = "DummyUser";
+            const string providerId = "123456";
+            var clientId = Guid.NewGuid();
+            var repo = GetMockRepo();
+            await repo.Create(new User
+            {
+                Username = username, 
+                UserType = GibsonUserType.Customer, 
+                AuthProfile = new AuthProfile
+                {
+                    ProviderId = providerId,
+                    AuthProvider = GibsonAuthProvider.Google
+                }
+            }, clientId);
+            var sut = new UserService(repo);
+            // Act
+            var result = await sut.FindByUsername(username, GibsonUserType.Customer, clientId);
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<User>(result);
+            Assert.Equal(username, result.Username);    
+        }
+        
+        [Fact]
+        public async Task FindByProviderId_Customer_Should_Return_Customer()
+        {
+            // Arrange
+            const string username = "DummyUser";
+            const string providerId = "123456";
+            var clientId = Guid.NewGuid();
+            var repo = GetMockRepo();
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.Customer, AuthProfile  = new AuthProfile {ProviderId =  providerId}}, clientId);
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.Employee , AuthProfile = new AuthProfile {ProviderId = providerId}}, clientId);
+            var sut = new UserService(repo);
+            // Act
+            var result = await sut.FindByProviderId(providerId, GibsonUserType.Customer, clientId);
+            // Assert
+            Assert.Equal(GibsonUserType.Customer, result.UserType);
+        }
+        
+        [Fact]
+        public async Task FindByProviderId_Employee_Should_Return_Employee()
+        {
+            // Arrange
+            const string username = "DummyUser";
+            const string providerId = "123456";
+            var clientId = Guid.NewGuid();
+            var repo = GetMockRepo();
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.Customer, AuthProfile  = new AuthProfile {ProviderId =  providerId}}, clientId);
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.Employee , AuthProfile = new AuthProfile {ProviderId = providerId}}, clientId);
+            var sut = new UserService(repo);
+            // Act
+            var result = await sut.FindByProviderId(providerId, GibsonUserType.Employee, clientId);
+            // Assert
+            Assert.Equal(GibsonUserType.Employee, result.UserType);
+        }
+
+        
     }
 }

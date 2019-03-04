@@ -45,6 +45,8 @@
         <Compile Remove="Validators\UserValidator.cs" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Gibson.Users\Gibson.Users.csproj" />
+        <ProjectReference Include="..\lib\Gibson.Auth\Gibson.Auth.csproj" />
         <ProjectReference Include="..\lib\TechDevs.Clients\TechDevs.Clients.csproj" />
         <ProjectReference Include="..\lib\TechDevs.Shared\TechDevs.Shared.csproj" />
         <ProjectReference Include="..\lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj" />
@@ -54,7 +56,6 @@
         <ProjectReference Include="..\lib\TechDevs.Products\TechDevs.Products.csproj" />
         <ProjectReference Include="..\lib\TechDevs.Customers\TechDevs.Customers.csproj" />
         <ProjectReference Include="..\lib\TechDevs.Clients.Theme\TechDevs.Clients.Theme.csproj" />
-        <ProjectReference Include="..\lib\TechDevs.Users\TechDevs.Users.csproj" />
         <ProjectReference Include="..\lib\TechDevs.Employees\TechDevs.Employees.csproj" />
         <ProjectReference Include="..\lib\Gibson.CustomerVehicles\Gibson.CustomerVehicles.csproj" />
         <ProjectReference Include="..\lib\Gibson.AuthTokens\Gibson.AuthTokens.csproj" />
@@ -65,7 +66,6 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Connected Services\" />
-        <Folder Include="Controllers\Products\" />
         <Folder Include="GraphQL\" />
     </ItemGroup>
 </Project>
