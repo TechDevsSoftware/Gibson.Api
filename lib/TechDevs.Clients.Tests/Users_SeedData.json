@@ -1,0 +1,23 @@
+﻿
+  {
+    "_id": "3c4ae7cd-847f-4dd5-8244-a4cc70d559d0",
+    "_t": "Employee",
+    "ClientId": {
+      "_id": "3061cd9e-f525-4af9-b906-0a78fa8355ec"
+    },
+    "Username": "test@test.com",
+    "NormalisedUsername": "TEST@TEST.COM",
+    "EmailAddress": "test@test.com",
+    "NormalisedEmail": "TEST@TEST.COM",
+    "FirstName": "Test",
+    "LastName": "Test",
+    "AgreedToTerms": true,
+    "ValidateEmailKey": null,
+    "ValidatedEmail": false,
+    "PasswordHash": "$2a$10$48k.hT0JhNwjBokGaZ3fTOxmy2kg./pZ4rjI.78alQrycSmF4HWWK",
+    "ProviderName": "TechDevs",
+    "ProviderId": null,
+    "ContactNumber": null,
+    "Invitation": null,
+    "Disabled": false
+  }
