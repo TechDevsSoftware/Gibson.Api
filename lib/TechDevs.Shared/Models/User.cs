@@ -63,7 +63,7 @@ namespace TechDevs.Shared.Models
 
     public enum GibsonUserType
     {
-        Employee, Customer
+        NotSet, Customer, Employee
     }
 
     public enum GibsonAuthProvider

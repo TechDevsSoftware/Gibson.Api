@@ -160,7 +160,7 @@ namespace Gibson.Users
         }
 
         [Fact]
-        public async Task RegisterUser_Should_Return_NotNull_MatchingUser()
+        public async Task RegisterUser_Result_ShouldHave_MatchingUser()
         {
             // Arrange
             var clientId = Guid.NewGuid();
@@ -183,6 +183,54 @@ namespace Gibson.Users
             Assert.Equal(reg.FirstName, result.UserProfile.FirstName);
             Assert.Equal(reg.LastName, result.UserProfile.LastName);
             Assert.Equal(reg.EmailAddress, result.UserProfile.Email);
+        }
+        
+        [Fact]
+        public async Task RegisterUser_Result_ShouldHave_UserType()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var repo = GetMockRepo();
+            var reg = new UserRegistration
+            {
+                AggreedToTerms =  true,
+                EmailAddress =  "test@test.com",
+                Password =  "Password",
+                FirstName = "FirstName",
+                LastName = "LastName",
+                ProviderName = "Google",
+                ProviderId = "GoogleId",
+                UserType = GibsonUserType.Customer
+            };
+            var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
+            // Act
+            var result = await sut.RegisterUser(reg, clientId);
+            // Assert
+            Assert.True(result.UserType != GibsonUserType.NotSet);
+        }
+        
+        [Fact]
+        public async Task RegisterUser_Should_Return_Matching_UserType()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var repo = GetMockRepo();
+            var reg = new UserRegistration
+            {
+                AggreedToTerms =  true,
+                EmailAddress =  "test@test.com",
+                Password =  "Password",
+                FirstName = "FirstName",
+                LastName = "LastName",
+                ProviderName = "Google",
+                ProviderId = "GoogleId",
+                UserType = GibsonUserType.Customer
+            };
+            var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
+            // Act
+            var result = await sut.RegisterUser(reg, clientId);
+            // Assert
+            Assert.Equal(reg.UserType, result.UserType);
         }
         
         [Fact]
