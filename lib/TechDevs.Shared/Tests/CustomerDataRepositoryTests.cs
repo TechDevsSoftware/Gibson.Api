@@ -6,6 +6,8 @@ using Xunit;
 
 namespace Gibson.Shared.Repositories.Tests
 {
+
+
     public class CustomerDataRepositoryTests : IClassFixture<DatabaseTestFixture>
     {
         private IOptions<MongoDbSettings> _settings;
@@ -17,11 +19,14 @@ namespace Gibson.Shared.Repositories.Tests
             _settings = Options.Create(dbSettings);
         }
 
+        private ICustomerDataRepository<MockCustomerEntity> GetMockRepo() =>
+            new CustomerDataRepository<MockCustomerEntity>("DummyCollection",_settings);
+
         [Fact]
-        public async Task Create_Should_IncreaseCollecitonCount_ByOne()
+        public async Task Create_Should_IncreaseCollectionCount_ByOne()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var beforeCollection = await repo.FindAllByCustomer(clientId, customerId);
@@ -36,7 +41,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task Create_Should_SetCustomerId()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
@@ -49,20 +54,20 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task Create_Should_SetClientId()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
             var result = await repo.Create(new MockCustomerEntity(), customerId, clientId);
             // Assert 
-            Assert.NotEqual(Guid.Empty, result.ClientId);
+            Assert.Equal(clientId, result.ClientId);
         }
 
         [Fact]
         public async Task Create_Should_SetId()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
@@ -72,10 +77,10 @@ namespace Gibson.Shared.Repositories.Tests
         }
 
         [Fact]
-        public async Task Create_Should_ReuturnCustomerEntity()
+        public async Task Create_Should_ReturnCustomerEntity()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             // Act
@@ -88,7 +93,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task Create_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -99,7 +104,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task Delete_Should_DecreaseCollecitonCount_ByOne()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var result = await repo.Create(new MockCustomerEntity(), customerId, clientId);
@@ -115,7 +120,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task Delete_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -126,7 +131,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task Update_Should_PersistModifiedProperty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var obj = new MockCustomerEntity { TestField = "BeforeValue" };
@@ -143,7 +148,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task Update_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -154,7 +159,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task FindAll_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 
@@ -165,7 +170,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task FindById_Should_ReturnNull_When_ClientId_NotMatching_Result()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var entity = await repo.Create(new MockCustomerEntity(), customerId, clientId);
@@ -180,7 +185,7 @@ namespace Gibson.Shared.Repositories.Tests
         public async Task FindById_Should_ThrowException_WhenClientId_IsEmpty()
         {
             // Arrange
-            var repo = new MockCustomerDataRepo<MockCustomerEntity>(_settings);
+            var repo = GetMockRepo();
             var clientId = Guid.Empty;
             var customerId = Guid.NewGuid();
             // Act & Assert 

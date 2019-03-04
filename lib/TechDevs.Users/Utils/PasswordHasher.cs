@@ -19,14 +19,14 @@ namespace TechDevs.Users
             options = optionsAccessor?.Value ?? new BCryptPasswordHasherOptions();
         }
 
-        public string HashPassword(AuthUser user, string password)
+        public string HashPassword(string password)
         {
             if (password == null) throw new ArgumentNullException(nameof(password));
 
             return BCrypt.Net.BCrypt.HashPassword(password, options.WorkFactor, options.EnhancedEntropy);
         }
 
-        public bool VerifyHashedPassword(AuthUser user, string hashedPassword, string providedPassword)
+        public bool VerifyHashedPassword(string hashedPassword, string providedPassword)
         {
             if (hashedPassword == null) throw new ArgumentNullException(nameof(hashedPassword));
             if (providedPassword == null) throw new ArgumentNullException(nameof(providedPassword));

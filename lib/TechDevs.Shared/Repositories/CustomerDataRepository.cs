@@ -7,9 +7,9 @@ using TechDevs.Shared.Models;
 
 namespace Gibson.Shared.Repositories
 {
-    public abstract class CustomerDataRepository<TEntity> : ICustomerDataRepository<TEntity> where TEntity : CustomerEntity
+    public class CustomerDataRepository<TEntity> : ICustomerDataRepository<TEntity> where TEntity : CustomerEntity
     {
-        readonly IMongoCollection<TEntity> collection;
+        private readonly IMongoCollection<TEntity> collection;
 
         public CustomerDataRepository(string collectionName, IOptions<MongoDbSettings> dbSettings)
         {

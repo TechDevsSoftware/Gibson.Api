@@ -179,7 +179,7 @@ namespace TechDevs.Gibson.Api.Controllers
         [HttpPost]
         [Route("register")]
         [Produces(typeof(AuthUserProfile))]
-        public async Task<IActionResult> RegisterUser([FromBody] AuthUserRegistration registration)
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegistration registration)
         {
             try
             {

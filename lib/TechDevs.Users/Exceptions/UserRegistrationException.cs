@@ -8,21 +8,21 @@ namespace TechDevs.Users
     {
         public List<string> RegistrationErrors { get; set; }
 
-        public UserRegistrationException(AuthUserRegistration userRegistration)
+        public UserRegistrationException(UserRegistration userRegistration)
         {
             UserRegistration = userRegistration;
         }
-        public UserRegistrationException(AuthUserRegistration userRegistration, List<string> errors, string message) : base(message)
+        public UserRegistrationException(UserRegistration userRegistration, List<string> errors, string message) : base(message)
         {
             UserRegistration = userRegistration;
             RegistrationErrors = errors;
         }
-        public UserRegistrationException(AuthUserRegistration userRegistration, List<string> errors, string message, Exception inner) : base(message, inner)
+        public UserRegistrationException(UserRegistration userRegistration, List<string> errors, string message, Exception inner) : base(message, inner)
         {
             UserRegistration = userRegistration;
             RegistrationErrors = errors;
         }
 
-        public AuthUserRegistration UserRegistration { get; }
+        public UserRegistration UserRegistration { get; }
     }
 }

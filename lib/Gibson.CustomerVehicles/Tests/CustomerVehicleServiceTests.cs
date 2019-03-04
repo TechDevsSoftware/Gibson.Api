@@ -20,7 +20,7 @@ namespace Gibson.CustomerVehicles
         }
 
         // TODO: LastUpdated field not updated on update MotData
-        // TODO: No test coverage for actually updating the cehicle record for MotData update
+        // TODO: No test coverage for actually updating the vehicle record for MotData update
 
         [Fact]
         public async Task AddVehicleToCustomer_Should_ReturnAVehicle()
