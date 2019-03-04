@@ -33,42 +33,37 @@ namespace TechDevs.Gibson.Api
             this.httpContext = ctx;
             this.auth = auth;
 
-            var token = ctx.GetAuthToken();
-            var clientKey = token.GetClientKey();
-            var userId = token.GetUserId();
-            var clientId = token.GetClientId();
-
             Name = "Query";
 
             Field<ListGraphType<ClientModel>>("clients", resolve: context => Authenticated() ? clientService.GetClients() : throw new Exception("Not authenticated"));
-            Field<ListGraphType<EmployeeModel>>("employees", resolve: context => Authenticated() ? employees.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
-            Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(clientKey) : throw new Exception("Not authenticated"));
-            Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => Authenticated() ? bookingRequests.GetBookings(clientId) : throw new Exception("Not authenticated"));
+            Field<ListGraphType<EmployeeModel>>("employees", resolve: context => Authenticated() ? employees.GetAllUsers(ctx.GetClientKey()) : throw new Exception("Not authenticated"));
+            Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(ctx.GetClientKey()) : throw new Exception("Not authenticated"));
+            Field<ListGraphType<BookingRequestModel>>("bookingRequests", resolve: c => Authenticated() ? bookingRequests.GetBookings(ctx.GetAuthToken().GetClientId()) : throw new Exception("Not authenticated"));
 
-            Field<ListGraphType<CustomerVehicleModel>>("myVehicles", resolve: context => Authenticated() ? vehicles.GetCustomerVehicles(userId, clientId) : throw new Exception("Not authenticated"));
+            Field<ListGraphType<CustomerVehicleModel>>("myVehicles", resolve: context => Authenticated() ? vehicles.GetCustomerVehicles(ctx.GetAuthToken().GetUserId(), ctx.GetAuthToken().GetClientId()) : throw new Exception("Not authenticated"));
 
 
             Field<ClientModel>("client", resolve: c => {
-                return Authenticated() ? clientService.GetClient(clientId.ToString()) : throw new Exception("Not authenticated");
+                return Authenticated() ? clientService.GetClient(ctx.GetAuthToken().GetClientId().ToString()) : throw new Exception("Not authenticated");
             });
 
-            Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetById(userId.ToString(), clientId.ToString()) : throw new Exception("Not authenticated"));
-            Field<CustomerModel>("myCustomerProfile", resolve: c => Authenticated() ? customers.GetById(userId.ToString(), clientId.ToString()) : throw new Exception("Not authenticated"));
+            Field<CustomerModel>("myProfile", resolve: c => Authenticated() ? customers.GetById(ctx.GetAuthToken().GetUserId().ToString(), ctx.GetAuthToken().GetClientId().ToString()) : throw new Exception("Not authenticated"));
+            Field<CustomerModel>("myCustomerProfile", resolve: c => Authenticated() ? customers.GetById(ctx.GetAuthToken().GetUserId().ToString(), ctx.GetAuthToken().GetClientId().ToString()) : throw new Exception("Not authenticated"));
             Field<EmployeeModel>("myEmployeeProfile", resolve: c => Authenticated() ? employees.GetByJwtToken(ctx.GetAuthToken()) : throw new Exception("Not authenticated"));
 
             Field<CustomerVehicleModel>("vehicle", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "vehicleId" }), resolve: c =>
             {
-                return Authenticated() ? vehicles.GetCustomerVehicle(Guid.Parse(c.GetArgument<string>("vehicleId")), clientId) : throw new Exception("Not authenticated");
+                return Authenticated() ? vehicles.GetCustomerVehicle(Guid.Parse(c.GetArgument<string>("vehicleId")), ctx.GetAuthToken().GetClientId()) : throw new Exception("Not authenticated");
             });
 
             Field<CustomerModel>("customer", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "customerId" }), resolve: c =>
             {
-                return Authenticated() ? customers.GetById(c.GetArgument<string>("customerId"), clientKey) : null;
+                return Authenticated() ? customers.GetById(c.GetArgument<string>("customerId"), ctx.GetClientKey()) : null;
             });
 
             Field<BookingRequestModel>("bookingRequest", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "bookingId" }), resolve: c =>
             {
-                return Authenticated() ? bookingRequests.GetBooking(Guid.Parse(c.GetArgument<string>("bookingId")), clientId) : throw new Exception("Not authenticated");
+                return Authenticated() ? bookingRequests.GetBooking(Guid.Parse(c.GetArgument<string>("bookingId")), ctx.GetAuthToken().GetClientId()) : throw new Exception("Not authenticated");
             });
 
             Field<ClientModel>("clientByKey", arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "shortKey" }), resolve: c =>

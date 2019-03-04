@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Models\Shared\" />
     <Folder Include="Repositories\" />
-    <Folder Include="Tests\" />
     <Folder Include="Models\Bookings\" />
   </ItemGroup>
 

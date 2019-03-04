@@ -3,43 +3,45 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Gibson.Api", "TechDevs.Gibson.Api\TechDevs.Gibson.Api.csproj", "{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Gibson.Api", "TechDevs.Gibson.Api\TechDevs.Gibson.Api.csproj", "{0FCDAEFD-F172-4956-BE66-97D0E9F1BC65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Users", "lib\TechDevs.Users\TechDevs.Users.csproj", "{283D9A06-AAE1-44DE-A32C-D31F3AADA454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Users", "lib\TechDevs.Users\TechDevs.Users.csproj", "{283D9A06-AAE1-44DE-A32C-D31F3AADA454}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Clients", "lib\TechDevs.Clients\TechDevs.Clients.csproj", "{57E3B65A-98D3-48AD-B0BE-743DEA744EE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Clients", "lib\TechDevs.Clients\TechDevs.Clients.csproj", "{57E3B65A-98D3-48AD-B0BE-743DEA744EE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.MyVehicles", "lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj", "{BD12F8DA-0B14-4ABA-AF72-892C6ABB63F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.MyVehicles", "lib\TechDevs.MyVehicles\TechDevs.MyVehicles.csproj", "{BD12F8DA-0B14-4ABA-AF72-892C6ABB63F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.NotificationPreferences", "lib\TechDevs.NotificationPreferences\TechDevs.NotificationPreferences.csproj", "{BBF58E95-E8DB-490A-82D5-53D8FA3B33C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.NotificationPreferences", "lib\TechDevs.NotificationPreferences\TechDevs.NotificationPreferences.csproj", "{BBF58E95-E8DB-490A-82D5-53D8FA3B33C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Shared", "lib\TechDevs.Shared\TechDevs.Shared.csproj", "{D578A207-E3B4-4029-83F0-A8A05047C097}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Shared", "lib\TechDevs.Shared\TechDevs.Shared.csproj", "{D578A207-E3B4-4029-83F0-A8A05047C097}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.MarketingPreferences", "lib\TechDevs.MarketingPreferences\TechDevs.MarketingPreferences.csproj", "{DC158477-C386-4F8A-9C33-7A6A43C7C5D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.MarketingPreferences", "lib\TechDevs.MarketingPreferences\TechDevs.MarketingPreferences.csproj", "{DC158477-C386-4F8A-9C33-7A6A43C7C5D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Clients.Offers", "lib\TechDevs.Clients.Offers\TechDevs.Clients.Offers.csproj", "{463B9A47-CE99-4ED1-B61A-2B7F8D2BB0FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Clients.Offers", "lib\TechDevs.Clients.Offers\TechDevs.Clients.Offers.csproj", "{463B9A47-CE99-4ED1-B61A-2B7F8D2BB0FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Products", "lib\TechDevs.Products\TechDevs.Products.csproj", "{EF883C30-B31E-4A34-A3B2-4DDD7E2CCA14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Products", "lib\TechDevs.Products\TechDevs.Products.csproj", "{EF883C30-B31E-4A34-A3B2-4DDD7E2CCA14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Billing.Stripe", "lib\TechDevs.Billing.Stripe\TechDevs.Billing.Stripe.csproj", "{11257D46-3F9A-4338-9D24-A1F0973F9F4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Billing.Stripe", "lib\TechDevs.Billing.Stripe\TechDevs.Billing.Stripe.csproj", "{11257D46-3F9A-4338-9D24-A1F0973F9F4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Customers", "lib\TechDevs.Customers\TechDevs.Customers.csproj", "{8550B864-A0F4-4A67-864D-FE04CEF020E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Customers", "lib\TechDevs.Customers\TechDevs.Customers.csproj", "{8550B864-A0F4-4A67-864D-FE04CEF020E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Clients.Tests", "lib\TechDevs.Clients.Tests\TechDevs.Clients.Tests.csproj", "{303851C3-EC66-46EE-BBDF-D048248F24B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Clients.Tests", "lib\TechDevs.Clients.Tests\TechDevs.Clients.Tests.csproj", "{303851C3-EC66-46EE-BBDF-D048248F24B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{F9AFF111-A225-4BE4-AEE1-9C9C6555E66E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Clients.Theme", "lib\TechDevs.Clients.Theme\TechDevs.Clients.Theme.csproj", "{B8666F65-1142-4300-8A62-5537BE38B05F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Clients.Theme", "lib\TechDevs.Clients.Theme\TechDevs.Clients.Theme.csproj", "{B8666F65-1142-4300-8A62-5537BE38B05F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechDevs.Employees", "lib\TechDevs.Employees\TechDevs.Employees.csproj", "{2C817ECE-9ECF-4558-861A-CE9032E654F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechDevs.Employees", "lib\TechDevs.Employees\TechDevs.Employees.csproj", "{2C817ECE-9ECF-4558-861A-CE9032E654F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.CustomerVehicles", "lib\Gibson.CustomerVehicles\Gibson.CustomerVehicles.csproj", "{EF359531-EA5F-405E-8DEB-54EA1011A27C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gibson.CustomerVehicles", "lib\Gibson.CustomerVehicles\Gibson.CustomerVehicles.csproj", "{EF359531-EA5F-405E-8DEB-54EA1011A27C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.Auth", "lib\Gibson.Auth\Gibson.Auth.csproj", "{E0626414-9FF1-436A-A254-4214F9C19C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gibson.Auth", "lib\Gibson.Auth\Gibson.Auth.csproj", "{E0626414-9FF1-436A-A254-4214F9C19C3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.AuthTokens", "lib\Gibson.AuthTokens\Gibson.AuthTokens.csproj", "{423B5B1A-3C37-418B-A0A7-E7B3DC57A07A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gibson.AuthTokens", "lib\Gibson.AuthTokens\Gibson.AuthTokens.csproj", "{423B5B1A-3C37-418B-A0A7-E7B3DC57A07A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.BookingRequests", "lib\Gibson.BookingRequests\Gibson.BookingRequests.csproj", "{C3FF4503-E3F4-44D3-9FA7-84940FC7C500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gibson.BookingRequests", "lib\Gibson.BookingRequests\Gibson.BookingRequests.csproj", "{C3FF4503-E3F4-44D3-9FA7-84940FC7C500}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.Users", "Gibson.Users\Gibson.Users.csproj", "{96521A2C-720F-486B-921D-E7DB33B8F8A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{91CC71A0-87D3-4AAD-A1FC-9A5A576568EE}"
 EndProject
@@ -95,10 +97,6 @@ Global
 		{8550B864-A0F4-4A67-864D-FE04CEF020E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8550B864-A0F4-4A67-864D-FE04CEF020E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8550B864-A0F4-4A67-864D-FE04CEF020E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D042436-9D6D-4E8D-9799-8F3CFAD254A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D042436-9D6D-4E8D-9799-8F3CFAD254A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D042436-9D6D-4E8D-9799-8F3CFAD254A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D042436-9D6D-4E8D-9799-8F3CFAD254A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{303851C3-EC66-46EE-BBDF-D048248F24B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{303851C3-EC66-46EE-BBDF-D048248F24B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{303851C3-EC66-46EE-BBDF-D048248F24B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -127,10 +125,11 @@ Global
 		{C3FF4503-E3F4-44D3-9FA7-84940FC7C500}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3FF4503-E3F4-44D3-9FA7-84940FC7C500}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3FF4503-E3F4-44D3-9FA7-84940FC7C500}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35E453F0-DA1E-490B-BC5D-ACE248E6C19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35E453F0-DA1E-490B-BC5D-ACE248E6C19E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35E453F0-DA1E-490B-BC5D-ACE248E6C19E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35E453F0-DA1E-490B-BC5D-ACE248E6C19E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96521A2C-720F-486B-921D-E7DB33B8F8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96521A2C-720F-486B-921D-E7DB33B8F8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96521A2C-720F-486B-921D-E7DB33B8F8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96521A2C-720F-486B-921D-E7DB33B8F8A0}.Release|Any CPU.Build.0 = Release|Any CPU
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,7 +152,8 @@ Global
 		{E0626414-9FF1-436A-A254-4214F9C19C3A} = {F9AFF111-A225-4BE4-AEE1-9C9C6555E66E}
 		{423B5B1A-3C37-418B-A0A7-E7B3DC57A07A} = {F9AFF111-A225-4BE4-AEE1-9C9C6555E66E}
 		{C3FF4503-E3F4-44D3-9FA7-84940FC7C500} = {F9AFF111-A225-4BE4-AEE1-9C9C6555E66E}
-		{35E453F0-DA1E-490B-BC5D-ACE248E6C19E} = {91CC71A0-87D3-4AAD-A1FC-9A5A576568EE}
+		{96521A2C-720F-486B-921D-E7DB33B8F8A0} = {F9AFF111-A225-4BE4-AEE1-9C9C6555E66E}
+
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B6649377-4FA8-4BC3-8D58-B6863080EDE7}

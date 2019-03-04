@@ -12,14 +12,14 @@ namespace TechDevs.Users
         Task<TAuthUser> GetById(string id, string clientIdOrKey);
         Task<TAuthUser> GetByJwtToken(string token);
         Task<TAuthUser> GetByProvider(string provider, string providerId, string clientIdOrKey);
-        Task<TAuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientIdOrKey);
+        Task<TAuthUser> RegisterUser(UserRegistration userRegistration, string clientIdOrKey);
         Task RequestResetPassword(string email);
         Task ResetPassword(string email, string resetPasswordToken, string clientIdOrKey);
         Task<TAuthUser> SetPassword(string email, string password, string clientIdOrKey);
         Task<TAuthUser> UpdateEmail(string currentEmail, string newEmail, string clientIdOrKey);
         Task<TAuthUser> UpdateName(string email, string firstName, string lastName, string clientIdOrKey);
         Task<TAuthUser> UpdateContactNuber(string email, string contactNumber, string clientIdOrKey);
-        Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientIdOrKey);
+        Task ValidateCanRegister(UserRegistration userRegistration, string clientIdOrKey);
          Task<TAuthUser> SubmitInvitation(AuthUserInvitationRequest invite, string clientIdOrKey);
         Task<TAuthUser> GetUserByInviteKey(string inviteKey, string clientIdOrKey);
         Task<TAuthUser> AcceptInvitation(AuthUserInvitationAcceptRequest req, string clientIdOrKey);

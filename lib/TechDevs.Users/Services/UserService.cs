@@ -22,7 +22,7 @@ namespace TechDevs.Users
         {
         }
 
-        public override Task<AuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientId)
+        public override Task<AuthUser> RegisterUser(UserRegistration userRegistration, string clientId)
         {
             throw new Exception("Must be registered using a Customer or Employee service. Not the base AuthUser service");
         }
@@ -58,7 +58,7 @@ namespace TechDevs.Users
             return result;
         }
 
-        public virtual async Task<TAuthUser> RegisterUser(AuthUserRegistration userRegistration, string clientIdOrKey)
+        public virtual async Task<TAuthUser> RegisterUser(UserRegistration userRegistration, string clientIdOrKey)
         {
             var client = await _clientService.GetClientIdentifier(clientIdOrKey);
 
@@ -84,7 +84,7 @@ namespace TechDevs.Users
             return resultAfterPassword;
         }
 
-        public virtual async Task ValidateCanRegister(AuthUserRegistration userRegistration, string clientIdOrKey)
+        public virtual async Task ValidateCanRegister(UserRegistration userRegistration, string clientIdOrKey)
         {
             var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             var validationErrors = new List<string>();
@@ -152,6 +152,7 @@ namespace TechDevs.Users
             return result;
         }
 
+
         public virtual async Task<bool> Delete(string email, string clientIdOrKey)
         {
             var client = await _clientService.GetClientIdentifier(clientIdOrKey);
@@ -179,7 +180,7 @@ namespace TechDevs.Users
             var client = await _clientService.GetClientIdentifier(clientIdOrKey);
             var user = await _userRepo.FindByEmail(email, client.Id);
             if (user == null) throw new Exception("User not found");
-            var hashedPassword = _passwordHasher.HashPassword(user, password);
+            var hashedPassword = _passwordHasher.HashPassword(password);
             var result = await _userRepo.SetPassword(user, hashedPassword, client.Id);
             return result;
         }
@@ -238,7 +239,7 @@ namespace TechDevs.Users
             var invitationRecord = new AuthUserInvitation(invite, fakeSentByUserId);
 
             // Map the invite into a new user request
-            var userReq = new AuthUserRegistration
+            var userReq = new UserRegistration
             {
                 IsInvite = true,
                 AggreedToTerms = false,

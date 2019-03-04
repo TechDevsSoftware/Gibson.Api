@@ -65,7 +65,7 @@ namespace TechDevs.Users
             {
                 var user = await userService.GetByEmail(email, clientId);
                 if (user == null) return false;
-                var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+                var result = passwordHasher.VerifyHashedPassword(user.PasswordHash, password);
                 return result;
             }
             catch (Exception ex)

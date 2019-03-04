@@ -4,7 +4,7 @@ namespace TechDevs.Users
 {
     public interface IPasswordHasher
     {
-        string HashPassword(AuthUser user, string password);
-        bool VerifyHashedPassword(AuthUser user, string hashedPassword, string providedPassword);
+        string HashPassword(string password);
+        bool VerifyHashedPassword(string hashedPassword, string providedPassword);
     }
 }
