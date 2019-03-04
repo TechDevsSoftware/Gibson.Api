@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
@@ -52,7 +53,8 @@ namespace TechDevs.Users
         {
             var json = FilterById(id, clientId).ToJson();
             var results = await _users.OfType<TAuthUser>().FindAsync(FilterById(id, clientId));
-            var result = await results.FirstOrDefaultAsync();
+            var list = await results.ToListAsync();
+            var result = list.FirstOrDefault();
             return result;
         }
 

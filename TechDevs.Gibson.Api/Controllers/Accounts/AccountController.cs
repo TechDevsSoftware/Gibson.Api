@@ -29,7 +29,9 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(CustomerProfile))]
         public override async Task<IActionResult> GetProfile()
         {
-            var user = await _customerService.GetById(this.UserId().ToString(), this.ClientId().ToString());
+            var userId = this.UserId().ToString();
+            var clientId = this.ClientId().ToString();
+            var user = await _customerService.GetById(userId, clientId);
             if (user == null) return new NotFoundResult();
 
             return new OkObjectResult(new CustomerProfile(user));

@@ -24,11 +24,17 @@ namespace TechDevs.Shared.Models
 
     public class ServiceData
     {
+        public DateTime? LastServicedOn { get; set; }
         public DateTime? CalculatedServiceDue { get; set; }
         public int MaxMonths { get; set; }
         public int MaxMileage { get; set; }
         public int EstAnualMileage { get; set; }
         public int CalculatedAnualMileage { get; set; }
         public string ServiceDataConfiguredBy { get; set; }
+    }
+
+    public class ServiceHistroy
+    {
+
     }
 }
