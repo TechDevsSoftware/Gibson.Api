@@ -22,6 +22,7 @@ namespace Gibson.Auth
 
         public async Task<string> Login(LoginRequest req)
         {
+            ValidateLoginRequest_PreSubmit(req);
             
             // Get the clientId from the clientKey
             switch (req.Provider)
@@ -35,6 +36,14 @@ namespace Gibson.Auth
             }
         }
 
+        private static void ValidateLoginRequest_PreSubmit(LoginRequest req)
+        {
+            if(req.UserType == GibsonUserType.NotSet) throw new ArgumentNullException("User type not set");
+            if(string.IsNullOrEmpty(req.Provider)) throw new ArgumentNullException("Provider not set");
+            if(req.ClientId == Guid.Empty) throw new ArgumentNullException("User type not set");
+            if(string.IsNullOrEmpty(req.ClientKey)) throw new ArgumentNullException("User type not set");
+        }
+
         private async Task<string> LoginViaGibson(LoginRequest req)
         {
             var user = await _userService.FindByUsername(req.Email, req.UserType, req.ClientId);
@@ -45,12 +54,10 @@ namespace Gibson.Auth
         }
 
         private async Task<string> LoginViaGoogle(LoginRequest req)
-        {            
+        {
             var payload = await GoogleJsonWebSignature.ValidateAsync(req.ProviderIdToken);
             var user = await _userService.FindByProviderId(payload.Subject, req.UserType, req.ClientId);
-   
-            //            return tokenService.CreateToken(Guid.NewGuid(), "NMJ", Guid.NewGuid());
-            return await Task.FromResult("");
+            return _tokenService.CreateToken(user.Id, req.ClientKey, req.ClientId);
         }
     }
 }

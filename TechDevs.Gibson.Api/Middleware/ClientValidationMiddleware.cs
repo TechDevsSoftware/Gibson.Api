@@ -27,9 +27,7 @@ namespace TechDevs.Gibson.Api
             // Check for whitelisted keywords
             if (hasReferer)
             {
-                bool ignore = false;
-                if (referer == "ui") ignore = true;
-                if (referer == "swagger") ignore = true;
+                var ignore = referer == "ui" || referer == "swagger";
 
                 if (ignore)
                 {
