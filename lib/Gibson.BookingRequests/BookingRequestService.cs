@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using TechDevs.Customers;
+using Gibson.CustomerVehicles;
+using Gibson.Users;
 using TechDevs.Shared.Models;
 
 namespace Gibson.BookingRequests
@@ -12,12 +12,14 @@ namespace Gibson.BookingRequests
     public class BookingRequestService : IBookingRequestService
     {
         private readonly IBookingRequestRepository bookings;
-        private readonly ICustomerService customers;
+        private readonly IUserService userService;
+        private readonly ICustomerVehicleService _vehicleService;
 
-        public BookingRequestService(IBookingRequestRepository bookings, ICustomerService customers)
+        public BookingRequestService(IBookingRequestRepository bookings, IUserService userService, ICustomerVehicleService vehicleService)
         {
             this.bookings = bookings;
-            this.customers = customers;
+            this.userService = userService;
+            _vehicleService = vehicleService;
         }
 
         public async Task<List<BookingRequest>> GetBookings(Guid clientId)
@@ -54,8 +56,8 @@ namespace Gibson.BookingRequests
         public async Task<BookingRequest> CreateBooking(BookingRequest_Create req, Guid clientId)
         {
             if (req.CustomerId == Guid.Empty) throw new Exception("CustomerId was not set");
-            var customer = await customers.GetById(req.CustomerId.ToString(), clientId.ToString());
-            var vehicle = customer?.CustomerData?.MyVehicles?.FirstOrDefault(x => x.Registration == req.Registration);
+            var customer = await userService.FindById(req.CustomerId, clientId);
+            var vehicle = await _vehicleService.GetCustomerVehicle(req.Registration, req.CustomerId, clientId);
             try
             {
                 var booking = new BookingRequest
@@ -72,12 +74,12 @@ namespace Gibson.BookingRequests
                     Vehicle = vehicle,
                     Customer = new BookingCustomer
                     {
-                        Id = Guid.Parse(customer.Id),
-                        ClientId = Guid.Parse(customer.ClientId.Id),
-                        FirstName = customer.FirstName,
-                        LastName = customer.LastName,
-                        EmailAddress = customer.EmailAddress,
-                        ContactNumber = customer.ContactNumber
+                        Id = customer.Id,
+                        ClientId = customer.ClientId,
+                        FirstName = customer.UserProfile.FirstName,
+                        LastName = customer.UserProfile.LastName,
+                        EmailAddress = customer.UserProfile.Email,
+                        ContactNumber = customer.UserProfile.MobilePhone
                     },
                     RequestDate = DateTime.UtcNow,
                 };

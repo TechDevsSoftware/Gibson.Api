@@ -1,6 +1,6 @@
 ﻿using TechDevs.Shared.Models;
 
-namespace Gibson.Auth
+namespace TechDevs.Shared
 {
     public interface IPasswordHasher
     {

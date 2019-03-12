@@ -9,7 +9,8 @@ namespace Gibson.AuthTokens
 {
     public class AuthTokenServiceTests
     {
-        private const string SECRET = "TechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKey";
+        private const string SECRET =
+            "TechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKey";
 
         [Fact]
         public void CreateToken_Should_ReturnReadableJwt()
@@ -135,6 +136,31 @@ namespace Gibson.AuthTokens
                 ValidateIssuer = false
             };
             handler.ValidateToken(result, validationParams, out var validatedToken);
+        }
+
+        [Fact]
+        public void ValidateToken_Should_ReturnFalse_OnUnreadableToken()
+        {
+            // Arrange
+            var invalidToken = @"ThisIsAnUnreadableToken";
+            var sut = new AuthTokenService();
+            // Act
+            var result = sut.ValidateToken(invalidToken);
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void ValidateToken_Should_ReturnTrue_OnGoodToken()
+        {
+            // Arrange
+            var invalidToken =
+                @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjY5NGYxODE5LTljMWMtNDYyMS1hN2JhLTQwMDYyNjBiYmI4YyIsIkdpYnNvbi1DbGllbnRLZXkiOiJubWoiLCJHaWJzb24tQ2xpZW50SWQiOiIwOTAxY2U0Ni1iYzllLTRkZTctYTJiZi1iODFiODdlNDdmNjIiLCJuYmYiOjE1NTIwNTc2MzMsImV4cCI6MTU1MjA2MTIzMywiaWF0IjoxNTUyMDU3NjMzfQ.JLkdfKRZGXDtbueqduvaXYMmYeSV3fgGmcNXqO1K7b4";
+            var sut = new AuthTokenService();
+            // Act
+            var result = sut.ValidateToken(invalidToken);
+            // Assert
+            Assert.True(result);
         }
     }
 }

@@ -7,7 +7,6 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
 {
-    [Authorize]
     [Route("api/v1/users")]
     public class UsersController : Controller
     {
@@ -20,6 +19,7 @@ namespace TechDevs.Gibson.Api.Controllers
             _regService = regService;
         }
 
+        [Authorize]
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUserById([FromRoute] Guid userId)
         {
@@ -28,6 +28,7 @@ namespace TechDevs.Gibson.Api.Controllers
             return new OkObjectResult(result);
         }
 
+        [Authorize]
         [HttpGet("{userType}/{username}")]
         public async Task<ActionResult<User>> GetUserByUsername([FromRoute] GibsonUserType userType, [FromRoute] string username)
         {
@@ -36,6 +37,7 @@ namespace TechDevs.Gibson.Api.Controllers
             return new OkObjectResult(result);
         }
 
+        [Authorize]
         [HttpPut("{userId}")]
         public async Task<ActionResult<User>> UpdateUserProfile([FromRoute] Guid userId, [FromBody] UserProfile userProfile)
         {
@@ -44,6 +46,7 @@ namespace TechDevs.Gibson.Api.Controllers
             return new OkObjectResult(result);
         }
 
+        [Authorize]
         [HttpDelete("{userId}")]
         public async Task<ActionResult> DeleteUser([FromRoute] Guid userId)
         {

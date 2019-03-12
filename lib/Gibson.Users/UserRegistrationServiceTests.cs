@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Gibson.Shared.Repositories.Tests;
 using Microsoft.Extensions.Options;
+using TechDevs.Shared;
 using TechDevs.Shared.Models;
-using TechDevs.Users;
 using Xunit;
 
 namespace Gibson.Users
@@ -148,11 +148,64 @@ namespace Gibson.Users
         }
         
         [Fact]
+        public async Task RegisterUser_Should_ThrowException_WhenAuthTypeIsUnsupported()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            const string username = "email@mail.com";
+            var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
+            var reg = new UserRegistration
+            {
+                EmailAddress = username,
+                FirstName = "FirstName",
+                LastName = "LastName",
+                UserType = GibsonUserType.Customer,
+                ProviderName = "NotSupported"
+            };
+            // Act & Assert
+            try
+            {
+                await sut.RegisterUser(reg, clientId);
+                Assert.True(false, "Method should have failed but did not");
+            }
+            catch (UserRegistrationException regEx)
+            {
+                Assert.Contains(regEx.RegistrationErrors, x => x == "Auth provider not supported");
+            }
+        }
+        
+        [Fact]
+        public async Task RegisterUser_Should_ThrowException_WhenUserType_IsNotSet()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            const string username = "email@mail.com";
+            var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
+            var reg = new UserRegistration
+            {
+                EmailAddress = username,
+                FirstName = "FirstName",
+                LastName = "LastName",
+                UserType = GibsonUserType.NotSet,
+                ProviderName = "Gibson",
+            };
+            // Act & Assert
+            try
+            {
+                await sut.RegisterUser(reg, clientId);
+                Assert.True(false, "Method should have failed but did not");
+            }
+            catch (UserRegistrationException regEx)
+            {
+                Assert.Contains(regEx.RegistrationErrors, x => x == "User type is not set");
+            }
+        }
+        
+        [Fact]
         public async Task RegisterUser_Should_ThrowException_WhenEmailAddressIsNull()
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
             var reg = new UserRegistration();
             // Act & Assert
@@ -164,7 +217,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -172,8 +224,8 @@ namespace Gibson.Users
                 Password =  "Password",
                 FirstName = "FirstName",
                 LastName = "LastName",
-                ProviderName = "Google",
-                ProviderId = "GoogleId"
+                ProviderName = "Gibson",
+                UserType = GibsonUserType.Customer
             };
             var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
             // Act
@@ -190,7 +242,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -214,7 +265,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -238,7 +288,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -246,7 +295,8 @@ namespace Gibson.Users
                 FirstName = "FirstName",
                 LastName = "LastName",
                 ProviderName = "Google",
-                ProviderId = "GoogleId"
+                ProviderId = "GoogleId",
+                UserType = GibsonUserType.Customer
             };
             var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
             // Act
@@ -260,7 +310,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -268,7 +317,8 @@ namespace Gibson.Users
                 Password =  "Password",
                 FirstName = "FirstName",
                 LastName = "LastName",
-                ProviderName = "Gibson"
+                ProviderName = "Gibson",
+                UserType = GibsonUserType.Customer
             };
             var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
             // Act
@@ -282,7 +332,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -290,7 +339,8 @@ namespace Gibson.Users
                 Password =  "Password",
                 FirstName = "FirstName",
                 LastName = "LastName",
-                ProviderName = "Gibson"
+                ProviderName = "Gibson",
+                UserType = GibsonUserType.Customer
             };
             var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
             // Act
@@ -304,7 +354,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -312,7 +361,8 @@ namespace Gibson.Users
                 Password =  "Password",
                 FirstName = "FirstName",
                 LastName = "LastName",
-                ProviderName = "Gibson"
+                ProviderName = "Gibson",
+                UserType = GibsonUserType.Customer
             };
             var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
             // Act
@@ -327,7 +377,6 @@ namespace Gibson.Users
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var repo = GetMockRepo();
             var reg = new UserRegistration
             {
                 AggreedToTerms =  true,
@@ -335,13 +384,36 @@ namespace Gibson.Users
                 FirstName = "FirstName",
                 LastName = "LastName",
                 ProviderName = "Google",
-                ProviderId = "GoogleId"
+                ProviderId = "GoogleId",
+                UserType = GibsonUserType.Customer
             };
             var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
             // Act
             var result = await sut.RegisterUser(reg, clientId);
             // Assert
             Assert.Equal(reg.ProviderId, result.AuthProfile.ProviderId);
+        }
+        
+        [Fact]
+        public async Task RegisterUser_Should_Return_EnabledUser()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var reg = new UserRegistration
+            {
+                AggreedToTerms =  true,
+                EmailAddress =  "test@test.com",
+                FirstName = "FirstName",
+                LastName = "LastName",
+                ProviderName = "Google",
+                ProviderId = "GoogleId",
+                UserType = GibsonUserType.Customer
+            };
+            var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
+            // Act
+            var result = await sut.RegisterUser(reg, clientId);
+            // Assert
+            Assert.True(result.Enabled);
         }
     }
 }

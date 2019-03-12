@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gibson.AuthTokens", "lib\Gi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gibson.BookingRequests", "lib\Gibson.BookingRequests\Gibson.BookingRequests.csproj", "{C3FF4503-E3F4-44D3-9FA7-84940FC7C500}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.Users", "Gibson.Users\Gibson.Users.csproj", "{96521A2C-720F-486B-921D-E7DB33B8F8A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibson.Users", "lib\Gibson.Users\Gibson.Users.csproj", "{96521A2C-720F-486B-921D-E7DB33B8F8A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{91CC71A0-87D3-4AAD-A1FC-9A5A576568EE}"
 EndProject

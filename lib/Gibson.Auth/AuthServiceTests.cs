@@ -5,6 +5,7 @@ using Gibson.AuthTokens;
 using Gibson.Shared.Repositories.Tests;
 using Gibson.Users;
 using Microsoft.Extensions.Options;
+using TechDevs.Shared;
 using TechDevs.Shared.Models;
 using Xunit;
 
@@ -213,37 +214,6 @@ namespace Gibson.Auth
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.Login(req));
         }
-        
-        [Fact]
-        public async Task Login_Should_ThrowException_When_ClientId_IsNotSet()
-        {
-            // Arrange
-            var req = new LoginRequest
-            {
-                Email = "user@email.com",
-                Provider =  "Gibson",
-                ClientKey = "nmj",
-                UserType = GibsonUserType.Customer
-            };
-            var sut = GetAuthService();
-            // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.Login(req));
-        }
-        
-        [Fact]
-        public async Task Login_Should_ThrowException_When_ClientKey_IsNotSet()
-        {
-            // Arrange
-            var req = new LoginRequest
-            {
-                Email = "user@email.com",
-                Provider =  "Gibson",
-                ClientId = Guid.NewGuid(),
-                UserType = GibsonUserType.Customer
-            };
-            var sut = GetAuthService();
-            // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.Login(req));
-        }
+     
     }
 }

@@ -1,14 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>  
+    <TargetFramework>netcoreapp3.0</TargetFramework>  
     <AssemblyName>TechDevs.Clients.BookingRequests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gibson.CustomerVehicles\Gibson.CustomerVehicles.csproj" />
+    <ProjectReference Include="..\Gibson.Users\Gibson.Users.csproj" />
     <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
     <ProjectReference Include="..\TechDevs.Clients\TechDevs.Clients.csproj" />
-    <ProjectReference Include="..\TechDevs.Customers\TechDevs.Customers.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="IBookingRequestsRepository.cs" />
@@ -16,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="Moq" Version="4.10.1" />
   </ItemGroup>
 </Project>

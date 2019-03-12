@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using TechDevs.Shared.Models;
 
-namespace Gibson.Auth
+namespace TechDevs.Shared
 {
     public class BCryptPasswordHasherOptions
     {

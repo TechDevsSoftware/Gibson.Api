@@ -1,41 +1,39 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.AspNetCore.Swagger;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using TechDevs.Clients;
 using TechDevs.Clients.Theme;
-using TechDevs.NotificationPreferences;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
-using TechDevs.MarketingPreferences;
 using TechDevs.Clients.Offers;
 using Audit.WebApi;
-using TechDevs.Customers;
-using TechDevs.Users;
+using Gibson.Auth;
 using GraphQL.Types;
 using GraphQL;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Http;
-using TechDevs.Employees;
 using Gibson.CustomerVehicles;
 using Gibson.BookingRequests;
 using Gibson.AuthTokens;
+using Gibson.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using TechDevs.Shared;
+using Microsoft.OpenApi.Models;
 
 namespace TechDevs.Gibson.Api
 {
     public class Startup
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             _env = env;
@@ -79,41 +77,26 @@ namespace TechDevs.Gibson.Api
             });
 
             // Repositories
-
-            //services.AddTransient(typeof(ICustomerDataRepository<>), typeof(CustomerDataRepository<>));
-
             services.AddTransient<IClientRepository, ClientRepository>();
-            services.AddTransient<IAuthUserRepository<Customer>, CustomerRepository>();
-            services.AddTransient<IAuthUserRepository<Employee>, EmployeeRepository>();
-            services.AddTransient<IAuthUserRepository<AuthUser>, UserRepository>();
             services.AddTransient<ICustomerVehicleRepository, CustomerVehicleRespository>();
             services.AddTransient<IBookingRequestRepository, BookingRequestsRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             // Services
-            services.AddTransient<IUserService<AuthUser>, UserService>();
-            services.AddTransient<IUserService<Customer>, CustomerService>();
-            services.AddTransient<IUserService<Employee>, EmployeeService>();
-            services.AddTransient<IAuthService<Customer>, AuthService<Customer>>();
-            services.AddTransient<IAuthService<AuthUser>, AuthService<AuthUser>>();
-            services.AddTransient<IAuthService<Employee>, AuthService<Employee>>();
             services.AddTransient<IAuthTokenService, AuthTokenService>();
             services.AddTransient<IClientService, ClientService>();
             services.AddTransient<IClientThemeService, ClientThemeService>();
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
             services.AddTransient<IVehicleDataService, VehicleDataService>();
             services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
-
-            services.AddTransient<INotificationPreferencesService, NotificationPreferencesService>();
-            services.AddTransient<IMarketingPreferencesService, MarketingPreferencesService>();
             services.AddTransient<IBasicOffersService, BasicOffersService>();
             services.AddTransient<IBookingRequestService, BookingRequestService>();
-
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAuthTokenService, AuthTokenService>();
+            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IUserRegistrationService, UserRegistrationService>();
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
-
-
             // GraphQL Models
             services.AddTransient<ServiceDataModel>();
             services.AddTransient<BookingRequestModel>();
@@ -160,30 +143,30 @@ namespace TechDevs.Gibson.Api
             // Configure
             //services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
 
-            if (_env.IsEnvironment("IntegrationTesting"))
-            {
-                services.Configure<MongoDbSettings>(config =>
-                {
-                    config.ConnectionString = "mongodb://127.0.0.1:27017/";
-                    config.Database = "accounts";
-                });
-            }
-            else
-            {
-                services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
-            }
-
-            if (_env.IsDevelopment() || _env.IsEnvironment("IntegrationTesting"))
-            {
-                services.Configure<AppSettings>(config =>
-                {
-                    config.InvitationSiteRoot = "http://localhost:4200";
-                });
-            }
-            else
-            {
-                services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
-            }
+//            if (_env.IsEnvironment("IntegrationTesting"))
+//            {
+//                services.Configure<MongoDbSettings>(config =>
+//                {
+//                    config.ConnectionString = "mongodb://127.0.0.1:27017/";
+//                    config.Database = "accounts";
+//                });
+//            }
+//            else
+//            {
+//                services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
+//            }
+//
+//            if (_env.IsDevelopment() || _env.IsEnvironment("IntegrationTesting"))
+//            {
+//                services.Configure<AppSettings>(config =>
+//                {
+//                    config.InvitationSiteRoot = "http://localhost:4200";
+//                });
+//            }
+//            else
+//            {
+//                services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
+//            }
 
 
             // Configure GraphQL
@@ -197,7 +180,6 @@ namespace TechDevs.Gibson.Api
                 User = httpContext.User,
                 Headers = httpContext.Request.Headers
             });
-
 
             //// Setup the API Audit DB
             //Audit.Core.Configuration
@@ -217,7 +199,6 @@ namespace TechDevs.Gibson.Api
                 //.IncludeModelState()
                 //.IncludeResponseBody());
             });
-
 
             services.AddSwaggerGen(c =>
             {
@@ -246,7 +227,6 @@ namespace TechDevs.Gibson.Api
                 Path = "/ui/graphql"
             });
 
-
             app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();
@@ -254,8 +234,6 @@ namespace TechDevs.Gibson.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Profile API v1");
             });
-
-
         }
     }
 

@@ -1,8 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\TechDevs.Shared\TechDevs.Shared.csproj" />
-    <ProjectReference Include="..\TechDevs.Users\TechDevs.Users.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -10,7 +9,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>  
+    <TargetFramework>netcoreapp3.0</TargetFramework>  
   </PropertyGroup>
 
 </Project>

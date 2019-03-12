@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TechDevs.Shared;
 using TechDevs.Shared.Models;
-using TechDevs.Users;
 
 namespace Gibson.Users
 {
@@ -37,7 +37,8 @@ namespace Gibson.Users
                     AuthProvider = (reg.ProviderName == "Google") ? GibsonAuthProvider.Google : GibsonAuthProvider.Gibson,
                     ProviderId = (reg.ProviderName == "Google") ? reg.ProviderId : null,
                     PasswordHash = (reg.ProviderName == "Gibson") ? _hasher.HashPassword(reg.Password) : null
-                }
+                },
+                Enabled = true
             };
             var result = await repo.Create(newUser, clientId);
             return result;
@@ -64,8 +65,15 @@ namespace Gibson.Users
             const string emailRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
             if (!Regex.IsMatch(reg.EmailAddress, emailRegex, RegexOptions.IgnoreCase))
                 validationErrors.Add("Not a valid email address");
-           
-
+       
+            // Must have a supported auth provider
+            if(reg.ProviderName != "Gibson" && reg.ProviderName != "Google") 
+                validationErrors.Add("Auth provider not supported");
+            
+            // Must have a set user type
+            if(reg.UserType == GibsonUserType.NotSet)
+                validationErrors.Add("User type is not set");
+            
             if (validationErrors.Count > 0)
                 throw new UserRegistrationException(reg, validationErrors, "Registration validation failed");
         }

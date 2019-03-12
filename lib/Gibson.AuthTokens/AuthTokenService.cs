@@ -43,5 +43,12 @@ namespace Gibson.AuthTokens
             var result = tokenHandler.WriteToken(token);
             return result;
         }
+
+        public bool ValidateToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var canRead = handler.CanReadToken(token);
+            return canRead;
+        }
     }
 }

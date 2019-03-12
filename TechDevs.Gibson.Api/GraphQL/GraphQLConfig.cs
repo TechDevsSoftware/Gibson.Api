@@ -1,15 +1,13 @@
 ﻿using System;
+using Gibson.Auth;
 using Gibson.BookingRequests;
 using Gibson.CustomerVehicles;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using TechDevs.Clients;
-using TechDevs.Customers;
-using TechDevs.Employees;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
-using TechDevs.Users;
 using TechDevs.Users.GraphQL.Resolvers;
 
 namespace TechDevs.Gibson.Api
@@ -17,16 +15,14 @@ namespace TechDevs.Gibson.Api
     public class GibsonQuery : ObjectGraphType<object>
     {
         private readonly IHttpContextAccessor httpContext;
-        private readonly IAuthService<AuthUser> auth;
+        private readonly IAuthService auth;
         private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken());
 
         public GibsonQuery(
             IClientService clientService,
-            IEmployeeService employees,
-            ICustomerService customers,
             IBookingRequestService bookingRequests,
             IHttpContextAccessor ctx,
-            IAuthService<AuthUser> auth,
+            IAuthService auth,
             ICustomerVehicleService vehicles
             )
         {
@@ -40,16 +36,16 @@ namespace TechDevs.Gibson.Api
                     Authenticated() 
                         ? clientService.GetClients() 
                         : throw new Exception("Not authenticated"));
-            Field<ListGraphType<EmployeeModel>>("employees",
-                resolve: context =>
-                    Authenticated()
-                        ? employees.GetAllUsers(ctx.GetClientKey())
-                        : throw new Exception("Not authenticated"));
-            Field<ListGraphType<CustomerModel>>("customers",
-                resolve: context =>
-                    Authenticated()
-                        ? customers.GetAllUsers(ctx.GetClientKey())
-                        : throw new Exception("Not authenticated"));
+//            Field<ListGraphType<EmployeeModel>>("employees",
+//                resolve: context =>
+//                    Authenticated()
+//                        ? employees.GetAllUsers(ctx.GetClientKey())
+//                        : throw new Exception("Not authenticated"));
+//            Field<ListGraphType<CustomerModel>>("customers",
+//                resolve: context =>
+//                    Authenticated()
+//                        ? customers.GetAllUsers(ctx.GetClientKey())
+//                        : throw new Exception("Not authenticated"));
             Field<ListGraphType<BookingRequestModel>>("bookingRequests",
                 resolve: c =>
                     Authenticated()
@@ -68,23 +64,23 @@ namespace TechDevs.Gibson.Api
                     ? clientService.GetClient(ctx.GetAuthToken().GetClientId().ToString())
                     : throw new Exception("Not authenticated"));
 
-            Field<CustomerModel>("myProfile",
-                resolve: c =>
-                    Authenticated()
-                        ? customers.GetById(ctx.GetAuthToken().GetUserId().ToString(),
-                            ctx.GetAuthToken().GetClientId().ToString())
-                        : throw new Exception("Not authenticated"));
-            Field<CustomerModel>("myCustomerProfile",
-                resolve: c =>
-                    Authenticated()
-                        ? customers.GetById(ctx.GetAuthToken().GetUserId().ToString(),
-                            ctx.GetAuthToken().GetClientId().ToString())
-                        : throw new Exception("Not authenticated"));
-            Field<EmployeeModel>("myEmployeeProfile",
-                resolve: c =>
-                    Authenticated()
-                        ? employees.GetByJwtToken(ctx.GetAuthToken())
-                        : throw new Exception("Not authenticated"));
+//            Field<CustomerModel>("myProfile",
+//                resolve: c =>
+//                    Authenticated()
+//                        ? customers.GetById(ctx.GetAuthToken().GetUserId().ToString(),
+//                            ctx.GetAuthToken().GetClientId().ToString())
+//                        : throw new Exception("Not authenticated"));
+//            Field<CustomerModel>("myCustomerProfile",
+//                resolve: c =>
+//                    Authenticated()
+//                        ? customers.GetById(ctx.GetAuthToken().GetUserId().ToString(),
+//                            ctx.GetAuthToken().GetClientId().ToString())
+//                        : throw new Exception("Not authenticated"));
+//            Field<EmployeeModel>("myEmployeeProfile",
+//                resolve: c =>
+//                    Authenticated()
+//                        ? employees.GetByJwtToken(ctx.GetAuthToken())
+//                        : throw new Exception("Not authenticated"));
 
             Field<CustomerVehicleModel>("vehicle",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "vehicleId"}), resolve: c =>
@@ -93,12 +89,12 @@ namespace TechDevs.Gibson.Api
                         ctx.GetAuthToken().GetClientId())
                     : throw new Exception("Not authenticated"));
 
-            Field<CustomerModel>("customer",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "customerId"}),
-                resolve: c =>
-                    Authenticated()
-                        ? customers.GetById(c.GetArgument<string>("customerId"), ctx.GetClientKey())
-                        : null);
+//            Field<CustomerModel>("customer",
+//                arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "customerId"}),
+//                resolve: c =>
+//                    Authenticated()
+//                        ? customers.GetById(c.GetArgument<string>("customerId"), ctx.GetClientKey())
+//                        : null);
 
             Field<BookingRequestModel>("bookingRequest",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "bookingId"}),
@@ -120,12 +116,12 @@ namespace TechDevs.Gibson.Api
 
     public class ClientModel : ObjectGraphType<Client>
     {
-        private readonly IAuthService<AuthUser> auth;
+        private readonly IAuthService auth;
         private readonly IHttpContextAccessor httpContext;
 
         private bool Authenticated() => auth.ValidateToken(httpContext.GetAuthToken());
 
-        public ClientModel(IEmployeeService employees, ICustomerService customers, IAuthService<AuthUser> auth, IHttpContextAccessor httpContext)
+        public ClientModel(IAuthService auth, IHttpContextAccessor httpContext)
         {
             this.auth = auth;
             this.httpContext = httpContext;
@@ -134,8 +130,8 @@ namespace TechDevs.Gibson.Api
             Field(x => x.Name);
             Field(x => x.ShortKey);
             Field(x => x.SiteUrl, true);
-            Field<ListGraphType<EmployeeModel>>("employees", resolve: context => Authenticated() ? employees.GetAllUsers(context.Source.Id) : throw new Exception("Not authenticated"));
-            Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(context.Source.Id) : throw new Exception("Not authenticated"));
+//            Field<ListGraphType<EmployeeModel>>("employees", resolve: context => Authenticated() ? employees.GetAllUsers(context.Source.Id) : throw new Exception("Not authenticated"));
+//            Field<ListGraphType<CustomerModel>>("customers", resolve: context => Authenticated() ? customers.GetAllUsers(context.Source.Id) : throw new Exception("Not authenticated"));
             Field<ClientDataModel>("clientData", resolve: c => c.Source.ClientData);
             Field<ClientThemeModel>("clientTheme", resolve: c => c.Source.ClientTheme);
         }

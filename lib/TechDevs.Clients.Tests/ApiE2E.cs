@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.TestHost;
 using System.Net.Http;
 using System.IO;
 using System.Collections.Generic;
-using System.Net.Http.Formatting;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Formatting;
 using Gibson.Shared.Repositories.Tests;
 using Microsoft.Extensions.Configuration;
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Gibson.AuthTokens;
 using Gibson.Users;
 using Google.Apis.Auth;
+using TechDevs.Shared;
 using TechDevs.Shared.Models;
 
 namespace Gibson.Auth
@@ -20,6 +21,11 @@ namespace Gibson.Auth
             _passwordHasher = passwordHasher;
         }
 
+        public bool ValidateToken(string token)
+        {
+            return _tokenService.ValidateToken(token);
+        }
+        
         public async Task<string> Login(LoginRequest req)
         {
             ValidateLoginRequest_PreSubmit(req);
