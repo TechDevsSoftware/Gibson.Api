@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TechDevs.Clients;
@@ -6,12 +6,14 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
 {
-    [Route("api/v1/clients")]
-    public class ClientController : Controller
+    [Route("clients")]
+    [ApiExplorerSettings(GroupName = "admin")]
+
+    public class ClientAdminController : Controller
     {
         private readonly IClientService _clientService;
 
-        public ClientController(IClientService clientService)
+        public ClientAdminController(IClientService clientService)
         {
             _clientService = clientService;
         }
@@ -20,16 +22,6 @@ namespace TechDevs.Gibson.Api.Controllers
         [Produces(typeof(List<Client>))]
         public async Task<IActionResult> GetClients() =>
             new OkObjectResult(await _clientService.GetClients());
-
-        [HttpGet("current")]
-        [Produces(typeof(Client))]
-        public async Task<IActionResult> GetCurrentClient()
-        {
-            var clientKey = Request.ClientKey();
-            var res = await _clientService.GetClientByShortKey(clientKey);
-            if (res == null) return new NotFoundResult();
-            return new OkObjectResult(res);
-        }
 
         [HttpGet("{clientId}")]
         [Produces(typeof(Client))]

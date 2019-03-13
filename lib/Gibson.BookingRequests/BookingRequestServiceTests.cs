@@ -140,13 +140,13 @@ namespace Gibson.BookingRequests
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var customerId = Guid.NewGuid();
-            var beforeCount = (await bookingRepo.FindAllByCustomer(customerId, clientId)).Count();
-            var newBooking = new BookingRequest_Create { Registration = "EF02VCC", CustomerId = customerId };
+            var usr = await userRepo.Create(new User(), clientId);
+            var beforeCount = (await bookingRepo.FindAllByCustomer(usr.Id, clientId)).Count();
+            var newBooking = new BookingRequest_Create { Registration = "EF02VCC", CustomerId = usr.Id };
             // Act
             await sut.CreateBooking(newBooking, clientId);
             // Assert 
-            var afterCount = (await bookingRepo.FindAllByCustomer(customerId, clientId)).Count();
+            var afterCount = (await bookingRepo.FindAllByCustomer(usr.Id, clientId)).Count();
             Assert.Equal(beforeCount + 1, afterCount);
         }
 
@@ -155,14 +155,14 @@ namespace Gibson.BookingRequests
         {
             // Arrange
             var clientId = Guid.NewGuid();
-            var customerId = Guid.NewGuid();
-            var newBooking = new BookingRequest_Create { Registration = "EF02VCC", CustomerId = customerId };
+            var usr = await userRepo.Create(new User(), clientId);
+            var newBooking = new BookingRequest_Create { Registration = "EF02VCC", CustomerId = usr.Id };
             var created = await sut.CreateBooking(newBooking, clientId);
-            var beforeCount = (await bookingRepo.FindAllByCustomer(customerId, clientId)).Count();
+            var beforeCount = (await bookingRepo.FindAllByCustomer(usr.Id, clientId)).Count();
             // Act
             await sut.DeleteBooking(created.Id, clientId);
             // Assert 
-            var afterCount = (await bookingRepo.FindAllByCustomer(customerId, clientId)).Count();
+            var afterCount = (await bookingRepo.FindAllByCustomer(usr.Id, clientId)).Count();
             Assert.Equal(beforeCount - 1, afterCount);
         }
 
@@ -173,6 +173,18 @@ namespace Gibson.BookingRequests
             var clientId = Guid.NewGuid();
             var newBooking = new BookingRequest_Create { Registration = "EF02VCC" };
             // Act & Assert 
+            await Assert.ThrowsAsync<Exception>(async () => await sut.CreateBooking(newBooking, clientId));
+        }
+
+       
+        [Fact]
+        public async Task CreateBooking_Should_ThrowException_WhenUserNotFound()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
+            var newBooking = new BookingRequest_Create { Registration = "EF02VCC", CustomerId = userId };
+            // Act & Assert
             await Assert.ThrowsAsync<Exception>(async () => await sut.CreateBooking(newBooking, clientId));
         }
 

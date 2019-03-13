@@ -9,19 +9,19 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
 {
-    [Route("api/v1/account/myvehicles")]
+    
+    [ApiExplorerSettings(GroupName = "customer")]
+    [Route("user/vehicles")]
     [Authorize]
-    public class MyVehiclesController : Controller
+    public class UserVehiclesController : Controller
     {
         private readonly ICustomerVehicleService vehicleService;
         private readonly IVehicleDataService vehicleData;
-        private readonly IClientService _clientService;
 
-        public MyVehiclesController(ICustomerVehicleService vehicleService, IVehicleDataService vehicleData, IClientService clientService)
+        public UserVehiclesController(ICustomerVehicleService vehicleService, IVehicleDataService vehicleData )
         {
             this.vehicleService = vehicleService;
             this.vehicleData = vehicleData;
-            _clientService = clientService;
         }
 
         [HttpPost]
@@ -69,9 +69,9 @@ namespace TechDevs.Gibson.Api.Controllers
                 var result = await vehicleService.UpdateMotData(vehicleId, this.ClientId());
                 return new OkObjectResult(result);
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
+                return new BadRequestObjectResult(ex.Message); 
                 throw;
             }
         }
@@ -86,7 +86,7 @@ namespace TechDevs.Gibson.Api.Controllers
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                return new BadRequestObjectResult(ex.Message); 
                 throw;
             }
         }

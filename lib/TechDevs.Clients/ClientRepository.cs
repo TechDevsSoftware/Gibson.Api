@@ -35,10 +35,9 @@ namespace TechDevs.Clients
         {
             // If the clientId is not a valid Guid, check for shortkey
             FilterDefinition<Client> filter;
-            if (IsGuid(clientIdOrKey))
-                filter = Builders<Client>.Filter.Eq(p => p.Id, clientIdOrKey);
-            else
-                filter = Builders<Client>.Filter.Eq(p => p.ShortKey, clientIdOrKey);
+            filter = IsGuid(clientIdOrKey)
+                ? Builders<Client>.Filter.Eq(p => p.Id, clientIdOrKey)
+                : Builders<Client>.Filter.Eq(p => p.ShortKey, clientIdOrKey);
 
             var fields = Builders<Client>.Projection.Include(p => p.Id).Include(p => p.ShortKey).Include(p => p.Name);
             var options = new FindOptions<Client>() { Projection = fields };

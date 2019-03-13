@@ -57,6 +57,7 @@ namespace Gibson.BookingRequests
         {
             if (req.CustomerId == Guid.Empty) throw new Exception("CustomerId was not set");
             var customer = await userService.FindById(req.CustomerId, clientId);
+            if(customer == null) throw new Exception("Customer could not be found");
             var vehicle = await _vehicleService.GetCustomerVehicle(req.Registration, req.CustomerId, clientId);
             try
             {

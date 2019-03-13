@@ -6,8 +6,8 @@ using TechDevs.Shared.Models;
 
 namespace TechDevs.Gibson.Api.Controllers
 {
-
-    [Route("api/v1/clients/data/basicoffers")]
+    [ApiExplorerSettings(GroupName = "client")]
+    [Route("client/basicoffers")]
     public class BasicOffersController : Controller
     {
         private readonly IBasicOffersService _basicOffersService;

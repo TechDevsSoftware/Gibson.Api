@@ -10,7 +10,9 @@ using TechDevs.Shared.Models;
 namespace TechDevs.Gibson.Api.Controllers
 {
     [Authorize]
-    [Route("api/v1/clients/data/bookingrequests")]
+    [Route("client/bookingrequests")]
+    [ApiExplorerSettings(GroupName = "client")]
+
     public class BookingRequestsController : Controller
     {
         private readonly IBookingRequestService _bookingRequestService;

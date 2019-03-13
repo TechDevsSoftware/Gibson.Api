@@ -6,7 +6,8 @@ using TechDevs.Shared.Models;
 namespace TechDevs.Gibson.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/v1/clients")]
+    [Route("client")]
+    [ApiExplorerSettings(GroupName = "client")]
     public class ClientThemeController : Controller
     {
         private readonly IClientService _clientService;
@@ -18,19 +19,21 @@ namespace TechDevs.Gibson.Api.Controllers
             _clientService = clientService;
         }
 
-        [HttpPost("{clientKey}/theme/parameters")]
+        [HttpPost("theme/parameters")]
         [Produces(typeof(Client))]
-        public async Task<IActionResult> AddParameter([FromRoute]string clientKey, [FromBody]CSSParameter parameter)
+        public async Task<IActionResult> AddParameter([FromBody]CSSParameter parameter)
         {
+            var clientKey = this.GetClientKey();
             var client = await _clientService.GetClientByShortKey(clientKey);
             if (client == null) return new BadRequestObjectResult("Client could not be found");
             return new OkObjectResult(await _themeService.SetParameter(client.Id, parameter.Key, parameter.Value));
         }
 
-        [HttpDelete("{clientKey}/theme/parameters")]
+        [HttpDelete("theme/parameters")]
         [Produces(typeof(Client))]
-        public async Task<IActionResult> RemoveParameter([FromRoute]string clientKey, [FromQuery]string key)
+        public async Task<IActionResult> RemoveParameter([FromQuery]string key)
         {
+            var clientKey = this.GetClientKey();
             var client = await _clientService.GetClientByShortKey(clientKey);
             if (client == null) return new BadRequestObjectResult("Client could not be found");
             return new OkObjectResult(await _themeService.RemoveParameter(client.Id, key));

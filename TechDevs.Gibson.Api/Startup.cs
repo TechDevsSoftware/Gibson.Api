@@ -7,12 +7,7 @@ using TechDevs.Clients.Theme;
 using TechDevs.Shared.Models;
 using TechDevs.Shared.Utils;
 using TechDevs.Clients.Offers;
-using Audit.WebApi;
 using Gibson.Auth;
-using GraphQL.Types;
-using GraphQL;
-using GraphQL.Server;
-using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Http;
 using Gibson.CustomerVehicles;
 using Gibson.BookingRequests;
@@ -25,21 +20,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TechDevs.Shared;
-using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace TechDevs.Gibson.Api
 {
     public class Startup
     {
-        private readonly IWebHostEnvironment _env;
+        private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             _env = env;
         }
-
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -97,34 +91,8 @@ namespace TechDevs.Gibson.Api
             // Utils
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddTransient<IStringNormaliser, UpperStringNormaliser>();
-            // GraphQL Models
-            services.AddTransient<ServiceDataModel>();
-            services.AddTransient<BookingRequestModel>();
-            services.AddTransient<BookingCustomerModel>();
-            services.AddTransient<MotCommentModel>();
-            services.AddTransient<MotDataModel>();
-            services.AddTransient<MotResultModel>();
-            services.AddTransient<ClientThemeModel>();
-            services.AddTransient<CSSParameterModel>();
-            services.AddTransient<BookingRequestModel>();
-            services.AddTransient<ClientModel>();
-            services.AddTransient<EmployeeModel>();
-            services.AddTransient<ClientDataModel>();
-            services.AddTransient<BasicOfferModel>();
-            services.AddTransient<CustomerModel>();
-            services.AddTransient<CustomerVehicleModel>();
-            services.AddTransient<MarketingNotificationPreferencesModel>();
-            services.AddTransient<CustomerNotificationPreferencesModel>();
-            // GraphQL Query
-            services.AddTransient<GibsonQuery>();
-            // GraphQL Schema
-            services.AddTransient<ISchema, GibsonSchema>();
-            // GraphQL Dependency Resolver
-            services.AddTransient<IDependencyResolver>(c => new FuncDependencyResolver(type => c.GetRequiredService(type)));
-            // HttpAccessor used to get access to the request headers in GraphQL queries
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-
-            // Configure the passowrd hashing algorithm
+            
+            // Configure the password hashing algorithm
             services.Configure<BCryptPasswordHasherOptions>(options =>
             {
                 options.WorkFactor = 10;
@@ -135,79 +103,35 @@ namespace TechDevs.Gibson.Api
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
-                //.AddUserSecrets<SMTPSettings>()
                 .AddUserSecrets<MongoDbSettings>()
                 .AddUserSecrets<AppSettings>()
                 .AddEnvironmentVariables();
-
-            // Configure
-            //services.Configure<SMTPSettings>(Configuration.GetSection(nameof(SMTPSettings)));
-
-//            if (_env.IsEnvironment("IntegrationTesting"))
-//            {
-//                services.Configure<MongoDbSettings>(config =>
-//                {
-//                    config.ConnectionString = "mongodb://127.0.0.1:27017/";
-//                    config.Database = "accounts";
-//                });
-//            }
-//            else
-//            {
-//                services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
-//            }
-//
-//            if (_env.IsDevelopment() || _env.IsEnvironment("IntegrationTesting"))
-//            {
-//                services.Configure<AppSettings>(config =>
-//                {
-//                    config.InvitationSiteRoot = "http://localhost:4200";
-//                });
-//            }
-//            else
-//            {
-//                services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
-//            }
-
-
-            // Configure GraphQL
-            services.AddGraphQL(_ =>
+            
+            if (_env.IsEnvironment("IntegrationTesting"))
             {
-                _.EnableMetrics = true;
-                _.ExposeExceptions = true;
-            })
-            .AddUserContextBuilder(httpContext => new GraphQLUserContext
+                services.Configure<MongoDbSettings>(config =>
+                {
+                    config.ConnectionString = "mongodb://127.0.0.1:27017/";
+                    config.Database = "accounts";
+                });
+            }
+            else
             {
-                User = httpContext.User,
-                Headers = httpContext.Request.Headers
-            });
-
-            //// Setup the API Audit DB
-            //Audit.Core.Configuration
-            //.Setup()
-            //.UseMongoDB(config => config
-            //.ConnectionString(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("ConnectionString"))
-            //.Database(Configuration.GetSection(nameof(MongoDbSettings)).GetValue<string>("Database"))
-            //.Collection("APIAudit"));
-
-            services.AddMvc(mvc =>
-            {
-                //mvc.AddAuditFilter(config => config
-                // .LogAllActions()
-                //.WithEventType("{verb}.{controller}.{action}")
-                //.IncludeHeaders(ctx => !ctx.ModelState.IsValid)
-                //.IncludeRequestBody()
-                //.IncludeModelState()
-                //.IncludeResponseBody());
-            });
+                services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
+            }
+            
+            services.AddMvc();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "User Profile API", Version = "v1" });
+                c.SwaggerDoc("customer", new Info { Title = "Customer API", Version = "v1" });
+                c.SwaggerDoc("client", new Info { Title = "Client API", Version = "v1" });
+                c.SwaggerDoc("admin", new Info { Title = "Admin API", Version = "v1" });
+
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme { In = "header", Description = "Please enter JWT with Bearer into field", Name = "Authorization", Type = "apiKey" });
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                     { "Bearer", Enumerable.Empty<string>() },
                 });
-                //c.OperationFilter<TechDevsClientKeyHeaderFilter>();
             });
         }
 
@@ -215,57 +139,17 @@ namespace TechDevs.Gibson.Api
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseCors("default");
-
             app.UseMiddleware<ClientValidationMiddleware>();
-
-            // add http for Schema at default url
-            app.UseGraphQL<ISchema>("/graphql");
-
-            // use graphql-playground at default url /ui/playground
-            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
-            {
-                Path = "/ui/graphql"
-            });
-
             app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Profile API v1");
+                c.SwaggerEndpoint("/swagger/customer/swagger.json", "Customer API v1");
+                c.SwaggerEndpoint("/swagger/client/swagger.json", "Client API v1");
+                c.SwaggerEndpoint("/swagger/admin/swagger.json", "Admin API v1");
+                
             });
-        }
-    }
-
-    public static class SensitiveInformation
-    {
-        public static void Custom()
-        {
-            Audit.Core.Configuration.AddCustomAction(Audit.Core.ActionType.OnEventSaving, action =>
-            {
-                var mvc = action.Event.GetWebApiAuditAction();//.GetMvcAuditAction();
-
-                if (mvc.ActionName.ToUpper() == "LOGIN")
-                {
-                    mvc.RequestBody.Value = null;
-                    if (mvc.ActionParameters.ContainsKey("request"))
-                    {
-                        dynamic x = mvc.ActionParameters["request"];
-                        mvc.ActionParameters["request"] = RemoveSensitiveData(x);
-                    }
-                }
-            });
-        }
-
-        private static object RemoveSensitiveData(object vm)
-        {
-            return vm;
-        }
-
-        private static LoginRequest RemoveSensitiveData(LoginRequest vm)
-        {
-            vm.Password = "{RemovedSensitiveInformation}";
-            return vm;
         }
     }
 }

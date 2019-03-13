@@ -44,10 +44,15 @@ namespace Gibson.Auth
 
         private static void ValidateLoginRequest_PreSubmit(LoginRequest req)
         {
+            // Work out the provider by splitting the controller to have two endpoints /auth/login & /auth/social
+            // Work out the clientId from the referer url and clientService
+            // Work out the clientKey from the referer url
+            // Work out the user type from the referer url
+            
             if(req.UserType == GibsonUserType.NotSet) throw new ArgumentNullException("User type not set");
             if(string.IsNullOrEmpty(req.Provider)) throw new ArgumentNullException("Provider not set");
-            if(req.ClientId == Guid.Empty) throw new ArgumentNullException("User type not set");
-            if(string.IsNullOrEmpty(req.ClientKey)) throw new ArgumentNullException("User type not set");
+            if(req.ClientId == Guid.Empty) throw new ArgumentNullException("ClientId not set");
+            if(string.IsNullOrEmpty(req.ClientKey)) throw new ArgumentNullException("Client key not set");
         }
 
         private async Task<string> LoginViaGibson(LoginRequest req)
