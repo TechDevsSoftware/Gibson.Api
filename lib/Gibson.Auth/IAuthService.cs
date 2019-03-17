@@ -1,12 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using TechDevs.Shared.Models;
+using Gibson.Common.Models;
 
 namespace Gibson.Auth
 {
     public interface IAuthService
     {
-        Task<string> Login(LoginRequest req);
+        Task<string> Login(LoginRequest req, GibsonUserType userType, Guid clientId);
         bool ValidateToken(string token);
     }
 }

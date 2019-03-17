@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gibson.Clients\Gibson.Clients.csproj" />
+    <ProjectReference Include="..\Gibson.Common\Gibson.Common.csproj" />
+    <ProjectReference Include="..\Gibson.Customers.Vehicles\Gibson.Customers.Vehicles.csproj" />
+    <ProjectReference Include="..\Gibson.Users\Gibson.Users.csproj" />
+  </ItemGroup>
+</Project>

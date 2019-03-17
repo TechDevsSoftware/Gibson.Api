@@ -1,10 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using Gibson.AuthTokens;
+using Gibson.Auth.Crypto;
+using Gibson.Auth.Tokens;
 using Gibson.Users;
 using Google.Apis.Auth;
-using TechDevs.Shared;
-using TechDevs.Shared.Models;
+using Gibson.Clients;
+using Gibson.Common.Models;
 
 namespace Gibson.Auth
 {
@@ -13,12 +14,14 @@ namespace Gibson.Auth
         private readonly IAuthTokenService _tokenService;
         private readonly IUserService _userService;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IClientService _clientService;
 
-        public AuthService(IAuthTokenService tokenService, IUserService userService, IPasswordHasher passwordHasher)
+        public AuthService(IAuthTokenService tokenService, IUserService userService, IPasswordHasher passwordHasher, IClientService clientService)
         {
             _tokenService = tokenService;
             _userService = userService;
             _passwordHasher = passwordHasher;
+            _clientService = clientService;
         }
 
         public bool ValidateToken(string token)
@@ -26,49 +29,30 @@ namespace Gibson.Auth
             return _tokenService.ValidateToken(token);
         }
         
-        public async Task<string> Login(LoginRequest req)
+        public async Task<string> Login(LoginRequest req, GibsonUserType userType, Guid clientId)
         {
-            ValidateLoginRequest_PreSubmit(req);
-            
-            // Get the clientId from the clientKey
-            switch (req.Provider)
-            {
-                case "Gibson":
-                    return await LoginViaGibson(req);
-                case "Google":
-                    return await LoginViaGoogle(req);
-                default:
-                    throw new Exception("Unsupported auth provider");
-            }
+            if (!string.IsNullOrEmpty(req.ProviderIdToken)) 
+                return await LoginViaGoogle(req, userType, clientId);
+            else
+                return await LoginViaGibson(req, userType, clientId);
         }
-
-        private static void ValidateLoginRequest_PreSubmit(LoginRequest req)
+        
+        private async Task<string> LoginViaGibson(LoginRequest req, GibsonUserType userType, Guid clientId)
         {
-            // Work out the provider by splitting the controller to have two endpoints /auth/login & /auth/social
-            // Work out the clientId from the referer url and clientService
-            // Work out the clientKey from the referer url
-            // Work out the user type from the referer url
-            
-            if(req.UserType == GibsonUserType.NotSet) throw new ArgumentNullException("User type not set");
-            if(string.IsNullOrEmpty(req.Provider)) throw new ArgumentNullException("Provider not set");
-            if(req.ClientId == Guid.Empty) throw new ArgumentNullException("ClientId not set");
-            if(string.IsNullOrEmpty(req.ClientKey)) throw new ArgumentNullException("Client key not set");
-        }
-
-        private async Task<string> LoginViaGibson(LoginRequest req)
-        {
-            var user = await _userService.FindByUsername(req.Email, req.UserType, req.ClientId);
+            var user = await _userService.FindByUsername(req.Email, userType, clientId);
+            var client = await _clientService.GetClient(clientId.ToString());
             if(user == null) throw new Exception();
             var validPassword = _passwordHasher.VerifyHashedPassword(user?.AuthProfile?.PasswordHash, req.Password);
             if(!validPassword) throw new UnauthorizedAccessException();
-            return _tokenService.CreateToken(user.Id, req.ClientKey, req.ClientId);
+            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId);
         }
 
-        private async Task<string> LoginViaGoogle(LoginRequest req)
+        private async Task<string> LoginViaGoogle(LoginRequest req, GibsonUserType userType, Guid clientId)
         {
             var payload = await GoogleJsonWebSignature.ValidateAsync(req.ProviderIdToken);
-            var user = await _userService.FindByProviderId(payload.Subject, req.UserType, req.ClientId);
-            return _tokenService.CreateToken(user.Id, req.ClientKey, req.ClientId);
+            var client = await _clientService.GetClient(clientId.ToString());
+            var user = await _userService.FindByProviderId(payload.Subject, userType, clientId);
+            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId);
         }
     }
 }

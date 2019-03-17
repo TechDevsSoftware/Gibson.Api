@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TechDevs.Gibson.Api;
+using Gibson.Api;
 using Xunit;
 
 namespace Gibson.Api.Tests

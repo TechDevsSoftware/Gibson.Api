@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using TechDevs.Shared.Models;
+using Gibson.Common.Models;
 
 namespace Gibson.Users
 {

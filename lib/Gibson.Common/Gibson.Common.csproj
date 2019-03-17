@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <UserSecretsId>b83ccb63-58c2-4508-aeda-9948809239e3</UserSecretsId>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Models\Shared\" />
+        <Folder Include="Repositories\" />
+        <Folder Include="Models\Bookings\" />
+    </ItemGroup>
+</Project>

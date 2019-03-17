@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+  <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />   
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
+    <PackageReference Include="Mongo2Go" Version="2.2.9" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\lib\Gibson.Customers.Bookings\Gibson.Customers.Bookings.csproj" />
+      <ProjectReference Include="..\..\lib\Gibson.Customers.Vehicles\Gibson.Customers.Vehicles.csproj" />
+      <ProjectReference Include="..\..\lib\Gibson.Users\Gibson.Users.csproj" />
+      <ProjectReference Include="..\Gibson.Tests.Common\Gibson.Tests.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="xunit.core, Version=2.4.1.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c">
+        <HintPath>..\..\..\..\..\.nuget\packages\xunit.extensibility.core\2.4.1\lib\netstandard1.1\xunit.core.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

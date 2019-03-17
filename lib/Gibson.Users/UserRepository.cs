@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Gibson.Shared.Repositories;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using TechDevs.Shared.Models;
+using Gibson.Common.Models;
 
 namespace Gibson.Users
 {

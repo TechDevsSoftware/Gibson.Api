@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using TechDevs.Shared.Models;
+using Gibson.Common.Models;
 
 namespace Gibson.Users
 {

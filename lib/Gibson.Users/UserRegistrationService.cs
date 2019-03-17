@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using TechDevs.Shared;
-using TechDevs.Shared.Models;
+using Gibson.Auth.Crypto;
+using Gibson.Common.Models;
 
 namespace Gibson.Users
 {

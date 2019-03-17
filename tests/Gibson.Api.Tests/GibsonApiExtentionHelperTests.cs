@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
-using TechDevs.Gibson.Api;
+using Gibson.Api;
 using Xunit;
 
 namespace Gibson.Api.Tests
