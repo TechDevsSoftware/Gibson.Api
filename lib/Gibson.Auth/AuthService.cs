@@ -5,6 +5,7 @@ using Gibson.Auth.Tokens;
 using Gibson.Users;
 using Google.Apis.Auth;
 using Gibson.Clients;
+using Gibson.Common.Enums;
 using Gibson.Common.Models;
 
 namespace Gibson.Auth
@@ -41,10 +42,10 @@ namespace Gibson.Auth
         {
             var user = await _userService.FindByUsername(req.Email, userType, clientId);
             var client = await _clientService.GetClient(clientId.ToString());
-            if(user == null) throw new Exception();
+            if(user == null) throw new Exception("User not found");
             var validPassword = _passwordHasher.VerifyHashedPassword(user?.AuthProfile?.PasswordHash, req.Password);
             if(!validPassword) throw new UnauthorizedAccessException();
-            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId);
+            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId, userType);
         }
 
         private async Task<string> LoginViaGoogle(LoginRequest req, GibsonUserType userType, Guid clientId)
@@ -52,7 +53,7 @@ namespace Gibson.Auth
             var payload = await GoogleJsonWebSignature.ValidateAsync(req.ProviderIdToken);
             var client = await _clientService.GetClient(clientId.ToString());
             var user = await _userService.FindByProviderId(payload.Subject, userType, clientId);
-            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId);
+            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId, userType);
         }
     }
 }

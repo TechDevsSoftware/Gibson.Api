@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Gibson.Common.Enums;
 using Gibson.Common.Models;
 using Gibson.Tests.Common;
 using Microsoft.Extensions.Options;
@@ -79,7 +80,7 @@ namespace Gibson.Users.Tests
             var clientId = Guid.NewGuid();
             var repo = GetMockRepo();
             await repo.Create(new User { Username = username, UserType = GibsonUserType.Customer  }, clientId);
-            await repo.Create(new User { Username = username, UserType = GibsonUserType.Employee  }, clientId);
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.ClientEmployee  }, clientId);
             var sut = new UserService(repo);
             // Act
             var result = await sut.FindByUsername(username, GibsonUserType.Customer, clientId);
@@ -95,12 +96,12 @@ namespace Gibson.Users.Tests
             var clientId = Guid.NewGuid();
             var repo = GetMockRepo();
             await repo.Create(new User { Username = username, UserType = GibsonUserType.Customer  }, clientId);
-            await repo.Create(new User { Username = username, UserType = GibsonUserType.Employee  }, clientId);
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.ClientEmployee  }, clientId);
             var sut = new UserService(repo);
             // Act
-            var result = await sut.FindByUsername(username, GibsonUserType.Employee, clientId);
+            var result = await sut.FindByUsername(username, GibsonUserType.ClientEmployee, clientId);
             // Assert
-            Assert.Equal(GibsonUserType.Employee, result.UserType);
+            Assert.Equal(GibsonUserType.ClientEmployee, result.UserType);
         }
 
         [Fact]
@@ -297,7 +298,7 @@ namespace Gibson.Users.Tests
             var clientId = Guid.NewGuid();
             var repo = GetMockRepo();
             await repo.Create(new User { Username = username, UserType = GibsonUserType.Customer, AuthProfile  = new AuthProfile {ProviderId =  providerId}}, clientId);
-            await repo.Create(new User { Username = username, UserType = GibsonUserType.Employee , AuthProfile = new AuthProfile {ProviderId = providerId}}, clientId);
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.ClientEmployee , AuthProfile = new AuthProfile {ProviderId = providerId}}, clientId);
             var sut = new UserService(repo);
             // Act
             var result = await sut.FindByProviderId(providerId, GibsonUserType.Customer, clientId);
@@ -314,12 +315,12 @@ namespace Gibson.Users.Tests
             var clientId = Guid.NewGuid();
             var repo = GetMockRepo();
             await repo.Create(new User { Username = username, UserType = GibsonUserType.Customer, AuthProfile  = new AuthProfile {ProviderId =  providerId}}, clientId);
-            await repo.Create(new User { Username = username, UserType = GibsonUserType.Employee , AuthProfile = new AuthProfile {ProviderId = providerId}}, clientId);
+            await repo.Create(new User { Username = username, UserType = GibsonUserType.ClientEmployee , AuthProfile = new AuthProfile {ProviderId = providerId}}, clientId);
             var sut = new UserService(repo);
             // Act
-            var result = await sut.FindByProviderId(providerId, GibsonUserType.Employee, clientId);
+            var result = await sut.FindByProviderId(providerId, GibsonUserType.ClientEmployee, clientId);
             // Assert
-            Assert.Equal(GibsonUserType.Employee, result.UserType);
+            Assert.Equal(GibsonUserType.ClientEmployee, result.UserType);
         }
 
         

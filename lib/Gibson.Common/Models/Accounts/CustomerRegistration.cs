@@ -1,4 +1,6 @@
-﻿namespace Gibson.Common.Models
+﻿using Gibson.Common.Enums;
+
+namespace Gibson.Common.Models
 {
     public class AuthUserRegistration
     {

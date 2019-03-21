@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Gibson.Clients;
 using Gibson.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gibson.Api.Controllers
 {
     [Route("client")]
+    [AllowAnonymous]
     public class ClientController : Controller
     {
         private readonly IClientService _clientService;
@@ -18,8 +20,8 @@ namespace Gibson.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<Client>> GetClient()
         {
-            var clientKey = Request.ClientKey();
-            var res = await _clientService.GetClientByShortKey(clientKey);
+            var clientId = User.ClientId();
+            var res = await _clientService.GetClient(clientId.ToString());
             if (res == null) return new NotFoundResult();
             return new OkObjectResult(res);
         }

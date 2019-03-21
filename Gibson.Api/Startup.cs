@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using Gibson.Api.AuthHandlers;
 using Gibson.Clients;
 using Gibson.Clients.Theme;
 using Gibson.Common.Models;
@@ -14,6 +15,7 @@ using Gibson.Auth.Tokens;
 using Gibson.Customers.Bookings;
 using Gibson.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -70,6 +72,18 @@ namespace Gibson.Api
                 };
             });
 
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("CustomerDataPolicy", policy => policy.Requirements.Add(new AuthorizedToCustomerData()));
+                config.AddPolicy("ClientDataPolicy", policy => policy.Requirements.Add(new AuthorizedToClientData()));
+                config.AddPolicy("TechDevsDataPolicy", policy => policy.Requirements.Add(new AuthorizedToTechDevsData()));
+            });
+            
+            // Authorization
+            services.AddTransient<IAuthorizationHandler, CustomerDataAuthorizationHandler>();
+            services.AddTransient<IAuthorizationHandler, ClientDataAuthorizationHandler>();
+            services.AddTransient<IAuthorizationHandler, TechDevsDataAuthorizationHandler>();
+            services.AddHttpContextAccessor();
             // Repositories
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<ICustomerVehicleRepository, CustomerVehicleRespository>();
@@ -139,7 +153,7 @@ namespace Gibson.Api
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseCors("default");
-            app.UseMiddleware<ClientValidationMiddleware>();
+//            app.UseMiddleware<ClientValidationMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
             app.UseSwagger();

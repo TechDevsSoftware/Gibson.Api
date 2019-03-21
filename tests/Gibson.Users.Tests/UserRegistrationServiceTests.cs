@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Gibson.Auth.Crypto;
+using Gibson.Common.Enums;
 using Gibson.Common.Models;
 using Gibson.Tests.Common;
 using Microsoft.Extensions.Options;

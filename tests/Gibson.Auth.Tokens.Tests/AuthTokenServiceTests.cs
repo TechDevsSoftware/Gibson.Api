@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
+using Gibson.Common.Enums;
 using Microsoft.IdentityModel.Tokens;
 using Xunit;
 
@@ -18,7 +19,7 @@ namespace Gibson.Auth.Tokens
             // Arrange
             var sut = new AuthTokenService();
             // Act
-            var result = sut.CreateToken(Guid.NewGuid(), "Key", Guid.NewGuid());
+            var result = sut.CreateToken(Guid.NewGuid(), "Key", Guid.NewGuid(), GibsonUserType.Customer);
             // Assert
             var handler = new JwtSecurityTokenHandler();
             Assert.True(handler.CanReadToken(result));
@@ -31,12 +32,28 @@ namespace Gibson.Auth.Tokens
             var sut = new AuthTokenService();
             var userId = Guid.NewGuid();
             // Act
-            var result = sut.CreateToken(userId, "Key", Guid.NewGuid());
+            var result = sut.CreateToken(userId, "Key", Guid.NewGuid(), GibsonUserType.Customer);
             // Assert
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(result);
             var value = jwt.Claims.First(x => x.Type == "unique_name").Value;
             Assert.Equal(userId.ToString(), value);
+        }
+
+        [Fact]
+        public void CreateToken_Should_HaveUserTypeClaim()
+        {
+            // Arrange
+            var sut = new AuthTokenService();
+            var userId = Guid.NewGuid();
+            // Act
+            var result = sut.CreateToken(userId, "Key", Guid.NewGuid(), GibsonUserType.Customer);
+            // Assert
+            var handler = new JwtSecurityTokenHandler();
+            var jwt = handler.ReadJwtToken(result);
+            var value = jwt.Claims.First(x => x.Type == "Gibson-UserType").Value;
+            GibsonUserType.TryParse(value, out GibsonUserType userType);
+            Assert.Equal(GibsonUserType.Customer, userType);
         }
 
         [Fact]
@@ -46,7 +63,7 @@ namespace Gibson.Auth.Tokens
             var sut = new AuthTokenService();
             var clientKey = "ClientKey";
             // Act
-            var result = sut.CreateToken(Guid.NewGuid(), clientKey, Guid.NewGuid());
+            var result = sut.CreateToken(Guid.NewGuid(), clientKey, Guid.NewGuid(), GibsonUserType.Customer);
             // Assert
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(result);
@@ -61,7 +78,7 @@ namespace Gibson.Auth.Tokens
             var sut = new AuthTokenService();
             var clientId = Guid.NewGuid();
             // Act
-            var result = sut.CreateToken(Guid.NewGuid(), "Key", clientId);
+            var result = sut.CreateToken(Guid.NewGuid(), "Key", clientId, GibsonUserType.Customer);
             // Assert
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(result);
@@ -75,7 +92,8 @@ namespace Gibson.Auth.Tokens
             // Arrange
             var sut = new AuthTokenService();
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.CreateToken(Guid.Empty, "NMJ", Guid.NewGuid()));
+            Assert.Throws<ArgumentException>(() =>
+                sut.CreateToken(Guid.Empty, "NMJ", Guid.NewGuid(), GibsonUserType.Customer));
         }
 
         [Fact]
@@ -84,7 +102,8 @@ namespace Gibson.Auth.Tokens
             // Arrange
             var sut = new AuthTokenService();
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.CreateToken(Guid.NewGuid(), "NMJ", Guid.Empty));
+            Assert.Throws<ArgumentException>(() =>
+                sut.CreateToken(Guid.NewGuid(), "NMJ", Guid.Empty, GibsonUserType.Customer));
         }
 
         [Fact]
@@ -93,7 +112,8 @@ namespace Gibson.Auth.Tokens
             // Arrange
             var sut = new AuthTokenService();
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.CreateToken(Guid.NewGuid(), "", Guid.Empty));
+            Assert.Throws<ArgumentException>(() =>
+                sut.CreateToken(Guid.NewGuid(), "", Guid.Empty, GibsonUserType.Customer));
         }
 
         [Fact]
@@ -102,7 +122,8 @@ namespace Gibson.Auth.Tokens
             // Arrange
             var sut = new AuthTokenService();
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.CreateToken(Guid.NewGuid(), "", Guid.Empty));
+            Assert.Throws<ArgumentException>(() =>
+                sut.CreateToken(Guid.NewGuid(), "", Guid.Empty, GibsonUserType.Customer));
         }
 
         [Fact]
@@ -111,7 +132,7 @@ namespace Gibson.Auth.Tokens
             // Arrange
             var sut = new AuthTokenService();
             // Act
-            var result = sut.CreateToken(Guid.NewGuid(), "NMJ", Guid.NewGuid());
+            var result = sut.CreateToken(Guid.NewGuid(), "NMJ", Guid.NewGuid(), GibsonUserType.Customer);
             // Assert
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(result);
@@ -124,7 +145,7 @@ namespace Gibson.Auth.Tokens
             // Arrange
             var sut = new AuthTokenService(SECRET);
             // Act
-            var result = sut.CreateToken(Guid.NewGuid(), "NMJ", Guid.NewGuid());
+            var result = sut.CreateToken(Guid.NewGuid(), "NMJ", Guid.NewGuid(), GibsonUserType.Customer);
             // Assert
             var handler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(SECRET);

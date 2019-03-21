@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Gibson.Auth.Crypto;
 using Gibson.Auth.Tokens;
 using Gibson.Clients;
+using Gibson.Common.Enums;
 using Gibson.Common.Models;
 using Gibson.Tests.Common;
 using Gibson.Users;

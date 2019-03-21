@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Gibson.Common.Models;
+using Gibson.Common.Enums;
 
 namespace Gibson.Common.Models
 {
@@ -59,15 +59,5 @@ namespace Gibson.Common.Models
         PasswordReset,
         InvitationSent,
         InvitationAccepted
-    }
-
-    public enum GibsonUserType
-    {
-        NotSet, Customer, Employee
-    }
-
-    public enum GibsonAuthProvider
-    {
-        Gibson, Google
     }
 }

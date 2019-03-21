@@ -1,9 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Gibson.Auth;
+using Gibson.Common.Enums;
 using Gibson.Common.Models;
 using Gibson.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Gibson.Api.Controllers
 {
@@ -12,8 +15,9 @@ namespace Gibson.Api.Controllers
         private readonly IAuthService _authService;
         private readonly IUserRegistrationService _userRegistrationService;
         private readonly GibsonUserType _userType;
-        
-        protected AuthController(IAuthService authService, IUserRegistrationService userRegistrationService, GibsonUserType userType)
+
+        protected AuthController(IAuthService authService, IUserRegistrationService userRegistrationService,
+            GibsonUserType userType)
         {
             _authService = authService;
             _userRegistrationService = userRegistrationService;
@@ -21,26 +25,24 @@ namespace Gibson.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest)
+        public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest, [FromRoute] Guid clientId)
         {
             try
             {
-                var clientId = this.ClientId();
                 var token = await _authService.Login(loginRequest, _userType, clientId);
                 return new OkObjectResult(token);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new BadRequestResult();
+                return new BadRequestObjectResult(ex);
             }
         }
-        
+
         [HttpPost("register")]
-        public async Task<ActionResult<User>> RegisterUser([FromBody] UserRegistration reg)
+        public async Task<ActionResult<User>> RegisterUser([FromBody] UserRegistration reg, [FromRoute] Guid clientId)
         {
             try
             {
-                var clientId = this.ClientId();
                 var result = await _userRegistrationService.RegisterUser(reg, clientId);
                 return new OkObjectResult(result);
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Gibson.Common.Enums;
 using Gibson.Shared.Repositories;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;

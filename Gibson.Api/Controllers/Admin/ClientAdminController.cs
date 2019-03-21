@@ -1,14 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Gibson.Clients;
 using Gibson.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gibson.Api.Controllers
 {
     [Route("clients")]
-    [ApiExplorerSettings(GroupName = "admin")]
-
+    [Authorize(Policy = "TechDevsDataPolicy")]
     public class ClientAdminController : Controller
     {
         private readonly IClientService _clientService;
@@ -18,34 +19,39 @@ namespace Gibson.Api.Controllers
             _clientService = clientService;
         }
 
-        [HttpGet]
-        [Produces(typeof(List<Client>))]
-        public async Task<IActionResult> GetClients() =>
-            new OkObjectResult(await _clientService.GetClients());
-
+        [AllowAnonymous]
+        [HttpGet("/key/{clientKey}")]
+        public async Task<ActionResult<Client>> GetClientByShortKey([FromRoute] string clientKey)
+        {
+            var res = await _clientService.GetClientByShortKey(clientKey);
+            if(res == null) return new NotFoundResult();
+            return new OkObjectResult(res);
+        }
+        
+        [AllowAnonymous]
         [HttpGet("{clientId}")]
-        [Produces(typeof(Client))]
-        public async Task<IActionResult> GetClientById([FromRoute] string clientId) =>
-            new OkObjectResult(await _clientService.GetClient(clientId));
+        public async Task<ActionResult<Client>> GetClient([FromRoute] Guid clientId)
+        {
+            var res = await _clientService.GetClient(clientId.ToString());
+            if (res == null) return new NotFoundResult();
+            return new OkObjectResult(res);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Client>>> GetClients() => new OkObjectResult(await _clientService.GetClients());
 
         [HttpGet("customer")]
-        [Produces(typeof(List<PublicClient>))]
-        public async Task<IActionResult> GetClientsByCustomerEmail([FromQuery] string customerEmail) =>
-            new OkObjectResult(await _clientService.GetClientsByCustomer(customerEmail));
+        [AllowAnonymous]
+        public async Task<ActionResult<List<PublicClient>>> GetClientsByCustomerEmail([FromQuery] string customerEmail) => new OkObjectResult(await _clientService.GetClientsByCustomer(customerEmail));
 
         [HttpPost]
-        [Produces(typeof(Client))]
-        public async Task<IActionResult> CreateClient([FromBody] ClientRegistration client)
+        public async Task<ActionResult<Client>> CreateClient([FromBody] ClientRegistration client)
             => new OkObjectResult(await _clientService.CreateClient(client));
 
         [HttpPut("{clientId}")]
-        [Produces(typeof(Client))]
-        public async Task<IActionResult> UpdateClient(string clientId, [FromBody] Client client) =>
-            new OkObjectResult(await _clientService.UpdateClient(clientId, client));
+        public async Task<ActionResult<Client>> UpdateClient(string clientId, [FromBody] Client client) => new OkObjectResult(await _clientService.UpdateClient(clientId, client));
 
         [HttpDelete("{clientId}")]
-        [Produces(typeof(Client))]
-        public async Task<IActionResult> DeleteClient([FromRoute] string clientId) =>
-            new OkObjectResult(await _clientService.DeleteClient(clientId));
+        public async Task<ActionResult<Client>> DeleteClient([FromRoute] string clientId) => new OkObjectResult(await _clientService.DeleteClient(clientId));
     }
 }

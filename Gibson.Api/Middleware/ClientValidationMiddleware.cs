@@ -34,14 +34,22 @@ namespace Gibson.Api
                     hasReferer = false;
                     referer = null;
                 }
-
             }
 
-            if (hasHeader && hasReferer && header != referer) throw new UnauthorizedAccessException();
-            if (hasHeader && hasToken && header != token) throw new UnauthorizedAccessException();
-            if (hasToken && hasReferer && token != referer) throw new UnauthorizedAccessException();
+            try
+            {
+                if (hasHeader && hasReferer && header != referer) throw new UnauthorizedAccessException();
+                if (hasHeader && hasToken && header != token) throw new UnauthorizedAccessException();
+                if (hasToken && hasReferer && token != referer) throw new UnauthorizedAccessException();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return;
+            }
 
-            if(!hasToken & !hasHeader & hasReferer)
+
+            if (!hasToken & !hasHeader & hasReferer)
             {
                 context.Request.Headers.Add("Gibson-ClientKey", referer);
             }

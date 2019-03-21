@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Gibson.Common.Enums;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Gibson.Auth.Tokens
@@ -12,7 +13,8 @@ namespace Gibson.Auth.Tokens
 
         public AuthTokenService()
         {
-            _tokenSecret = "TechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKey";
+            _tokenSecret =
+                "TechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKeyTechDevsKey";
         }
 
         public AuthTokenService(string secret)
@@ -20,7 +22,7 @@ namespace Gibson.Auth.Tokens
             _tokenSecret = secret;
         }
 
-        public string CreateToken(Guid userId, string clientKey, Guid clientId)
+        public string CreateToken(Guid userId, string clientKey, Guid clientId, GibsonUserType userType)
         {
             if (userId == Guid.Empty) throw new ArgumentException("UserId was an empty Guid");
             if (clientId == Guid.Empty) throw new ArgumentException("ClientId was an empty Guid");
@@ -34,10 +36,12 @@ namespace Gibson.Auth.Tokens
                 {
                     new Claim(ClaimTypes.Name, userId.ToString()),
                     new Claim("Gibson-ClientKey", clientKey),
-                    new Claim("Gibson-ClientId", clientId.ToString())
+                    new Claim("Gibson-ClientId", clientId.ToString()),
+                    new Claim("Gibson-UserType", userType.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials =
+                    new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var result = tokenHandler.WriteToken(token);

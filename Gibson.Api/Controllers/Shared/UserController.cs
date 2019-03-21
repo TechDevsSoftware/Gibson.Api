@@ -7,18 +7,17 @@ using Gibson.Common.Models;
 namespace Gibson.Api.Controllers
 {
     [Authorize]
-    [Route("customer")]
-    [ApiExplorerSettings(GroupName = "customer")]
-    public class CustomerController : Controller
+    [Route("user")]
+    public class UserController : Controller
     {
         private readonly IUserService _users;
-        public CustomerController(IUserService users)
+        public UserController(IUserService users)
         {
             _users = users;
         }
 
         [HttpGet]
-        public async Task<ActionResult<UserProfile>> GetCustomerProfile()
+        public async Task<ActionResult<UserProfile>> GetUserProfile()
         {
             var clientId = this.ClientId();
             var userId = this.UserId();

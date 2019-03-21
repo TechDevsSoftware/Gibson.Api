@@ -1,35 +1,35 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gibson.Customers.Vehicles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Gibson.Clients;
 using Gibson.Common.Models;
 
 namespace Gibson.Api.Controllers
 {
-    
-    [ApiExplorerSettings(GroupName = "customer")]
-    [Route("customer/vehicles")]
-    [Authorize]
+    [Authorize(Policy="CustomerDataPolicy")]
+    [Route("customers/{customerId}/vehicles")]
     public class CustomerVehicleController : Controller
     {
         private readonly ICustomerVehicleService vehicleService;
         private readonly IVehicleDataService vehicleData;
+        private readonly IAuthorizationService _authorizationService;
 
-        public CustomerVehicleController(ICustomerVehicleService vehicleService, IVehicleDataService vehicleData )
+        public CustomerVehicleController(ICustomerVehicleService vehicleService, IVehicleDataService vehicleData,
+            IAuthorizationService authorizationService)
         {
             this.vehicleService = vehicleService;
             this.vehicleData = vehicleData;
+            _authorizationService = authorizationService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddVehicle([FromQuery] string registration)
+        public async Task<IActionResult> AddVehicle([FromRoute] Guid customerId, [FromQuery] string registration)
         {
             try
             {
-                var result = await vehicleService.AddVehicleToCustomer(registration, this.UserId(), this.ClientId());
+                var result = await vehicleService.AddVehicleToCustomer(registration, customerId, this.ClientId());
                 return new OkObjectResult(result);
             }
             catch (Exception)
@@ -39,11 +39,11 @@ namespace Gibson.Api.Controllers
         }
 
         [HttpDelete("{vehicleId}")]
-        public async Task<IActionResult> RemoveVehicle([FromRoute] Guid vehicleId)
+        public async Task<IActionResult> RemoveVehicle([FromRoute] Guid customerId, [FromRoute] Guid vehicleId)
         {
             try
             {
-                await vehicleService.DeleteCustomerVehicle(vehicleId, this.UserId(), this.ClientId());
+                await vehicleService.DeleteCustomerVehicle(vehicleId, customerId, this.ClientId());
                 return new OkResult();
             }
             catch (Exception)
@@ -53,8 +53,25 @@ namespace Gibson.Api.Controllers
         }
 
         [HttpGet]
-        [Route("lookup")]
-        [AllowAnonymous]
+        public async Task<ActionResult<List<CustomerVehicle>>> GetCustomerVehicles([FromRoute] Guid customerId)
+        {
+            try
+            {
+                // Fetch the data
+                var result = await vehicleService.GetCustomerVehicles(customerId, this.ClientId());
+                return new OkObjectResult(result);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new UnauthorizedResult();
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e);
+            }
+        }
+
+        [HttpGet("lookup")]
         public async Task<IActionResult> LookupVehicle(string registration)
         {
             var result = await vehicleData.GetVehicleData(registration);
@@ -71,13 +88,14 @@ namespace Gibson.Api.Controllers
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex.Message); 
+                return new BadRequestObjectResult(ex.Message);
                 throw;
             }
         }
 
         [HttpPost("{vehicleId}/servicedata")]
-        public async Task<ActionResult<CustomerVehicle>> UpdateServiceData([FromRoute] Guid vehicleId, [FromBody] ServiceData serviceData)
+        public async Task<ActionResult<CustomerVehicle>> UpdateServiceData([FromRoute] Guid vehicleId,
+            [FromBody] ServiceData serviceData)
         {
             try
             {
@@ -86,7 +104,7 @@ namespace Gibson.Api.Controllers
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex.Message); 
+                return new BadRequestObjectResult(ex.Message);
                 throw;
             }
         }

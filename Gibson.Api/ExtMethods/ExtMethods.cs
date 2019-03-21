@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Routing.Matching;
 
 namespace Gibson.Api
 {
@@ -13,10 +16,30 @@ namespace Gibson.Api
             return Guid.Parse(val);
         }
 
+        public static Guid UserId(this ClaimsPrincipal user)
+        {
+            var val = user.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+            return string.IsNullOrEmpty(val) ? Guid.Empty : Guid.Parse(val);
+        }
+
+        public static Guid ClientId(this ClaimsPrincipal user)
+        {
+            var val = user.FindFirstValue("Gibson-ClientId");
+            return string.IsNullOrEmpty(val) ? Guid.Empty : Guid.Parse(val);
+        }
+
         public static Guid ClientId(this Controller controller)
         {
             var user = controller.User;
             var val = user.FindFirst("Gibson-ClientId")?.Value;
+            if (val == null)
+            {
+                // Try and get the client from the header
+                controller.Request.Headers.TryGetValue("Gibson-ClientId", out var vals);
+                val = vals.FirstOrDefault();
+                if (val == null) return Guid.Empty;
+            }
+            
             return Guid.Parse(val);
         }
 
@@ -50,6 +73,11 @@ namespace Gibson.Api
                 result = result.Substring(7, result.Length - 7);
             }
             return result;
+        }
+        
+        public static string GetAppId(this HttpRequest request)
+        {
+            return null;
         }
     }
 }
