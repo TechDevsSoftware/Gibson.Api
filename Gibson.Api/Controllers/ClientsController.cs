@@ -19,7 +19,7 @@ namespace Gibson.Api.Controllers
         }
         
         [AllowAnonymous]
-        [HttpGet("/key/{clientKey}")]
+        [HttpGet("key/{clientKey}")]
         public async Task<ActionResult<PublicClient>> GetClientByShortKey([FromRoute] string clientKey)
         {
             var res = await _clientService.GetClientByShortKey(clientKey);
