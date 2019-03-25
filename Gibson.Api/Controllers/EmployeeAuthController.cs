@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Gibson.Api.Controllers
 {
     [Route("clients/{clientId}/employee/auth")]
-    [ApiExplorerSettings(GroupName = "client")]
     public class EmployeeAuthController : AuthController
     {
         public EmployeeAuthController(IAuthService authService, IUserRegistrationService userRegistrationService) 

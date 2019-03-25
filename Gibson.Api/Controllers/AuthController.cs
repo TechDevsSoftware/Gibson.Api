@@ -4,6 +4,7 @@ using Gibson.Auth;
 using Gibson.Common.Enums;
 using Gibson.Common.Models;
 using Gibson.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,6 +26,7 @@ namespace Gibson.Api.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest, [FromRoute] Guid clientId)
         {
             try
@@ -39,6 +41,7 @@ namespace Gibson.Api.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<ActionResult<User>> RegisterUser([FromBody] UserRegistration reg, [FromRoute] Guid clientId)
         {
             try

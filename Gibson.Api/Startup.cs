@@ -74,9 +74,9 @@ namespace Gibson.Api
 
             services.AddAuthorization(config =>
             {
-                config.AddPolicy("CustomerDataPolicy", policy => policy.Requirements.Add(new AuthorizedToCustomerData()));
-                config.AddPolicy("ClientDataPolicy", policy => policy.Requirements.Add(new AuthorizedToClientData()));
-                config.AddPolicy("TechDevsDataPolicy", policy => policy.Requirements.Add(new AuthorizedToTechDevsData()));
+                config.AddPolicy("CustomerData", policy => policy.Requirements.Add(new AuthorizedToCustomerData()));
+                config.AddPolicy("ClientData", policy => policy.Requirements.Add(new AuthorizedToClientData()));
+                config.AddPolicy("TechDevsData", policy => policy.Requirements.Add(new AuthorizedToTechDevsData()));
             });
             
             // Authorization
@@ -96,7 +96,7 @@ namespace Gibson.Api
             services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
             services.AddTransient<IVehicleDataService, VehicleDataService>();
             services.AddTransient<ICustomerVehicleService, CustomerVehicleService>();
-            services.AddTransient<IBasicOffersService, BasicOffersService>();
+            services.AddTransient<IOffersService, OffersService>();
             services.AddTransient<IBookingRequestService, BookingRequestService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthTokenService, AuthTokenService>();
@@ -138,10 +138,8 @@ namespace Gibson.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("customer", new Info { Title = "Customer API", Version = "v1" });
-                c.SwaggerDoc("client", new Info { Title = "Client API", Version = "v1" });
-                c.SwaggerDoc("admin", new Info { Title = "Admin API", Version = "v1" });
-
+                c.SwaggerDoc("v1", new Info { Title = "Gibson API", Version = "v1" });
+                
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme { In = "header", Description = "Please enter JWT with Bearer into field", Name = "Authorization", Type = "apiKey" });
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                     { "Bearer", Enumerable.Empty<string>() },
@@ -159,10 +157,7 @@ namespace Gibson.Api
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/customer/swagger.json", "Customer API v1");
-                c.SwaggerEndpoint("/swagger/client/swagger.json", "Client API v1");
-                c.SwaggerEndpoint("/swagger/admin/swagger.json", "Admin API v1");
-                
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gibson API v1");
             });
         }
     }

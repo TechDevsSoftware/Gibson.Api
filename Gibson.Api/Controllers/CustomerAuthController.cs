@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace Gibson.Api.Controllers
 {
     [Route("clients/{clientId}/customer/auth")]
-    [ApiExplorerSettings(GroupName = "customer")]
     public class CustomerAuthController : AuthController
     {
         public CustomerAuthController(IAuthService authService, IUserRegistrationService userRegistrationService) 

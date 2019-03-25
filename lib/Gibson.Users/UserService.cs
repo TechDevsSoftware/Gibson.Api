@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gibson.Common.Enums;
 using Gibson.Common.Models;
@@ -12,6 +13,11 @@ namespace Gibson.Users
         public UserService(IUserRepository repo)
         {
             this.repo = repo;
+        }
+
+        public Task<List<User>> FindByClient(GibsonUserType userType, Guid clientId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<User> FindByUsername(string username, GibsonUserType userType, Guid clientId)

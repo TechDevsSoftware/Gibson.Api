@@ -32,15 +32,10 @@ namespace Gibson.Api
         {
             var user = controller.User;
             var val = user.FindFirst("Gibson-ClientId")?.Value;
-            if (val == null)
-            {
-                // Try and get the client from the header
-                controller.Request.Headers.TryGetValue("Gibson-ClientId", out var vals);
-                val = vals.FirstOrDefault();
-                if (val == null) return Guid.Empty;
-            }
-            
-            return Guid.Parse(val);
+            if (val != null) return Guid.Parse(val);
+            controller.Request.Headers.TryGetValue("Gibson-ClientId", out var vals);
+            val = vals.FirstOrDefault();
+            return val == null ? Guid.Empty : Guid.Parse(val);
         }
 
         public static string GetClientKey(this Controller controller)
