@@ -25,7 +25,7 @@ namespace Gibson.Api.Controllers
 
         [HttpPost]
         [Authorize(Policy="CustomerData")]
-        public async Task<IActionResult> AddVehicle([FromRoute] Guid customerId, [FromQuery] string registration, [FromRoute] Guid clientId)
+        public async Task<ActionResult<CustomerVehicle>> AddVehicle([FromRoute] Guid customerId, [FromQuery] string registration, [FromRoute] Guid clientId)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace Gibson.Api.Controllers
 
         [HttpDelete("{vehicleId}")]
         [Authorize(Policy="CustomerData")]
-        public async Task<IActionResult> RemoveVehicle([FromRoute] Guid customerId, [FromRoute] Guid vehicleId, [FromRoute] Guid clientId)
+        public async Task<ActionResult> RemoveVehicle([FromRoute] Guid customerId, [FromRoute] Guid vehicleId, [FromRoute] Guid clientId)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Gibson.Api.Controllers
 
         [HttpGet("lookup")]
         [Authorize(Policy="CustomerData")]
-        public async Task<IActionResult> LookupVehicle(string registration)
+        public async Task<ActionResult<VehicleData>> LookupVehicle(string registration)
         {
             var result = await _vehicleData.GetVehicleData(registration);
             return new OkObjectResult(result);
@@ -83,7 +83,7 @@ namespace Gibson.Api.Controllers
 
         [HttpPost("{vehicleId}/refreshmot")]
         [Authorize(Policy="CustomerData")]
-        public async Task<IActionResult> UpdateVehicleMotData([FromRoute] Guid vehicleId, [FromRoute] Guid clientId)
+        public async Task<ActionResult<CustomerVehicle>> UpdateVehicleMotData([FromRoute] Guid vehicleId, [FromRoute] Guid clientId)
         {
             try
             {

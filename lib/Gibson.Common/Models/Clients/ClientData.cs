@@ -13,9 +13,8 @@ namespace Gibson.Common.Models
         }
     }
 
-    public class BasicOffer
+    public class BasicOffer : Entity 
     {
-        public string Id { get; set; }
         public string OfferCode { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -25,7 +24,6 @@ namespace Gibson.Common.Models
 
         public BasicOffer()
         {
-            Id = Guid.NewGuid().ToString();
             Enabled = false;
         }
     }

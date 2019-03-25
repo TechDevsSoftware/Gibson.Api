@@ -42,14 +42,15 @@ namespace Gibson.Api.Controllers
 
         [HttpPost]
         [Authorize(Policy = "CustomerData")]
-        public async Task<ActionResult<BookingRequest>>CreateBookingRequest([FromBody] BookingRequest_Create bookingRequest, [FromRoute] Guid clientId)
+        public async Task<ActionResult<BookingRequest>>CreateBookingRequest([FromBody] BookingRequest_Create bookingRequest, [FromRoute] Guid clientId, [FromRoute] Guid customerId)
         {
+            bookingRequest.CustomerId = customerId;   
             return new OkObjectResult(await _bookingRequestService.CreateBooking(bookingRequest, clientId));
         }
 
         [HttpPut]
         [Authorize(Policy = "CustomerData")]
-        public async Task<ActionResult<BookingRequest>> UpdateBookingRequest([FromBody] BookingRequest bookingRequest, [FromRoute] Guid clientId)
+        public async Task<ActionResult<BookingRequest>> UpdateBookingRequest([FromBody] BookingRequest bookingRequest, [FromRoute] Guid clientId, [FromRoute] Guid customerId)
         {
             return new OkObjectResult(await _bookingRequestService.UpdateBooking(bookingRequest, clientId));
         }

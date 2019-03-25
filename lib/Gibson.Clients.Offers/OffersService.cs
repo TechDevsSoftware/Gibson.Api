@@ -1,64 +1,49 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Gibson.Common.Models;
 
 namespace Gibson.Clients.Offers
 {
     public class OffersService : IOffersService
     {
-        private readonly IClientRepository _clientRepository;
+        private readonly IRepository<BasicOffer> _offerRepository;
 
-        public OffersService(IClientRepository clientRepository)
+        public OffersService(IRepository<BasicOffer> offerRepository)
         {
-            _clientRepository = clientRepository;
+            _offerRepository = offerRepository;
         }
 
-        // If ClientData IsNull New Up A new client Data
-
-        public async Task<BasicOffer> UpdateBasicOffer(BasicOffer offer, string clientId)
+        public async Task<List<BasicOffer>> GetActiveOffers(Guid clientId)
         {
-            // Get the client and the existing offer
-            var client = await _clientRepository.GetClient(clientId);
-
-            if (client.ClientData == null)
-            {
-                client.ClientData = new ClientData
-                {
-                    BasicOffers = new System.Collections.Generic.List<BasicOffer>()
-                };
-            }
-
-            var existingOfferIndex = client?.ClientData?.BasicOffers.FindIndex(x => x.Id == offer.Id);
-            if (!existingOfferIndex.HasValue || existingOfferIndex.Value == -1)
-            {
-                // No existing offer found, so add the new basic offer
-                offer.Id = Guid.NewGuid().ToString();
-                client.ClientData.BasicOffers.Add(offer);
-            }
-            else
-            {
-                // Replace the existing offer
-                client.ClientData.BasicOffers[existingOfferIndex.Value] = offer;
-            }
-            var result = await _clientRepository.UpdateClient("ClientData.BasicOffers", client.ClientData.BasicOffers, client.Id);
-            var offerResult = result.ClientData.BasicOffers.FirstOrDefault(x => x.Id == offer.Id);
-            return offerResult;
+            var allOffers = await GetOffers(clientId);
+            var result = allOffers.Where(x => x.Enabled).ToList();
+            return result;
         }
 
-        // If Offer cannot be found throw exception
-
-        public async Task DeleteBasicOffer(string offerId, string clientId)
+        public async Task<List<BasicOffer>> GetOffers(Guid clientId)
         {
-            // Get the client and the existing offer
-            var client = await _clientRepository.GetClient(clientId);
-            var existingOfferIndex = client?.ClientData?.BasicOffers.FindIndex(x => x.Id == offerId);
-            if (!existingOfferIndex.HasValue || existingOfferIndex.Value == -1) throw new Exception("Offer could not be found");
-            // Replace the existing offer
-            client.ClientData.BasicOffers.RemoveAt(existingOfferIndex.Value);
-            // Update the client and return
-            await _clientRepository.UpdateClient("ClientData.BasicOffers", client.ClientData.BasicOffers, client.Id);
+            var allOffers = await _offerRepository.FindAll(clientId);
+            return allOffers;
+        }
 
+        public async Task<BasicOffer> CreateOffer(BasicOffer offer, Guid clientId)
+        {
+            var result = await _offerRepository.Create(offer, clientId);
+            return result;
+        }
+    
+        public async Task<BasicOffer> UpdateOffer(BasicOffer offer, Guid clientId)
+        {
+            var result = await _offerRepository.Update(offer, clientId);
+            return result;
+        }
+
+        public async Task DeleteOffer(Guid offerId, Guid clientId)
+        {
+            await _offerRepository.Delete(offerId, clientId);
         }
     }
 }

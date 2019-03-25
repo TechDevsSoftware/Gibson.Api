@@ -46,6 +46,7 @@ namespace Gibson.Api.Controllers
         {
             try
             {
+                reg.UserType = _userType;
                 var result = await _userRegistrationService.RegisterUser(reg, clientId);
                 return new OkObjectResult(result);
             }

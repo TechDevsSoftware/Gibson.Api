@@ -26,6 +26,17 @@ namespace Gibson.Common.Models
         public string Email { get; set; }
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
+        
+        public MarketingPreferences MarketingPreferences { get; set; }
+        
+        public NotificationPreferences NotificationPreferences { get; set; }
+
+        public UserProfile()
+        {
+            MarketingPreferences = new MarketingPreferences();
+            NotificationPreferences = new NotificationPreferences();
+        }
+        
     }
 
     public class AuthProfile

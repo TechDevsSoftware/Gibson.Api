@@ -45,7 +45,8 @@ namespace Gibson.Auth
             if(user == null) throw new Exception("User not found");
             var validPassword = _passwordHasher.VerifyHashedPassword(user?.AuthProfile?.PasswordHash, req.Password);
             if(!validPassword) throw new UnauthorizedAccessException();
-            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId, userType);
+            var token = _tokenService.CreateToken(user.Id, client.ShortKey, clientId, userType);
+            return token;
         }
 
         private async Task<string> LoginViaGoogle(LoginRequest req, GibsonUserType userType, Guid clientId)
@@ -53,7 +54,14 @@ namespace Gibson.Auth
             var payload = await GoogleJsonWebSignature.ValidateAsync(req.ProviderIdToken);
             var client = await _clientService.GetClient(clientId.ToString());
             var user = await _userService.FindByProviderId(payload.Subject, userType, clientId);
-            return _tokenService.CreateToken(user.Id, client.ShortKey, clientId, userType);
+            if (user == null) throw new Exception("User not found");
+            var token = _tokenService.CreateToken(user.Id, client.ShortKey, clientId, userType);
+            return token;
+        }
+
+        private async Task<User> LogAuthEvent_Login()
+        {
+            return await Task.FromResult(new User());
         }
     }
 }

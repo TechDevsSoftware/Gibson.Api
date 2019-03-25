@@ -89,6 +89,7 @@ namespace Gibson.Api
             services.AddTransient<ICustomerVehicleRepository, CustomerVehicleRespository>();
             services.AddTransient<IBookingRequestRepository, BookingRequestsRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRepository<BasicOffer>, OffersRepository>(); 
             // Services
             services.AddTransient<IAuthTokenService, AuthTokenService>();
             services.AddTransient<IClientService, ClientService>();

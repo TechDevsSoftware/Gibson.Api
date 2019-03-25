@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace Gibson.Common.Models
 {
-    public class CustomerNotificationPreferences
+    public class NotificationPreferences
     {
         public bool Email { get; set; }
         public bool SMS { get; set; }
         public bool PushNotifications { get; set; }
 
 
-        public CustomerNotificationPreferences()
+        public NotificationPreferences()
         {
             Email = true;
             SMS = true;

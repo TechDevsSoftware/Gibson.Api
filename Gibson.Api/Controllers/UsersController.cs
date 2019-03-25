@@ -60,5 +60,20 @@ namespace Gibson.Api.Controllers
                 return new BadRequestObjectResult(e);
             }
         }
+
+        [HttpPut("users/{userId}")]
+        [Authorize(Policy = "ClientData")]
+        public async Task<ActionResult<UserProfile>> UpdateUserProfile([FromRoute] Guid clientId, [FromRoute] Guid userId, [FromBody] UserProfile userProfile)
+        {
+            try
+            {
+                var updateResult = await _users.UpdateUserProfile(userId, userProfile, clientId);
+                return new OkObjectResult(updateResult.UserProfile);
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e);
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading.Tasks;
 using Gibson.Auth.Crypto;
 using Gibson.Auth.Tokens;
@@ -170,6 +171,39 @@ namespace Gibson.Auth.Tests
             var sut = GetAuthService();
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.Login(req, GibsonUserType.Customer, Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task Login_Should_CreateNewAuthEvent()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var password = "PASSW0RD";
+            var hash = _hasher.HashPassword(password);
+            var user = new User
+            {
+                Username = "user@email.com",
+                UserType = GibsonUserType.Customer,
+                AuthProfile = new AuthProfile
+                {
+                    AuthProvider = GibsonAuthProvider.Gibson,
+                    PasswordHash = hash
+                }
+            };
+            await _repo.Create(user, clientId);
+            var sut = GetAuthService();
+            var req = new LoginRequest
+            {
+                Email =  user.Username,
+                Password = password
+            };
+            // Act
+            var result = await sut.Login(req, GibsonUserType.Customer, clientId);
+            // Assert
+            var userResult = await _repo.GetUserByUserName(user.Username, user.UserType, clientId);
+            var loginEvent =
+                userResult.AuthProfile.AuthEvents.Where(x => x.EventType == GibsonAuthEventType.SuccessfulLogin);
+            Assert.True(loginEvent.Any());
         }
      
     }

@@ -78,15 +78,15 @@ namespace Gibson.Api.AuthHandlers
                 var clientIdVal = context.User.FindFirstValue("Gibson-ClientId");
                 var clientIdSuccessful = Guid.TryParse(clientIdVal, out var clientId);
                 if (!clientIdSuccessful) context.Fail();
-                // Get the CustomerId from the Route
-                var routeCustomerId = _httpContextAccessor.HttpContext.GetRouteValue("customerId").ToString();
-                if (!Guid.TryParse(routeCustomerId, out var customerId))
+                // Get the UserId from the Route
+                var routeUserId = _httpContextAccessor.HttpContext.GetRouteValue("customerId")?.ToString() ??
+                                  _httpContextAccessor.HttpContext.GetRouteValue("userId")?.ToString();
+                if(routeUserId == null) context.Fail();
+                if (!Guid.TryParse(routeUserId, out var customerId))
                 {
                     context.Fail();
                     return;
                 }
-
-                ;
 
                 switch (userType)
                 {
