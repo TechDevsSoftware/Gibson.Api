@@ -27,6 +27,8 @@ namespace Gibson.Common.Models
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
         
+        public bool Disabled { get; set; }
+        
         public MarketingPreferences MarketingPreferences { get; set; }
         
         public NotificationPreferences NotificationPreferences { get; set; }
@@ -35,6 +37,7 @@ namespace Gibson.Common.Models
         {
             MarketingPreferences = new MarketingPreferences();
             NotificationPreferences = new NotificationPreferences();
+            Disabled = false;
         }
         
     }

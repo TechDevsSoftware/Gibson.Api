@@ -9,7 +9,7 @@ using Gibson.Customers.Bookings;
 
 namespace Gibson.Api.Controllers
 {   
-    [Route("clients/{clientId}/customers/{customerId}/bookings")]
+    [Route("clients/{clientId}/bookings")]
     public class BookingsController : Controller
     {
         private readonly IBookingRequestService _bookingRequestService;
@@ -19,14 +19,14 @@ namespace Gibson.Api.Controllers
             _bookingRequestService = bookingRequestService;
         }
         
-        [HttpGet("~/clients/{clientId}/bookings")]
+        [HttpGet]
         [Authorize(Policy = "ClientData")]
         public async Task<ActionResult<List<BookingRequest>>> GetClientBookings([FromRoute] Guid clientId)
         {
             return new OkObjectResult(await _bookingRequestService.GetBookings(clientId));
         }
         
-        [HttpGet()]
+        [HttpGet("customer/{customerId}")]
         [Authorize(Policy = "CustomerData")]
         public async Task<ActionResult<List<BookingRequest>>> GetCustomerBookings([FromRoute] Guid customerId, [FromRoute] Guid clientId)
         {
@@ -35,29 +35,28 @@ namespace Gibson.Api.Controllers
 
         [HttpGet("{bookingId}")]
         [Authorize(Policy = "CustomerData")]
-        public async Task<ActionResult<BookingRequest>> GetBookingRequest([FromRoute] Guid bookingId, [FromRoute] Guid clientId)
+        public async Task<ActionResult<BookingRequest>> GetBooking([FromRoute] Guid bookingId, [FromRoute] Guid clientId)
         {
             return new OkObjectResult(await _bookingRequestService.GetBooking(bookingId, clientId));
         }
 
         [HttpPost]
         [Authorize(Policy = "CustomerData")]
-        public async Task<ActionResult<BookingRequest>>CreateBookingRequest([FromBody] BookingRequest_Create bookingRequest, [FromRoute] Guid clientId, [FromRoute] Guid customerId)
+        public async Task<ActionResult<BookingRequest>>CreateBooking([FromBody] BookingRequest_Create bookingRequest, [FromRoute] Guid clientId)
         {
-            bookingRequest.CustomerId = customerId;   
             return new OkObjectResult(await _bookingRequestService.CreateBooking(bookingRequest, clientId));
         }
 
-        [HttpPut]
+        [HttpPut("{bookingId}")]
         [Authorize(Policy = "CustomerData")]
-        public async Task<ActionResult<BookingRequest>> UpdateBookingRequest([FromBody] BookingRequest bookingRequest, [FromRoute] Guid clientId, [FromRoute] Guid customerId)
+        public async Task<ActionResult<BookingRequest>> UpdateBooking([FromBody] BookingRequest bookingRequest,[FromRoute] Guid bookingId, [FromRoute] Guid clientId)
         {
             return new OkObjectResult(await _bookingRequestService.UpdateBooking(bookingRequest, clientId));
         }
 
         [HttpDelete("{bookingId}")]
         [Authorize(Policy = "CustomerData")]
-        public async Task<ActionResult<BookingRequest>> DeleteBookingRequest([FromRoute] Guid bookingId, [FromRoute] Guid clientId)
+        public async Task<ActionResult<BookingRequest>> DeleteBooking([FromRoute] Guid bookingId, [FromRoute] Guid clientId)
         {
             await _bookingRequestService.DeleteBooking(bookingId, clientId);
             return new OkResult();

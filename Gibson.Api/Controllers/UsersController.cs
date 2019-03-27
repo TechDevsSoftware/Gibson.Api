@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gibson.Common.Enums;
@@ -30,7 +31,7 @@ namespace Gibson.Api.Controllers
 
         [HttpGet("employees")]
         [Authorize(Policy = "ClientData")]
-        public async Task<ActionResult<UserProfile>> GetClientEmployees([FromRoute] Guid clientId)
+        public async Task<ActionResult<List<UserProfile>>> GetClientEmployees([FromRoute] Guid clientId)
         {
             var employees = await _users.FindByClient(GibsonUserType.ClientEmployee, clientId);
             if (employees == null) return new NotFoundResult();
@@ -39,7 +40,7 @@ namespace Gibson.Api.Controllers
 
         [HttpGet("customers")]
         [Authorize(Policy = "ClientData")]
-        public async Task<ActionResult<UserProfile>> GetClientCustomers([FromRoute] Guid clientId)
+        public async Task<ActionResult<List<UserProfile>>> GetClientCustomers([FromRoute] Guid clientId)
         {
             var customers = await _users.FindByClient(GibsonUserType.Customer, clientId);
             if (customers == null) return new NotFoundResult();
