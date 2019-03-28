@@ -78,22 +78,22 @@ namespace Gibson.Api.AuthHandlers
                 var clientIdVal = context.User.FindFirstValue("Gibson-ClientId");
                 var clientIdSuccessful = Guid.TryParse(clientIdVal, out var clientId);
                 if (!clientIdSuccessful) context.Fail();
-                // Get the UserId from the Route
-                var routeUserId = _httpContextAccessor.HttpContext.GetRouteValue("customerId")?.ToString() ??
-                                  _httpContextAccessor.HttpContext.GetRouteValue("userId")?.ToString();
-                if(routeUserId == null) context.Fail();
-                if (!Guid.TryParse(routeUserId, out var customerId))
-                {
-                    context.Fail();
-                    return;
-                }
+//                // Get the UserId from the Route
+//                var routeUserId = _httpContextAccessor.HttpContext.GetRouteValue("customerId")?.ToString() ??
+//                                  _httpContextAccessor.HttpContext.GetRouteValue("userId")?.ToString();
+//                if(routeUserId == null) context.Fail();
+//                if (!Guid.TryParse(routeUserId, out var customerId))
+//                {
+//                    context.Fail();
+//                    return;
+//                }
 
                 switch (userType)
                 {
                     case GibsonUserType.Customer:
                     {
-                        // Make sure that the CustomerId is matching the entity CustomerId
-                        if (userId == customerId) context.Succeed(requirement);
+//                        // Make sure that the CustomerId is matching the entity CustomerId
+//                        if (userId == customerId) context.Succeed(requirement);
                         break;
                     }
                     case GibsonUserType.ClientEmployee:

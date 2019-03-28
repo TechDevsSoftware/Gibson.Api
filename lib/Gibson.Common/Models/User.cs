@@ -40,7 +40,22 @@ namespace Gibson.Common.Models
 
     public class PublicUser : UserProfile
     {
-        
+        public Guid UserId { get; set; }
+        public GibsonAuthProvider AuthProvider { get; set; }
+
+        public PublicUser(User user)
+        {
+            UserId = user.Id;
+            FirstName = user.UserProfile.FirstName;
+            LastName = user.UserProfile.LastName;
+            Email = user.UserProfile.Email;
+            HomePhone = user.UserProfile.HomePhone;
+            MobilePhone = user.UserProfile.MobilePhone;
+            Disabled = user.UserProfile.Disabled;
+            MarketingPreferences = user.UserProfile.MarketingPreferences;
+            NotificationPreferences = user.UserProfile.NotificationPreferences;
+            AuthProvider = user.AuthProfile.AuthProvider;
+        }
     }
 
     public class AuthProfile

@@ -42,13 +42,13 @@ namespace Gibson.Api.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<ActionResult<User>> RegisterUser([FromBody] UserRegistration reg, [FromRoute] Guid clientId)
+        public async Task<ActionResult<PublicUser>> RegisterUser([FromBody] UserRegistration reg, [FromRoute] Guid clientId)
         {
             try
             {
                 reg.UserType = _userType;
                 var result = await _userRegistrationService.RegisterUser(reg, clientId);
-                return new OkObjectResult(result);
+                return new OkObjectResult(new PublicUser(result));
             }
             catch (UserRegistrationException ex)
             {

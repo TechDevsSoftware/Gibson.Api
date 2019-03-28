@@ -206,12 +206,6 @@ namespace Gibson.Auth.Tests
             Assert.True(loginEvent.Any());
         }
 
-        [Fact]
-        public async Task Register_Should_SetUserId_On_UserProfile()
-        {
-
-        }
-     
     }
 
     public class MockClientServiceFixture

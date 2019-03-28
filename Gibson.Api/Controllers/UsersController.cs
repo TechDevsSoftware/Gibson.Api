@@ -22,22 +22,22 @@ namespace Gibson.Api.Controllers
 
         [HttpGet("users/{userId}")]
         [Authorize(Policy = "CustomerData")]
-        public async Task<ActionResult<UserProfile>> GetUserProfile([FromRoute]Guid userId, [FromRoute] Guid clientId)
+        public async Task<ActionResult<PublicUser>> GetUserProfile([FromRoute]Guid userId, [FromRoute] Guid clientId)
         {
             var user = await _users.FindById(userId, clientId);
             if (user == null) return new NotFoundResult();
-            return new OkObjectResult(user?.UserProfile);
+            return new OkObjectResult(new PublicUser(user));
         }
 
         [HttpGet("employees")]
         [Authorize(Policy = "ClientData")]
-        public async Task<ActionResult<List<UserProfile>>> GetClientEmployees([FromRoute] Guid clientId)
+        public async Task<ActionResult<List<PublicUser>>> GetClientEmployees([FromRoute] Guid clientId)
         {
             try
             {
                 var employees = await _users.FindByClient(GibsonUserType.ClientEmployee, clientId);
                 if (employees == null) return new NotFoundResult();
-                return new OkObjectResult(employees.Select(x => x.UserProfile));
+                return new OkObjectResult(employees.Select(x => new PublicUser(x)));
             }
             catch (Exception ex)
             {
@@ -47,13 +47,13 @@ namespace Gibson.Api.Controllers
 
         [HttpGet("customers")]
         [Authorize(Policy = "ClientData")]
-        public async Task<ActionResult<List<UserProfile>>> GetClientCustomers([FromRoute] Guid clientId)
+        public async Task<ActionResult<List<PublicUser>>> GetClientCustomers([FromRoute] Guid clientId)
         {
             try
             {
                 var customers = await _users.FindByClient(GibsonUserType.Customer, clientId);
                 if (customers == null) return new NotFoundResult();
-                return new OkObjectResult(customers.Select(x => x.UserProfile));
+                return new OkObjectResult(customers.Select(x => new PublicUser(x)));
             }
             catch (Exception ex)
             {
@@ -78,12 +78,12 @@ namespace Gibson.Api.Controllers
 
         [HttpPut("users/{userId}")]
         [Authorize(Policy = "ClientData")]
-        public async Task<ActionResult<UserProfile>> UpdateUserProfile([FromRoute] Guid clientId, [FromRoute] Guid userId, [FromBody] UserProfile userProfile)
+        public async Task<ActionResult<PublicUser>> UpdateUserProfile([FromRoute] Guid clientId, [FromRoute] Guid userId, [FromBody] UserProfile userProfile)
         {
             try
             {
                 var updateResult = await _users.UpdateUserProfile(userId, userProfile, clientId);
-                return new OkObjectResult(updateResult.UserProfile);
+                return new OkObjectResult(new PublicUser(updateResult));
             }
             catch (Exception e)
             {
