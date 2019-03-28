@@ -33,18 +33,32 @@ namespace Gibson.Api.Controllers
         [Authorize(Policy = "ClientData")]
         public async Task<ActionResult<List<UserProfile>>> GetClientEmployees([FromRoute] Guid clientId)
         {
-            var employees = await _users.FindByClient(GibsonUserType.ClientEmployee, clientId);
-            if (employees == null) return new NotFoundResult();
-            return new OkObjectResult(employees.Select(x => x.UserProfile));
+            try
+            {
+                var employees = await _users.FindByClient(GibsonUserType.ClientEmployee, clientId);
+                if (employees == null) return new NotFoundResult();
+                return new OkObjectResult(employees.Select(x => x.UserProfile));
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
         }
 
         [HttpGet("customers")]
         [Authorize(Policy = "ClientData")]
         public async Task<ActionResult<List<UserProfile>>> GetClientCustomers([FromRoute] Guid clientId)
         {
-            var customers = await _users.FindByClient(GibsonUserType.Customer, clientId);
-            if (customers == null) return new NotFoundResult();
-            return new OkObjectResult(customers.Select(x => x.UserProfile));
+            try
+            {
+                var customers = await _users.FindByClient(GibsonUserType.Customer, clientId);
+                if (customers == null) return new NotFoundResult();
+                return new OkObjectResult(customers.Select(x => x.UserProfile));
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
         }
 
         [HttpDelete("users/{userId}")]

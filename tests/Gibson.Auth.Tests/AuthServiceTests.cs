@@ -205,6 +205,12 @@ namespace Gibson.Auth.Tests
                 userResult.AuthProfile.AuthEvents.Where(x => x.EventType == GibsonAuthEventType.SuccessfulLogin);
             Assert.True(loginEvent.Any());
         }
+
+        [Fact]
+        public async Task Register_Should_SetUserId_On_UserProfile()
+        {
+
+        }
      
     }
 

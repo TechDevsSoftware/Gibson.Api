@@ -416,5 +416,29 @@ namespace Gibson.Users.Tests
             // Assert
             Assert.True(result.Enabled);
         }
+
+
+        [Fact]
+        public async Task Register_Should_SetUserId_On_UserProfile()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var reg = new UserRegistration
+            {
+                AggreedToTerms = true,
+                EmailAddress = "test@test.com",
+                FirstName = "FirstName",
+                LastName = "LastName",
+                ProviderName = "Google",
+                ProviderId = "GoogleId",
+                UserType = GibsonUserType.Customer
+            };
+            var sut = new UserRegistrationService(GetMockRepo(), GetPasswordHasher());
+            // Act
+            var result = await sut.RegisterUser(reg, clientId);
+            // Assert
+            Assert.Equal(result.Id, result.UserProfile.UserId);
+        }
+
     }
 }
