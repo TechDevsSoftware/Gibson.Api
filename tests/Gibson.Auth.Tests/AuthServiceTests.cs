@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Gibson.Auth.Tests
 {
-    public class AuthServiceTests: IClassFixture<DatabaseTestFixture>, IClassFixture<MockClientServiceFixture>
+    public class AuthServiceTests : IClassFixture<DatabaseTestFixture>, IClassFixture<MockClientServiceFixture>
     {
         private readonly IUserRepository _repo;
         private readonly IClientRepository _clientRepo;
@@ -32,11 +32,11 @@ namespace Gibson.Auth.Tests
             _dummyClient = new Client
             {
                 Id = Guid.NewGuid().ToString(),
-                Name =  "Dummy",
+                Name = "Dummy",
                 ShortKey = "dummy"
             };
         }
-        
+
         private AuthService GetAuthService()
         {
             var userService = new UserService(_repo);
@@ -45,7 +45,7 @@ namespace Gibson.Auth.Tests
             var service = new AuthService(tokenService, userService, _hasher, clientService);
             return service;
         }
-        
+
         [Fact]
         public async Task Login_Should_ReturnReadableToken_OnValidGibsonRequest()
         {
@@ -67,7 +67,7 @@ namespace Gibson.Auth.Tests
             var sut = GetAuthService();
             var req = new LoginRequest
             {
-                Email =  user.Username,
+                Email = user.Username,
                 Password = password
             };
             // Act
@@ -76,7 +76,7 @@ namespace Gibson.Auth.Tests
             var handler = new JwtSecurityTokenHandler();
             Assert.True(handler.CanReadToken(result));
         }
-        
+
         [Fact]
         public async Task Login_Should_ThrowException_WhenUnsupportedProvider()
         {
@@ -84,13 +84,13 @@ namespace Gibson.Auth.Tests
             var sut = GetAuthService();
             var req = new LoginRequest
             {
-                Email =  "user@email.com",
+                Email = "user@email.com",
                 Password = "CorrectPassword",
             };
             // Act & Assert
             await Assert.ThrowsAsync<Exception>(async () => await sut.Login(req, GibsonUserType.Customer, Guid.NewGuid()));
         }
-        
+
         [Fact]
         public async Task Login_Should_ThrowException_WhenUserIsNotFound()
         {
@@ -112,13 +112,13 @@ namespace Gibson.Auth.Tests
             var sut = GetAuthService();
             var req = new LoginRequest
             {
-                Email =  "NotAUser@email.com",
+                Email = "NotAUser@email.com",
                 Password = password
             };
             // Act & Assert
-            await Assert.ThrowsAsync<Exception>(async () => await sut.Login(req, GibsonUserType.Customer, clientId) );
+            await Assert.ThrowsAsync<Exception>(async () => await sut.Login(req, GibsonUserType.Customer, clientId));
         }
-        
+
         [Fact]
         public async Task Login_Should_ThrowException_PasswordIsIncorrect()
         {
@@ -140,7 +140,7 @@ namespace Gibson.Auth.Tests
             var sut = GetAuthService();
             var req = new LoginRequest
             {
-                Email =  user.Username,
+                Email = user.Username,
                 Password = "WrongPassword"
             };
             // Act & Assert
@@ -159,7 +159,7 @@ namespace Gibson.Auth.Tests
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await sut.Login(req, GibsonUserType.Customer, Guid.NewGuid()));
         }
-        
+
         [Fact]
         public async Task Login_Should_ThrowException_When_Provider_IsNotSet()
         {
@@ -194,7 +194,7 @@ namespace Gibson.Auth.Tests
             var sut = GetAuthService();
             var req = new LoginRequest
             {
-                Email =  user.Username,
+                Email = user.Username,
                 Password = password
             };
             // Act

@@ -30,14 +30,14 @@ namespace Gibson.Api.AuthHandlers
         {
             _clientService = clientService;
         }
-        
+
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
             AuthorizedToTechDevsData requirement)
         {
             var usersClientId = context.User.ClientId();
             var client = await _clientService.GetClient(usersClientId.ToString());
-            if(client ==  null) context.Fail();
-            if(client.ShortKey != "techdevs") context.Fail();
+            if (client == null) context.Fail();
+            if (client.ShortKey != "techdevs") context.Fail();
             context.Succeed(requirement);
         }
     }
@@ -61,7 +61,7 @@ namespace Gibson.Api.AuthHandlers
             _httpContextAccessor = httpContextAccessor;
             _userService = userService;
         }
-
+             
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
             AuthorizedToCustomerData requirement)
         {
@@ -78,30 +78,33 @@ namespace Gibson.Api.AuthHandlers
                 var clientIdVal = context.User.FindFirstValue("Gibson-ClientId");
                 var clientIdSuccessful = Guid.TryParse(clientIdVal, out var clientId);
                 if (!clientIdSuccessful) context.Fail();
-//                // Get the UserId from the Route
-//                var routeUserId = _httpContextAccessor.HttpContext.GetRouteValue("customerId")?.ToString() ??
-//                                  _httpContextAccessor.HttpContext.GetRouteValue("userId")?.ToString();
-//                if(routeUserId == null) context.Fail();
-//                if (!Guid.TryParse(routeUserId, out var customerId))
-//                {
-//                    context.Fail();
-//                    return;
-//                }
+                // Get the ClientId from the Route
+                var clientIdRoute = _httpContextAccessor.HttpContext.GetRouteValue("clientId")?.ToString();
+                if (!Guid.TryParse(clientIdRoute, out var clientIdRouteGuid))
+                {
+                    // MUST ALWAYS HAVE A CLIENT ID
+                    context.Fail();
+                    return;
+                }
+
+                // Get the UserId from the Route
+                var routeUserId = _httpContextAccessor.HttpContext.GetRouteValue("customerId")?.ToString() ??
+                                  _httpContextAccessor.HttpContext.GetRouteValue("userId")?.ToString();
+                Guid.TryParse(routeUserId, out var customerId);
 
                 switch (userType)
                 {
                     case GibsonUserType.Customer:
-                    {
-//                        // Make sure that the CustomerId is matching the entity CustomerId
-//                        if (userId == customerId) context.Succeed(requirement);
-                        break;
-                    }
+                        {
+                            // Make sure that the CustomerId is matching the entity CustomerId
+                            if (userId == customerId) context.Succeed(requirement);
+                            break;
+                        }
                     case GibsonUserType.ClientEmployee:
-                        // Make sure that the employee is part of the entity group
-                        var customer = await _userService.FindById(customerId, clientId);
-                        if (customer == null) context.Fail();
+                        // Make sure that the employees clientId is matching
+                        var employee = await _userService.FindById(userId, clientId);
                         // Check that the customers clientId is equal to the employees clientId
-                        if (customer?.ClientId == clientId) context.Succeed(requirement);
+                        if (employee.ClientId == clientIdRouteGuid) context.Succeed(requirement);
                         break;
                     case GibsonUserType.TechDevsEmployee:
                         // Make sure that the TechDevs employee Id is valid

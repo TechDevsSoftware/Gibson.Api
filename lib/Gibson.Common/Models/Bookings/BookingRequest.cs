@@ -15,7 +15,7 @@ namespace Gibson.Common.Models
         public bool ConfirmationEmailSent { get; set; }
         public DateTime RequestDate { get; set; }
         public CustomerVehicle Vehicle { get; set; }
-        public BookingCustomer Customer { get; set; }
+        public PublicUser Customer { get; set; }
 
         public BookingRequest()
         {

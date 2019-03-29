@@ -73,15 +73,7 @@ namespace Gibson.Customers.Bookings
                     Cancelled = false,
                     ConfirmationEmailSent = false,
                     Vehicle = vehicle,
-                    Customer = new BookingCustomer
-                    {
-                        Id = customer.Id,
-                        ClientId = customer.ClientId,
-                        FirstName = customer.UserProfile.FirstName,
-                        LastName = customer.UserProfile.LastName,
-                        EmailAddress = customer.UserProfile.Email,
-                        ContactNumber = customer.UserProfile.MobilePhone
-                    },
+                    Customer = new PublicUser(customer),
                     RequestDate = DateTime.UtcNow,
                 };
                 return await bookings.Create(booking, req.CustomerId, clientId);
