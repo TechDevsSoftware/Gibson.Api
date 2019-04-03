@@ -25,6 +25,7 @@ namespace Gibson.Common.Models
     public class ServiceData
     {
         public DateTime? LastServicedOn { get; set; }
+        public int LastServiceMileage { get; set; }
         public DateTime? CalculatedServiceDue { get; set; }
         public int MaxMonths { get; set; }
         public int MaxMileage { get; set; }

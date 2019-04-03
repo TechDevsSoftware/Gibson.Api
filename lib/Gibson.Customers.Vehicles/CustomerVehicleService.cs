@@ -3,6 +3,7 @@ using Gibson.Common.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Xml.Linq;
 
 namespace Gibson.Customers.Vehicles
 {
@@ -88,23 +89,6 @@ namespace Gibson.Customers.Vehicles
             if (string.IsNullOrEmpty(strDate)) return null;
             DateTime.TryParse(strDate, out DateTime result);
             return result;
-        }
-
-        private DateTime? CalculateServiceExpiry(CustomerVehicle v)
-        {
-            // Max Mileage
-            // Max Months
-            // Est Anual Mileage
-            var maxMiles = v.ServiceData?.MaxMileage;
-            var maxMonths = v.ServiceData?.MaxMonths;
-            var estMiles = v.ServiceData?.MaxMileage;
-
-            // When was the last service done
-            // Show the user remianing miles / days / months
-            // Offer them the ability to re-calculate their service renewal
-
-            return null;
-             
         }
 
         private CustomerVehicle MapLookupToCustomerVehicle(VehicleData lookup)
